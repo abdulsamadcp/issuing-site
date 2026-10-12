@@ -96,7 +96,7 @@
   .sidebar-backdrop {
     position: fixed; inset: 0; z-index: 60; background: rgba(15,23,42,0.32);
     opacity: 0; visibility: hidden; pointer-events: none;
-    transition: opacity 0.28s ease, visibility 0s linear 0.28s;
+    transition: opacity 0.34s ease, visibility 0s linear 0.34s;
   }
   body.sidebar-open .sidebar-backdrop { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
 
@@ -106,11 +106,18 @@
     background: var(--surface); border-right: 1px solid var(--border-soft);
     display: flex; flex-direction: column; padding: 22px 16px;
     position: fixed; inset: 0 auto 0 0; z-index: 70; overflow-y: auto;
-    transform: translateX(-100%); visibility: hidden;
+    transform: translateX(-105%); opacity: 0; visibility: hidden;
     box-shadow: 12px 0 40px rgba(15,23,42,0.12);
-    transition: transform 0.28s cubic-bezier(0.22,1,0.36,1), visibility 0s linear 0.28s;
+    transition: transform 0.34s cubic-bezier(0.16,1,0.3,1), opacity 0.25s ease, visibility 0s linear 0.34s;
   }
-  body.sidebar-open .sidebar { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  body.sidebar-open .sidebar { transform: translateX(0); opacity: 1; visibility: visible; transition-delay: 0s; }
+  body.sidebar-open .sidebar-nav .nav-item { animation: sidebar-item-in 0.36s ease both; }
+  body.sidebar-open .sidebar-nav .nav-item:nth-child(1) { animation-delay: 0.04s; }
+  body.sidebar-open .sidebar-nav .nav-item:nth-child(2) { animation-delay: 0.08s; }
+  body.sidebar-open .sidebar-nav .nav-item:nth-child(3) { animation-delay: 0.12s; }
+  body.sidebar-open .sidebar-nav .nav-item:nth-child(4) { animation-delay: 0.16s; }
+  body.sidebar-open .sidebar-nav .nav-item:nth-child(5) { animation-delay: 0.20s; }
+  @keyframes sidebar-item-in { from { opacity: 0; translate: -14px 0; } to { opacity: 1; translate: 0 0; } }
   .sidebar-close { width: 30px; height: 30px; margin-left: auto; border-color: transparent; }
   .sidebar-brand { display: flex; align-items: center; gap: 11px; padding: 4px 8px 26px; }
   .brand-mark {
@@ -160,6 +167,7 @@
   .main-content { flex: 1; min-width: 0; width: 100%; }
   .main-inner { max-width: 760px; margin: 0 auto; padding: 40px 32px 100px; }
   .main-inner.stock-check-view { max-width: 1180px; }
+  .main-inner.pharmacy-directory-view { max-width: 960px; }
   #heroSub, .static-hint { display: none; }
 
   @media (max-width: 860px) {
@@ -260,6 +268,63 @@
   }
   .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3.5px var(--brand-soft); }
   .field textarea { resize: vertical; min-height: 92px; line-height: 1.7; }
+  .batch-option { display: flex; align-items: flex-start; gap: 11px; margin-top: 20px; padding: 15px; border: 1px solid var(--brand-soft-line); border-radius: 10px; background: var(--brand-soft); cursor: pointer; }
+  .batch-option input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--brand); flex: none; }
+  .batch-option strong { display: block; color: var(--ink-soft); font-size: 13px; }
+  .batch-option small { display: block; color: var(--muted); margin-top: 5px; font-size: 12px; line-height: 1.6; }
+  .expire-map { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .expire-map th, .expire-map td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border-soft); }
+  .expire-map th { background: var(--surface-alt); color: var(--muted); font-weight: 600; }
+  .expire-map tr:last-child td { border-bottom: 0; }
+  .expire-map td:not(:first-child) { font-family: var(--font-mono); }
+  #expireRouteNote, #expireBatchSummary { color: var(--muted); font-size: 12.5px; line-height: 1.65; margin: 14px 0 0; }
+  .expire-warehouse-summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 15px; border: 1px solid var(--brand-soft-line); border-radius: 10px; background: var(--brand-soft); }
+  .expire-warehouse-summary strong { display: block; color: var(--brand-dark); font-size: 14px; }
+  .expire-warehouse-summary small { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+  .expire-warehouse-summary .text-btn { flex: none; }
+  .dropzone[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+
+  .pharmacy-review { margin-bottom: 26px; padding-bottom: 24px; border-bottom: 1px solid var(--border-soft); }
+  .pharmacy-review h3 { margin: 0 0 9px; color: var(--ink-soft); font-size: 14px; }
+  .pharmacy-review p { color: var(--muted); font-size: 12.5px; line-height: 1.7; }
+  .pharmacy-review-reference { margin: 8px 0 16px; font-size: 11.5px !important; }
+  .pharmacy-review-summary { padding: 12px 14px; background: var(--brand-soft); border: 1px solid var(--brand-soft-line); border-radius: 10px; font-weight: 600; }
+  .pharmacy-review-controls { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 16px; }
+  .pharmacy-review-controls .field { flex: 1 1 175px; min-width: 0; }
+  .pharmacy-review-controls .field:first-child { flex-grow: 2; }
+  .pharmacy-review-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+  .pharmacy-review-actions .primary-btn { padding: 10px 15px; font-size: 12px; }
+  .pharmacy-review .table-wrap { margin-top: 16px; max-height: 430px; overflow-y: auto; }
+  .pharmacy-review-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .pharmacy-review-table th, .pharmacy-review-table td { padding: 12px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border-soft); }
+  .pharmacy-review-table th { position: sticky; top: 0; z-index: 1; background: var(--surface-alt); color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; }
+  .pharmacy-review-table tbody tr:last-child td { border-bottom: 0; }
+  .pharmacy-review-table td:first-child strong { font-family: var(--font-mono); }
+  .pharmacy-review-table small { display: block; margin-top: 5px; color: var(--muted); font-size: 10.5px; }
+  .pharmacy-review-table .text-btn { color: var(--brand-dark); min-height: 28px; white-space: nowrap; font-size: 11.5px; }
+  .pharmacy-review-status { display: inline-block; padding: 4px 7px; border-radius: 6px; font-size: 10.5px; font-weight: 700; white-space: nowrap; }
+  .pharmacy-review-status.mismatch { background: var(--error-bg); color: var(--error); }
+  .pharmacy-review-status.match { background: var(--success-bg); color: var(--success); }
+  .pharmacy-review-status.applied { background: var(--brand-soft); color: var(--brand-dark); }
+  .pharmacy-review-status.unknown { background: var(--surface-alt); color: var(--muted); }
+  .pharmacy-review-empty { color: var(--muted); line-height: 1.7; }
+  .directory-note { margin: 12px 0; color: var(--muted); font-size: 12.5px; line-height: 1.8; }
+  .directory-stats { margin-top: 20px; }
+  .directory-stats .stat-num { font-size: 25px; }
+  .directory-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .directory-table th, .directory-table td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--border-soft); }
+  .directory-table th { position: sticky; top: 0; background: var(--surface-alt); color: var(--muted); font-size: 10.5px; text-transform: uppercase; }
+  .directory-table td:first-child strong { font-family: var(--font-mono); }
+  .directory-table small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+  .directory-table tr:last-child td { border-bottom: none; }
+  .directory-table-wrap { max-height: 440px; overflow-y: auto; }
+  .directory-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 18px; }
+  .directory-preview { margin-top: 18px; padding: 16px; border: 1px solid var(--brand-soft-line); border-radius: 12px; background: var(--brand-soft); }
+  .directory-preview h3 { margin: 0; font-size: 14px; }
+  .directory-preview .table-wrap { background: var(--surface); }
+  .directory-preview details summary { color: var(--ink-soft); font-size: 12.5px; cursor: pointer; }
+  #directoryDiffWrap { max-height: 320px; overflow-y: auto; }
+  #pharmacyQuickSearch { color: var(--brand-dark); }
 
   details.advanced { margin-top: 22px; border-top: 1px solid var(--border-soft); padding-top: 16px; }
   details.advanced summary { cursor: pointer; font-size: 13px; color: var(--muted); font-weight: 700; list-style: none; }
@@ -379,6 +444,7 @@
   @media (max-width: 480px) {
     .step { gap: 12px; padding: 20px 16px; }
     .step-marker { flex-basis: 32px; width: 32px; height: 32px; font-size: 13px; }
+    .expire-warehouse-summary { align-items: flex-start; flex-direction: column; gap: 10px; }
     .dropzone { padding: 24px 12px; }
     .drop-main { font-size: 13px; }
     .topbar-workflow { font-size: 11px; }
@@ -419,9 +485,17 @@
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l-4 4 4 4"/><path d="M3 14h13"/><path d="M17 4l4 4-4 4"/><path d="M21 8H8"/></svg>
         Warehouse Transfer
       </button>
+      <button class="nav-item mode-btn" data-mode="expire" type="button">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18M12 14v3l2 1"/></svg>
+        Store Expire
+      </button>
       <button class="nav-item mode-btn" data-mode="stock" type="button">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9 5-9-5M12 13v8M3 8l9-5 9 5v9l-9 5-9-5V8"/><path d="M7 10l9-5"/></svg>
         Stock Check
+      </button>
+      <button class="nav-item mode-btn" data-mode="pharmacy" type="button">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5M7 10h6M10 7v6"/></svg>
+        Pharmacy Search
       </button>
     </nav>
 
@@ -445,6 +519,7 @@
         </button>
         <span class="topbar-name">StockLink</span>
         <span class="topbar-workflow" id="topbarWorkflow">Pharmacy Issue</span>
+        <button class="icon-btn" id="pharmacyQuickSearch" type="button" aria-label="Open Pharmacy Search" title="Pharmacy Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg></button>
       </div>
     </header>
     <div class="main-inner">
@@ -452,6 +527,50 @@
       <p class="sub" id="heroSub"></p>
 
       <div class="sheet" id="orderTool">
+
+        <section class="step" id="expireSetup" data-step="1" hidden>
+          <div class="step-marker"><span>1</span></div>
+          <div class="step-content">
+            <h2 id="expireWarehouseTitle">Choose your warehouse</h2>
+            <div class="field" id="expireWarehouseChoose">
+              <label for="expireWarehouse">Supplying warehouse</label>
+              <select id="expireWarehouse">
+                <option value="">Select Jeddah or Riyadh</option>
+                <option value="1100">Jeddah: 1100 → 1200</option>
+                <option value="2100">Riyadh: 2100 → 2200</option>
+              </select>
+            </div>
+            <div class="expire-warehouse-summary" id="expireWarehouseLocked" hidden>
+              <div><strong id="expireWarehouseLabel"></strong><small>Kept for every upload until you change it.</small></div>
+              <button class="text-btn" id="expireChangeWarehouse" type="button">Change warehouse</button>
+            </div>
+            <div id="expireSettings" hidden>
+              <label class="batch-option" for="expireIncludeBatch">
+                <input type="checkbox" id="expireIncludeBatch" aria-describedby="expireBatchHelp">
+                <span><strong>Include batch numbers</strong><small id="expireBatchHelp">Off by default. Turn on only when needed. Every material line stays in its original order, including repeats.</small></span>
+              </label>
+              <p class="hint" id="expireBatchSummary" aria-live="polite"></p>
+              <div class="callout error" id="expireValidation" role="alert" hidden></div>
+              <details class="advanced">
+                <summary>Issue date and SAP settings</summary>
+                <div class="field-grid">
+                  <div class="field"><label for="expireDate">Issue date</label><input type="date" id="expireDate"></div>
+                  <div class="field"><label for="eDocType">Document type</label><input id="eDocType" value="ZTDD" maxlength="12"></div>
+                  <div class="field"><label for="eCompanyCode">Company code</label><input id="eCompanyCode" value="1000"></div>
+                  <div class="field"><label for="ePurchOrg">Purchasing org</label><input id="ePurchOrg" value="INT"></div>
+                  <div class="field"><label for="ePoUnit">Order unit</label><input id="ePoUnit" value="EA"></div>
+                </div>
+                <p class="hint" id="expireRouteNote"></p>
+                <div class="table-wrap">
+                  <table class="expire-map" aria-label="Expiry storage locations">
+                    <thead><tr><th>Category</th><th>From storage</th><th>To storage</th></tr></thead>
+                    <tbody id="expireMappingRows"></tbody>
+                  </table>
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
 
         <section class="step" id="step1" data-step="1">
           <div class="step-marker"><span>1</span></div>
@@ -496,6 +615,24 @@
             <h2>Check the details</h2>
 
             <div id="issueSettings">
+              <section class="pharmacy-review" id="pharmacyWarehouseReview" aria-labelledby="pharmacyReviewTitle" hidden>
+                <h3 id="pharmacyReviewTitle">Pharmacy warehouse check</h3>
+                <p>Each pharmacy code is checked against your reference list. The uploaded warehouse stays unchanged until you apply a suggestion.</p>
+                <p class="pharmacy-review-reference" id="pharmacyReviewReference"></p>
+                <p class="pharmacy-review-summary" id="pharmacyReviewSummary" aria-live="polite"></p>
+                <div class="pharmacy-review-controls">
+                  <div class="field"><label for="pharmacyReviewSearch">Search pharmacy or area</label><input type="search" id="pharmacyReviewSearch" placeholder="Example: P035 or Riyadh" spellcheck="false"></div>
+                  <div class="field"><label for="pharmacyReviewFilter">Show pharmacies</label><select id="pharmacyReviewFilter"><option value="all">All pharmacies</option><option value="mismatch">Warehouse mismatches</option><option value="unknown">Not in reference list</option><option value="applied">Suggestions applied</option></select></div>
+                </div>
+                <div class="pharmacy-review-actions">
+                  <button class="primary-btn" id="pharmacyApplyAll" type="button" hidden>Apply all suggestions</button>
+                  <button class="text-btn" id="pharmacyUndoAll" type="button" hidden>Undo all changes</button>
+                </div>
+                <div class="table-wrap" tabindex="0" role="region" aria-label="Pharmacy warehouse suggestions"><table class="pharmacy-review-table" id="pharmacyReviewTable"></table></div>
+                <p id="pharmacyReviewShown"></p>
+                <button class="text-btn" id="pharmacyReviewMore" type="button" hidden>Show more pharmacies</button>
+                <p id="pharmacyReviewNotice" role="status" aria-live="polite" hidden></p>
+              </section>
               <div class="field-grid">
                 <div class="field">
                   <label for="issueDate">Issue date</label>
@@ -572,6 +709,53 @@
           </div>
         </section>
 
+      </div>
+
+      <div class="sheet" id="pharmacyDirectoryTool" hidden>
+        <section class="step" id="directorySearchSection">
+          <div class="step-marker"><span>1</span></div>
+          <div class="step-content">
+            <h2>Pharmacy Search</h2>
+            <p class="directory-note">Find a pharmacy’s warehouse by its code, name, or area. This search is available anytime, without an issuing file.</p>
+            <div class="stat-row directory-stats" aria-live="polite">
+              <div class="stat"><span class="stat-num" id="directoryTotal"></span><span class="stat-label">pharmacies</span></div>
+              <div class="stat"><span class="stat-num" id="directoryJeddah"></span><span class="stat-label">Jeddah · 1100</span></div>
+              <div class="stat"><span class="stat-num" id="directoryRiyadh"></span><span class="stat-label">Riyadh · 2100</span></div>
+            </div>
+            <p class="directory-note" id="directoryActiveList"></p>
+            <div class="pharmacy-review-controls">
+              <div class="field"><label for="directorySearch">Pharmacy code, name, or area</label><input type="search" id="directorySearch" placeholder="Example: P035 or Riyadh" spellcheck="false"></div>
+              <div class="field"><label for="directoryWarehouse">Warehouse</label><select id="directoryWarehouse"><option value="all">All warehouses</option><option value="1100">Jeddah (1100)</option><option value="2100">Riyadh (2100)</option></select></div>
+            </div>
+            <div class="table-wrap directory-table-wrap" tabindex="0" role="region" aria-label="Pharmacy directory"><table class="directory-table" id="directoryTable"></table></div>
+            <p class="directory-note" id="directoryResultCount" aria-live="polite"></p>
+            <button class="text-btn" id="directoryMore" type="button" hidden>Show more pharmacies</button>
+            <div class="directory-actions"><button class="text-btn" id="directoryBack" type="button">Back to Pharmacy Issue</button></div>
+          </div>
+        </section>
+        <section class="step" id="directoryUpdateSection">
+          <div class="step-marker"><span>2</span></div>
+          <div class="step-content">
+            <h2>Update pharmacy list</h2>
+            <p class="directory-note">Upload the complete current list. Saving it adds new pharmacies, updates their details, and removes pharmacies missing from the uploaded list.</p>
+            <p class="directory-note">Required columns: <strong>Plant / Pharmacy</strong> and <strong>WH / Warehouse</strong> (1100 or 2100). <strong>Area_name</strong> and <strong>Pharmacy Name</strong> are optional.</p>
+            <label class="dropzone" id="directoryDropzone" for="directoryFileInput" tabindex="0" role="button" aria-label="Upload complete pharmacy reference list">
+              <input type="file" id="directoryFileInput" accept=".xlsx,.xls,.csv">
+              <span class="drop-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span>
+              <p class="drop-main">Upload updated pharmacy Excel</p><p class="drop-alt">or drop an Excel or CSV file here</p>
+            </label>
+            <div class="upload-loading" id="directoryLoading" role="status" aria-live="polite" hidden><span class="upload-spinner" aria-hidden="true"></span><div><strong>Reading pharmacy list…</strong><small>Your saved list stays active while this file is checked.</small></div></div>
+            <div class="callout error" id="directoryError" role="alert" hidden></div>
+            <div class="directory-preview" id="directoryPreview" hidden>
+              <h3 id="directoryPreviewTitle"></h3>
+              <p class="directory-note" id="directoryPreviewSummary"></p>
+              <details id="directoryChangeDetails"><summary>Review additions, removals, and updates</summary><div class="table-wrap" id="directoryDiffWrap" tabindex="0" role="region" aria-label="Changes to pharmacy list"><table class="directory-table" id="directoryDiffTable"></table></div></details>
+              <div class="directory-actions"><button class="primary-btn accent" id="directorySave" type="button">Save updated list</button><button class="text-btn" id="directoryCancel" type="button">Cancel upload</button></div>
+            </div>
+            <div class="callout note" id="directoryStatus" role="status" aria-live="polite" hidden></div>
+            <p class="directory-note">In a normal browser window, the saved list stays on this device after refreshing or closing the website. Other browsers and devices need their own upload. Private browsing or clearing this website’s browser data can remove the saved list.</p>
+          </div>
+        </section>
       </div>
 
       <div class="sheet" id="stockCheckTool" hidden>
@@ -754,7 +938,10 @@
   sidebar.addEventListener('click', function (event) {
     if (event.target.closest('.mode-btn')) {
       setMenuOpen(false, false);
-      const upload = document.querySelector('.sheet:not([hidden]) .dropzone');
+      const choice = document.getElementById('expireWarehouse');
+      const needsWarehouse = choice && !choice.disabled && !document.getElementById('expireSetup').hidden;
+      const directory = document.getElementById('pharmacyDirectoryTool');
+      const upload = directory && !directory.hidden ? document.getElementById('directorySearch') : needsWarehouse ? choice : document.querySelector('.sheet:not([hidden]) .dropzone');
       if (upload) upload.focus({ preventScroll: true });
     }
   });
@@ -800,6 +987,586 @@
   };
 
   const KNOWN_WAREHOUSES = [1100, 2100]; // 1100 = Jeddah, 2100 = Riyadh
+  // Pharmacy assignments supplied in Pharmacies.xlsx. The WH column is authoritative.
+  const PHARMACY_WAREHOUSE_ROWS = [
+    ["D069", "RIYADH", 2100],
+    ["D075", "RIYADH", 2100],
+    ["D147", "RIYADH", 2100],
+    ["D148", "RIYADH", 2100],
+    ["D308", "RIYADH", 2100],
+    ["P001", "JEDDAH", 1100],
+    ["P002", "MADINAH", 1100],
+    ["P003", "MAKKAH", 1100],
+    ["P004", "JEDDAH", 1100],
+    ["P005", "MADINAH", 1100],
+    ["P006", "MAKKAH", 1100],
+    ["P007", "JEDDAH", 1100],
+    ["P008", "MAKKAH", 1100],
+    ["P009", "MAKKAH", 1100],
+    ["P010", "MAKKAH", 1100],
+    ["P011", "MAKKAH", 1100],
+    ["P013", "MAKKAH", 1100],
+    ["P014", "MADINAH", 1100],
+    ["P015", "JEDDAH", 1100],
+    ["P016", "ABHA", 1100],
+    ["P017", "JEDDAH", 1100],
+    ["P018", "JEDDAH", 1100],
+    ["P019", "MADINAH", 1100],
+    ["P020", "JEDDAH", 1100],
+    ["P021", "TAIF", 1100],
+    ["P022", "JEDDAH", 1100],
+    ["P023", "MAKKAH", 1100],
+    ["P024", "MAKKAH", 1100],
+    ["P025", "ABHA", 1100],
+    ["P026", "MAKKAH", 1100],
+    ["P027", "MAKKAH", 1100],
+    ["P028", "JEDDAH", 1100],
+    ["P029", "JEDDAH", 1100],
+    ["P030", "TAIF", 1100],
+    ["P031", "JEDDAH", 1100],
+    ["P032", "MADINAH", 1100],
+    ["P033", "JEDDAH", 1100],
+    ["P034", "MADINAH", 1100],
+    ["P035", "RIYADH", 2100],
+    ["P036", "JEDDAH", 1100],
+    ["P037", "JEDDAH", 1100],
+    ["P038", "JEDDAH", 1100],
+    ["P040", "MAKKAH", 1100],
+    ["P041", "MAKKAH", 1100],
+    ["P042", "JEDDAH", 1100],
+    ["P043", "MADINAH", 1100],
+    ["P044", "JEDDAH", 1100],
+    ["P045", "TAIF", 1100],
+    ["P046", "ABHA", 1100],
+    ["P047", "MAKKAH", 1100],
+    ["P048", "JEDDAH", 1100],
+    ["P049", "TAIF", 1100],
+    ["P050", "ABHA", 1100],
+    ["P051", "MAKKAH", 1100],
+    ["P052", "RIYADH", 2100],
+    ["P053", "TAIF", 1100],
+    ["P054", "MAKKAH", 1100],
+    ["P055", "MAKKAH", 1100],
+    ["P056", "MAKKAH", 1100],
+    ["P057", "RIYADH", 2100],
+    ["P058", "JEDDAH", 1100],
+    ["P059", "TAIF", 1100],
+    ["P060", "MADINAH", 1100],
+    ["P061", "TAIF", 1100],
+    ["P062", "TAIF", 1100],
+    ["P063", "TAIF", 1100],
+    ["P064", "RIYADH", 2100],
+    ["P065", "RIYADH", 2100],
+    ["P066", "TAIF", 1100],
+    ["P067", "TAIF", 1100],
+    ["P068", "RIYADH", 2100],
+    ["P069", "RIYADH", 2100],
+    ["P070", "ABHA", 1100],
+    ["P071", "TAIF", 1100],
+    ["P072", "TAIF", 1100],
+    ["P073", "RIYADH", 2100],
+    ["P074", "TAIF", 1100],
+    ["P075", "RIYADH", 2100],
+    ["P076", "TAIF", 1100],
+    ["P077", "RIYADH", 2100],
+    ["P078", "TAIF", 1100],
+    ["P079", "RIYADH", 2100],
+    ["P080", "RIYADH", 2100],
+    ["P081", "TAIF", 1100],
+    ["P082", "RIYADH", 2100],
+    ["P083", "RIYADH", 2100],
+    ["P084", "TAIF", 1100],
+    ["P085", "TAIF", 1100],
+    ["P086", "TAIF", 1100],
+    ["P088", "TAIF", 1100],
+    ["P089", "MAKKAH", 1100],
+    ["P090", "DAMMAM", 2100],
+    ["P091", "MAKKAH", 1100],
+    ["P092", "RIYADH", 2100],
+    ["P093", "MAKKAH", 1100],
+    ["P094", "MAKKAH", 1100],
+    ["P095", "TAIF", 1100],
+    ["P096", "MAKKAH", 1100],
+    ["P097", "RIYADH", 2100],
+    ["P098", "JEDDAH", 1100],
+    ["P099", "MAKKAH", 1100],
+    ["P101", "MADINAH", 1100],
+    ["P102", "JEDDAH", 1100],
+    ["P103", "HAIL", 2100],
+    ["P104", "JEDDAH", 1100],
+    ["P105", "RIYADH", 2100],
+    ["P106", "TAIF", 1100],
+    ["P107", "HAIL", 2100],
+    ["P108", "NAGRAN", 1100],
+    ["P109", "TAIF", 1100],
+    ["P110", "JEDDAH", 1100],
+    ["P111", "MAKKAH", 1100],
+    ["P112", "MAKKAH", 1100],
+    ["P114", "JEDDAH", 1100],
+    ["P115", "RIYADH", 2100],
+    ["P116", "MADINAH", 1100],
+    ["P117", "MADINAH", 1100],
+    ["P118", "TAIF", 1100],
+    ["P119", "JEDDAH", 1100],
+    ["P120", "MADINAH", 1100],
+    ["P121", "BAHA", 1100],
+    ["P122", "TAIF", 1100],
+    ["P123", "MADINAH", 1100],
+    ["P124", "TAIF", 1100],
+    ["P125", "JEDDAH", 1100],
+    ["P126", "MAKKAH", 1100],
+    ["P127", "TAIF", 1100],
+    ["P128", "BAHA", 1100],
+    ["P129", "JEDDAH", 1100],
+    ["P130", "TAIF", 1100],
+    ["P131", "TAIF", 1100],
+    ["P132", "TAIF", 1100],
+    ["P133", "TAIF", 1100],
+    ["P134", "TAIF", 1100],
+    ["P135", "BAHA", 1100],
+    ["P137", "QASIM", 2100],
+    ["P138", "JEDDAH", 1100],
+    ["P139", "TAIF", 1100],
+    ["P140", "TAIF", 1100],
+    ["P141", "ABHA", 1100],
+    ["P142", "TAIF", 1100],
+    ["P143", "JEDDAH", 1100],
+    ["P144", "JEDDAH", 1100],
+    ["P145", "JEDDAH", 1100],
+    ["P146", "JEDDAH", 1100],
+    ["P147", "RIYADH", 2100],
+    ["P148", "RIYADH", 2100],
+    ["P149", "JEDDAH", 1100],
+    ["P150", "JEDDAH", 1100],
+    ["P151", "JEDDAH", 1100],
+    ["P152", "JEDDAH", 1100],
+    ["P153", "JEDDAH", 1100],
+    ["P154", "JEDDAH", 1100],
+    ["P155", "JEDDAH", 1100],
+    ["P156", "JEDDAH", 1100],
+    ["P157", "JEDDAH", 1100],
+    ["P158", "JEDDAH", 1100],
+    ["P159", "JEDDAH", 1100],
+    ["P160", "TAIF", 1100],
+    ["P161", "TAIF", 1100],
+    ["P162", "MADINAH", 1100],
+    ["P163", "MADINAH", 1100],
+    ["P164", "JEDDAH", 1100],
+    ["P165", "JEDDAH", 1100],
+    ["P166", "JEDDAH", 1100],
+    ["P167", "JEDDAH", 1100],
+    ["P168", "JEDDAH", 1100],
+    ["P169", "JEDDAH", 1100],
+    ["P170", "JEDDAH", 1100],
+    ["P171", "JEDDAH", 1100],
+    ["P172", "JEDDAH", 1100],
+    ["P173", "TAIF", 1100],
+    ["P174", "BAHA", 1100],
+    ["P175", "ABHA", 1100],
+    ["P176", "ABHA", 1100],
+    ["P177", "HAIL", 2100],
+    ["P178", "ABHA", 1100],
+    ["P179", "ABHA", 1100],
+    ["P180", "ABHA", 1100],
+    ["P181", "RIYADH", 2100],
+    ["P182", "RIYADH", 2100],
+    ["P183", "RIYADH", 2100],
+    ["P184", "MADINAH", 1100],
+    ["P185", "JIZAN", 1100],
+    ["P186", "MADINAH", 1100],
+    ["P187", "MADINAH", 1100],
+    ["P188", "BAHA", 1100],
+    ["P189", "MAKKAH", 1100],
+    ["P191", "MAKKAH", 1100],
+    ["P192", "MAKKAH", 1100],
+    ["P193", "MAKKAH", 1100],
+    ["P194", "MAKKAH", 1100],
+    ["P195", "MAKKAH", 1100],
+    ["P196", "MAKKAH", 1100],
+    ["P197", "TAIF", 1100],
+    ["P198", "JEDDAH", 1100],
+    ["P199", "JEDDAH", 1100],
+    ["P200", "JEDDAH", 1100],
+    ["P202", "JEDDAH", 1100],
+    ["P203", "JEDDAH", 1100],
+    ["P204", "JEDDAH", 1100],
+    ["P205", "JEDDAH", 1100],
+    ["P206", "JEDDAH", 1100],
+    ["P207", "JEDDAH", 1100],
+    ["P208", "JEDDAH", 1100],
+    ["P209", "ABHA", 1100],
+    ["P210", "MAKKAH", 1100],
+    ["P211", "TAIF", 1100],
+    ["P212", "MAKKAH", 1100],
+    ["P213", "TAIF", 1100],
+    ["P214", "TAIF", 1100],
+    ["P215", "DAMMAM", 2100],
+    ["P216", "DAMMAM", 2100],
+    ["P217", "DAMMAM", 2100],
+    ["P218", "DAMMAM", 2100],
+    ["P219", "BAHA", 1100],
+    ["P220", "BAHA", 1100],
+    ["P221", "JEDDAH", 1100],
+    ["P222", "BAHA", 1100],
+    ["P223", "BAHA", 1100],
+    ["P224", "JEDDAH", 1100],
+    ["P225", "JEDDAH", 1100],
+    ["P226", "BAHA", 1100],
+    ["P228", "JEDDAH", 1100],
+    ["P229", "DAMMAM", 2100],
+    ["P230", "BAHA", 1100],
+    ["P231", "MAKKAH", 1100],
+    ["P232", "MAKKAH", 1100],
+    ["P233", "ABHA", 1100],
+    ["P234", "BAHA", 1100],
+    ["P235", "BAHA", 1100],
+    ["P236", "DAMMAM", 2100],
+    ["P237", "DAMMAM", 2100],
+    ["P238", "ABHA", 1100],
+    ["P239", "ABHA", 1100],
+    ["P240", "RIYADH", 2100],
+    ["P241", "RIYADH", 2100],
+    ["P242", "ABHA", 1100],
+    ["P243", "TAIF", 1100],
+    ["P244", "DAMMAM", 2100],
+    ["P245", "DAMMAM", 2100],
+    ["P246", "DAMMAM", 2100],
+    ["P247", "JEDDAH", 1100],
+    ["P248", "JEDDAH", 1100],
+    ["P249", "RIYADH", 2100],
+    ["P250", "DAMMAM", 2100],
+    ["P251", "MADINAH", 1100],
+    ["P252", "JEDDAH", 1100],
+    ["P253", "RIYADH", 2100],
+    ["P254", "MADINAH", 1100],
+    ["P255", "JEDDAH", 1100],
+    ["P256", "JEDDAH", 1100],
+    ["P257", "JIZAN", 1100],
+    ["P258", "JIZAN", 1100],
+    ["P259", "JIZAN", 1100],
+    ["P260", "BAHA", 1100],
+    ["P261", "BAHA", 1100],
+    ["P262", "DAMMAM", 2100],
+    ["P263", "BAHA", 1100],
+    ["P264", "NAGRAN", 1100],
+    ["P265", "ABHA", 1100],
+    ["P266", "ABHA", 1100],
+    ["P267", "BAHA", 1100],
+    ["P268", "TAIF", 1100],
+    ["P269", "TAIF", 1100],
+    ["P270", "QASIM", 2100],
+    ["P271", "QASIM", 2100],
+    ["P272", "QASIM", 2100],
+    ["P273", "QASIM", 2100],
+    ["P274", "QASIM", 2100],
+    ["P275", "QASIM", 2100],
+    ["P276", "QASIM", 2100],
+    ["P277", "HAIL", 2100],
+    ["P278", "HAIL", 2100],
+    ["P279", "HAIL", 2100],
+    ["P280", "TABOUK", 1100],
+    ["P281", "TABOUK", 1100],
+    ["P282", "ARAR", 2100],
+    ["P283", "ARAR", 2100],
+    ["P284", "ARAR", 2100],
+    ["P285", "DAMMAM", 2100],
+    ["P286", "DAMMAM", 2100],
+    ["P287", "TABOUK", 1100],
+    ["P288", "MADINAH", 1100],
+    ["P289", "ARAR", 2100],
+    ["P290", "JEDDAH", 1100],
+    ["P291", "JEDDAH", 1100],
+    ["P292", "TAIF", 1100],
+    ["P293", "BAHA", 1100],
+    ["P294", "BAHA", 1100],
+    ["P295", "JIZAN", 1100],
+    ["P296", "NAGRAN", 1100],
+    ["P297", "BAHA", 1100],
+    ["P298", "ABHA", 1100],
+    ["P299", "BAHA", 1100],
+    ["P300", "JEDDAH", 1100],
+    ["P301", "BAHA", 1100],
+    ["P302", "BAHA", 1100],
+    ["P303", "JIZAN", 1100],
+    ["P304", "QASIM", 2100],
+    ["P305", "JEDDAH", 1100],
+    ["P306", "JEDDAH", 1100],
+    ["P307", "JEDDAH", 1100],
+    ["P308", "RIYADH", 2100],
+    ["P310", "DAMMAM", 2100],
+    ["P311", "ARAR", 2100],
+    ["P312", "ARAR", 2100],
+    ["P313", "TAIF", 1100],
+    ["P314", "BAHA", 1100],
+    ["P315", "ARAR", 2100],
+    ["P316", "BAHA", 1100],
+    ["P317", "RIYADH", 2100],
+    ["P318", "BAHA", 1100],
+    ["P319", "TAIF", 1100],
+    ["P320", "DAMMAM", 2100],
+    ["P321", "TABOUK", 1100],
+    ["P322", "JIZAN", 1100],
+    ["P324", "BAHA", 1100],
+    ["P325", "TABOUK", 1100],
+    ["P326", "DAMMAM", 2100],
+    ["P327", "RIYADH", 2100],
+    ["P328", "BAHA", 1100],
+    ["P329", "TAIF", 1100],
+    ["P330", "MAKKAH", 1100],
+    ["P331", "JIZAN", 1100],
+    ["P332", "BAHA", 1100],
+    ["P333", "MAKKAH", 1100],
+    ["P334", "JEDDAH", 1100],
+    ["P335", "JEDDAH", 1100],
+    ["P336", "ABHA", 1100],
+    ["P337", "ABHA", 1100],
+    ["P339", "MADINAH", 1100],
+    ["P340", "NAGRAN", 1100],
+    ["P341", "NAGRAN", 1100],
+    ["P342", "NAGRAN", 1100],
+    ["P343", "DAMMAM", 2100],
+    ["P344", "JEDDAH", 1100],
+    ["P345", "JEDDAH", 1100],
+    ["P346", "Hail", 2100],
+    ["P347", "BAHA", 1100],
+    ["P348", "TAIF", 1100],
+    ["P349", "TAIF", 1100],
+    ["P350", "MAKKAH", 1100],
+    ["P351", "JIZAN", 1100],
+    ["P352", "DAMMAM", 2100],
+    ["P353", "DAMMAM", 2100],
+    ["P354", "HAIL", 2100],
+    ["P355", "DAMMAM", 2100],
+    ["P356", "TABOUK", 1100],
+    ["P357", "JIZAN", 1100],
+    ["P358", "RIYADH", 2100],
+    ["P359", "MADINAH", 1100],
+    ["P361", "JIZAN", 1100],
+    ["P362", "TABOUK", 1100],
+    ["P363", "HAFR", 2100],
+    ["P364", "HAFR", 2100],
+    ["P365", "DAMMAM", 2100],
+    ["P366", "RIYADH", 2100],
+    ["P367", "RIYADH", 2100],
+    ["P368", "QASIM", 2100],
+    ["P369", "QASIM", 2100],
+    ["P370", "QASIM", 2100],
+    ["P371", "ABHA", 1100],
+    ["P372", "JEDDAH", 1100],
+    ["P373", "JEDDAH", 1100],
+    ["P374", "JEDDAH", 1100],
+    ["P375", "RIYADH", 2100],
+    ["P376", "RIYADH", 2100],
+    ["P377", "RIYADH", 2100],
+    ["P378", "RIYADH", 2100],
+    ["P379", "RIYADH", 2100],
+    ["P380", "MAKKAH", 1100],
+    ["P381", "DAMMAM", 2100],
+    ["P382", "JEDDAH", 1100],
+    ["P383", "JIZAN", 1100],
+    ["P384", "JEDDAH", 1100],
+    ["P385", "ARAR", 2100],
+    ["P386", "ARAR", 2100],
+    ["P387", "ABHA", 1100],
+    ["P388", "ARAR", 2100],
+    ["P389", "HAFR", 2100],
+    ["P390", "DAMMAM", 2100],
+    ["P391", "HAFR", 2100],
+    ["P392", "DAMMAM", 2100],
+    ["P393", "NAGRAN", 1100],
+    ["P394", "ARAR", 2100],
+    ["P395", "JEDDAH", 1100],
+    ["P396", "JEDDAH", 1100],
+    ["P397", "QASIM", 2100],
+    ["P398", "JEDDAH", 1100],
+    ["P399", "JIZAN", 1100],
+    ["P400", "JEDDAH", 1100],
+    ["P401", "TABOUK", 1100],
+    ["P402", "RIYADH", 2100],
+    ["P403", "JEDDAH", 1100],
+    ["P404", "JEDDAH", 1100],
+    ["P405", "TABOUK", 1100],
+    ["P406", "DAMMAM", 2100],
+    ["P407", "NAGRAN", 1100],
+    ["P408", "DAMMAM", 2100],
+    ["P409", "MAKKAH", 1100],
+    ["P410", "MADINAH", 1100],
+    ["P411", "JEDDAH", 1100],
+    ["P413", "RIYADH", 2100],
+    ["P415", "MADINAH", 1100],
+    ["P416", "RIYADH", 2100],
+    ["P417", "JEDDAH", 1100],
+    ["P418", "JEDDAH", 1100],
+    ["P419", "JEDDAH", 1100],
+    ["P420", "JEDDAH", 1100],
+    ["P421", "JEDDAH", 1100],
+    ["P422", "DAMMAM", 2100],
+    ["P424", "RIYADH", 2100],
+    ["P425", "ABHA", 1100],
+    ["P426", "ABHA", 1100],
+    ["P427", "ABHA", 1100],
+    ["P428", "BAHA", 1100],
+    ["P429", "BAHA", 1100],
+    ["P430", "BAHA", 1100],
+    ["P431", "JEDDAH", 1100],
+    ["P432", "MADINAH", 1100],
+    ["P433", "JEDDAH", 1100],
+    ["P434", "RIYADH", 2100],
+    ["P435", "MADINAH", 1100],
+    ["P436", "MADINAH", 1100],
+    ["P437", "MADINAH", 1100],
+    ["P438", "ARAR", 2100],
+    ["P439", "DAMMAM", 2100],
+    ["P440", "TAIF", 1100],
+    ["P441", "JEDDAH", 1100],
+    ["P442", "DAMMAM", 2100],
+    ["P443", "MADINAH", 1100],
+    ["P444", "JEDDAH", 1100],
+    ["P445", "DAMMAM", 2100],
+    ["P446", "TABOUK", 1100],
+    ["P447", "DAMMAM", 2100],
+    ["P448", "DAMMAM", 2100],
+    ["P449", "DAMMAM", 2100],
+    ["P450", "JEDDAH", 1100],
+    ["P451", "ABHA", 1100],
+    ["P452", "Hail", 2100],
+    ["P453", "RIYADH", 2100],
+    ["P454", "MADINAH", 1100],
+    ["P455", "JEDDAH", 1100],
+    ["P456", "QASIM", 2100],
+    ["P457", "ABHA", 1100],
+    ["P458", "BAHA", 1100],
+    ["P459", "JEDDAH", 1100],
+    ["P460", "JEDDAH", 1100],
+    ["P461", "JEDDAH", 1100],
+    ["P463", "HAIL", 2100],
+    ["P464", "QASIM", 2100],
+    ["P465", "QASIM", 2100],
+    ["P466", "RIYADH", 2100],
+    ["P467", "RIYADH", 2100],
+    ["P469", "DAMMAM", 2100],
+    ["P470", "BAHA", 1100],
+    ["P471", "JIZAN", 1100],
+    ["P472", "RIYADH", 2100],
+    ["P473", "BAHA", 1100],
+    ["P475", "JEDDAH", 1100],
+    ["P476", "JEDDAH", 1100],
+    ["P477", "JEDDAH", 1100],
+    ["P478", "HAIL", 1100],
+    ["P479", "ABHA", 1100],
+    ["P480", "BAHA", 1100],
+    ["P481", "JIZAN", 1100],
+    ["P482", "TAIF", 1100],
+    ["P483", "MADINAH", 1100],
+    ["P484", "MAKKAH", 1100],
+    ["P485", "JEDDAH", 1100],
+    ["P486", "JEDDAH", 1100],
+    ["P487", "MAKKAH", 1100],
+    ["P488", "QASIM", 2100],
+    ["P489", "HAIL", 2100],
+    ["P490", "HAIL", 2100],
+    ["P491", "JEDDAH", 1100],
+    ["P492", "DAMMAM", 2100],
+    ["P493", "RIYADH", 2100],
+    ["P494", "BAHA", 1100],
+    ["P495", "ABHA", 1100],
+    ["P496", "DAMMAM", 2100],
+    ["P497", "RIYADH", 2100],
+    ["P498", "JEDDAH", 1100],
+    ["P499", "DAMMAM", 2100],
+    ["P500", "JEDDAH", 1100],
+    ["P501", "DAMMAM", 2100],
+    ["P502", "DAMMAM", 2100],
+    ["P503", "TABOUK", 1100],
+    ["P504", "DAMMAM", 2100],
+    ["P505", "BAHA", 1100],
+    ["P506", "RIYADH", 2100],
+    ["P507", "RIYADH", 2100],
+    ["P509", "HAIL", 2100],
+    ["P510", "RIYADH", 2100],
+    ["P511", "RIYADH", 2100],
+    ["P513", "MADINAH", 1100],
+    ["P514", "JIZAN", 1100],
+    ["P515", "ABHA", 1100],
+    ["P516", "BAHA", 1100],
+    ["P517", "DAMMAM", 2100],
+    ["P518", "RIYADH", 2100],
+    ["P519", "DAMMAM", 2100],
+    ["P520", "RIYADH", 2100],
+    ["P522", "NAGRAN", 1100],
+    ["P523", "JEDDAH", 1100],
+    ["P526", "JEDDAH", 1100],
+    ["P527", "JEDDAH", 1100],
+    ["P528", "JEDDAH", 1100],
+    ["P529", "JEDDAH", 1100],
+    ["P530", "RIYADH", 2100],
+    ["P531", "RIYADH", 2100],
+    ["P532", "MADINAH", 1100],
+    ["P533", "RIYADH", 2100],
+    ["P535", "ABHA", 1100],
+    ["P536", "RIYADH", 2100],
+    ["P539", "NAGRAN", 1100],
+    ["P541", "QASIM", 2100],
+    ["P542", "RIYADH", 2100],
+    ["P543", "JIZAN", 1100],
+    ["P544", "BAHA", 1100],
+    ["P545", "MADINAH", 1100],
+    ["P549", "DAMMAM", 2100],
+    ["P550", "DAMMAM", 2100],
+    ["P553", "JEDDAH", 1100],
+    ["P556", "JIZAN", 1100],
+    ["P557", "JEDDAH", 1100],
+    ["P600", "RIYADH", 2100],
+    ["P601", "RIYADH", 2100],
+    ["P602", "RIYADH", 2100],
+    ["P603", "RIYADH", 2100],
+    ["P604", "RIYADH", 2100],
+    ["P605", "RIYADH", 2100],
+    ["P606", "RIYADH", 2100],
+    ["P607", "RIYADH", 2100],
+    ["P608", "RIYADH", 2100],
+    ["P609", "RIYADH", 2100],
+    ["P610", "RIYADH", 2100],
+    ["P611", "RIYADH", 2100],
+    ["P612", "RIYADH", 2100],
+    ["P613", "RIYADH", 2100],
+    ["P614", "RIYADH", 2100],
+    ["P615", "RIYADH", 2100],
+    ["P616", "RIYADH", 2100],
+    ["P617", "RIYADH", 2100],
+    ["P618", "RIYADH", 2100],
+    ["P619", "RIYADH", 2100],
+    ["P620", "RIYADH", 2100],
+    ["P621", "RIYADH", 2100],
+    ["P622", "RIYADH", 2100],
+    ["P623", "RIYADH", 2100],
+    ["P630", "RIYADH", 2100],
+    ["P631", "RIYADH", 2100],
+    ["P632", "RIYADH", 2100],
+    ["P635", "RIYADH", 2100],
+    ["P636", "RIYADH", 2100],
+    ["P637", "RIYADH", 2100],
+    ["P639", "RIYADH", 2100],
+    ["P640", "RIYADH", 2100],
+    ["P641", "RIYADH", 2100],
+    ["P642", "RIYADH", 2100],
+    ["P643", "RIYADH", 2100],
+    ["P644", "RIYADH", 2100],
+    ["P645", "RIYADH", 2100],
+    ["P646", "RIYADH", 2100],
+    ["P647", "RIYADH", 2100],
+    ["P648", "RIYADH", 2100],
+    ["P649", "RIYADH", 2100],
+    ["P650", "RIYADH", 2100],
+    ["P651", "RIYADH", 2100],
+    ["P652", "RIYADH", 2100],
+    ["P653", "RIYADH", 2100],
+    ["P654", "RIYADH", 2100],
+    ["P655", "RIYADH", 2100],
+    ["P656", "RIYADH", 2100],
+    ["P657", "RIYADH", 2100]
+  ];
+  const PHARMACY_WAREHOUSE_REFERENCE = new Map(PHARMACY_WAREHOUSE_ROWS.map(row => [row[0], { area: row[1], wh: row[2] }]));
   const PLANT_REGEX = /^[PD]\d{3}$/i;     // P164, D069 — 1 letter (P/D) + 3 digits
   const MATERIAL_MIN = 100000, MATERIAL_MAX = 999999; // 6-digit material numbers
   const PATTERN_MATCH_THRESHOLD = 0.8;
@@ -1004,6 +1771,117 @@
   const WAREHOUSE_LABEL = { 1100: 'Jeddah', 2100: 'Riyadh' };
   const LEADING_DIGIT_CATEGORY = { '1': 'medicine', '2': 'cosmetics', '3': 'milk', '4': 'diaper' };
 
+  // Store Expire keeps every input line, including different batches of the
+  // same material. The destination stores are taken from the supplied SAP files.
+  const EXPIRE_CATEGORY_ORDER = ['medicine', 'cosmetics', 'milk', 'diaper'];
+  const EXPIRE_DESTINATION = {
+    1100: { plant: 1200, medicine: 1201, cosmetics: 1205, milk: 1205, diaper: 1205 },
+    2100: { plant: 2200, medicine: 2201, cosmetics: 2205, milk: 2205, diaper: 2205 },
+  };
+  const EXPIRE_COLUMNS = {
+    material: ['materialnumber', 'material', 'materialno', 'materialcode', 'matnr', 'itemcode', 'itemnumber', 'materialtypenlength18'],
+    order: ['quantity', 'qty', 'orderqty', 'orderquantity', 'order', 'quantitytypebstmg'],
+    batch: ['batchnumber', 'batch', 'batchno', 'batchcode', 'lotnumber', 'lotno', 'charg', 'pobatch', 'pobatchtypechargd'],
+    wh: ['supplyingplant', 'warehouse', 'warehousecode', 'wh', 'whcode'],
+  };
+  function expireKey(value) { return String(value == null ? '' : value).toLowerCase().replace(/[^a-z0-9]/g, ''); }
+  function expireColumn(cells, role) {
+    const hits = Array.from(cells).filter(([, cell]) => EXPIRE_COLUMNS[role].includes(expireKey(cell.v)));
+    return hits.length === 1 ? hits[0][0] : -1;
+  }
+  function expireBatch(cell) {
+    if (!cell || cell.v == null || String(cell.v).trim() === '') return { batch: '', batchProblem: '' };
+    if (cell.t === 'e' || cell.t === 'd' || typeof cell.v === 'boolean' || cell.v instanceof Date) {
+      return { batch: '', batchProblem: 'Batch numbers must be text or whole numbers.' };
+    }
+    if (typeof cell.v === 'number') {
+      if (!Number.isSafeInteger(cell.v)) return { batch: '', batchProblem: 'Save this batch number as text in Excel to preserve it exactly.' };
+      // A numeric batch with a custom zero format still needs its leading zeros.
+      if (/^0+$/.test(cell.z || '')) return { batch: XLSX.utils.format_cell(cell), batchProblem: '' };
+    }
+    return { batch: String(cell.v).trim(), batchProblem: '' };
+  }
+  function parseExpireWorkbook(workbook) {
+    const result = { rows: [], skippedSheets: [], invalidRowCount: 0, sampleHeaders: [], detectedColumns: null, errors: [], sourceWarehouse: null };
+    const warehouses = new Set();
+    function invalid(where, reason) {
+      result.invalidRowCount++;
+      if (result.errors.length < 5) result.errors.push(where + ': ' + reason);
+    }
+    workbook.SheetNames.forEach(sheetName => {
+      const sheet = workbook.Sheets[sheetName], rowMap = new Map();
+      // Ignore empty formatted cells instead of iterating a million-row !ref.
+      Object.keys(sheet).forEach(address => {
+        if (!/^[A-Z]+[1-9][0-9]*$/.test(address)) return;
+        const cell = sheet[address];
+        if (!cell || cell.v == null || String(cell.v).trim() === '') return;
+        const pos = XLSX.utils.decode_cell(address);
+        if (!rowMap.has(pos.r)) rowMap.set(pos.r, new Map());
+        rowMap.get(pos.r).set(pos.c, cell);
+      });
+      const rows = Array.from(rowMap).sort((a, b) => a[0] - b[0]);
+      let header = -1, cols;
+      for (let i = 0; i < Math.min(rows.length, 40); i++) {
+        const cells = rows[i][1];
+        const candidate = Object.fromEntries(Object.keys(EXPIRE_COLUMNS).map(role => [role, expireColumn(cells, role)]));
+        if (candidate.material >= 0 && candidate.order >= 0) { header = i; cols = candidate; break; }
+      }
+      if (header < 0) {
+        result.skippedSheets.push(sheetName);
+        if (!result.sampleHeaders.length && rows.length) result.sampleHeaders = Array.from(rows[0][1].values(), cell => String(cell.v));
+        return;
+      }
+      if (!result.detectedColumns) {
+        result.detectedColumns = Object.fromEntries(Object.entries(cols).map(([role, col]) => [role, col < 0 ? '' : String(rows[header][1].get(col).v)]));
+      }
+      for (const [rowNumber, cells] of rows.slice(header + 1)) {
+        const materialCell = cells.get(cols.material), qtyCell = cells.get(cols.order);
+        const materialText = String(materialCell && materialCell.v != null ? materialCell.v : '').trim();
+        const qtyText = String(qtyCell && qtyCell.v != null ? qtyCell.v : '').trim();
+        if (['total', 'subtotal', 'grandtotal'].includes(expireKey(materialText))) continue;
+        if (EXPIRE_COLUMNS.material.includes(expireKey(materialText)) && EXPIRE_COLUMNS.order.includes(expireKey(qtyText))) continue;
+        const where = sheetName + ' row ' + (rowNumber + 1);
+        if (!/^0*[1-4]\d{5}$/.test(materialText) || materialCell.t === 'e') {
+          invalid(where, 'use a six-digit material number starting with 1, 2, 3, or 4.'); continue;
+        }
+        const groupedNumber = /^\d{1,3}(,\d{3})+(\.\d+)?$/.test(qtyText);
+        const quantity = Number(groupedNumber ? qtyText.replace(/,/g, '') : qtyText);
+        if (!qtyText || !Number.isFinite(quantity) || quantity <= 0 || quantity > Number.MAX_SAFE_INTEGER || qtyCell.t === 'e') {
+          invalid(where, 'quantity must be a positive number.'); continue;
+        }
+        if (cols.wh >= 0 && cells.has(cols.wh)) {
+          const wh = Number(cells.get(cols.wh).v);
+          if (!KNOWN_WAREHOUSES.includes(wh)) { invalid(where, 'supplying warehouse must be 1100 or 2100.'); continue; }
+          warehouses.add(wh);
+        }
+        const material = Number(materialText);
+        result.rows.push({ material, order: quantity, category: LEADING_DIGIT_CATEGORY[String(material)[0]], source: where, ...expireBatch(cells.get(cols.batch)) });
+      }
+    });
+    if (warehouses.size > 1) invalid('Warehouse column', 'this file contains both warehouses. Upload one warehouse at a time.');
+    if (warehouses.size === 1) result.sourceWarehouse = Array.from(warehouses)[0];
+    return result;
+  }
+  function buildExpireRows(rows, settings) {
+    const destination = EXPIRE_DESTINATION[settings.warehouse];
+    let docNm = 0, slNo = 0, previousCategory = null;
+    // Preserve the exact worksheet/row sequence. Start another SAP document
+    // when the category changes, so documents remain contiguous without sorting.
+    return rows.map(row => {
+      if (row.category !== previousCategory) { docNm++; slNo = 10; previousCategory = row.category; }
+      else slNo += 10;
+      return {
+        docNm, date: settings.dateNum, type: settings.docType,
+        companyCode: settings.companyCode, purchOrg: settings.purchOrg,
+        purGroup: CATEGORY_PUR_GROUP[row.category], supplyingPlant: settings.warehouse,
+        slNo, material: row.material, stgeLoc: null, toWhere: destination.plant,
+        qty: row.order, poUnit: settings.poUnit, poReason: null,
+        poBatch: settings.includeBatch ? row.batch : null,
+        destStgeLoc: destination[row.category], supplyingStgeLoc: STORAGE_LOCATIONS[settings.warehouse][row.category],
+      };
+    });
+  }
+
   function mergeDuplicateMaterials(rows) {
     const merged = [];
     const map = new Map();
@@ -1187,7 +2065,17 @@
     catch (error) { throw uploadError('excel-parse'); }
   }
 
-  const state = { mode: 'issue', uniqueRows: null, finalRows: null, fileName: '', fileReadToken: 0, fileReadController: null };
+  const state = { mode: 'issue', uniqueRows: null, finalRows: null, fileName: '', fileReadToken: 0, fileReadController: null, expireWarehouse: null,
+    issueSourceRows: null, issueWarehouseOverrides: new Map(), issueReviewLimit: 40 };
+  const DIRECTORY_STORAGE_KEY = 'upc-stocklink-pharmacy-directory-v1';
+  const directory = { open: false, sourceName: 'Pharmacies.xlsx', savedAt: null, saved: false,
+    pending: null, limit: 50, readToken: 0, controller: null, returnScroll: 0 };
+  const directoryUI = {};
+  ['pharmacyDirectoryTool','directorySearch','directoryWarehouse','directoryTotal','directoryJeddah','directoryRiyadh',
+    'directoryActiveList','directoryTable','directoryResultCount','directoryMore','directoryBack',
+    'directoryFileInput','directoryDropzone','directoryLoading','directoryError','directoryPreview',
+    'directoryPreviewTitle','directoryPreviewSummary','directoryDiffTable','directoryChangeDetails',
+    'directorySave','directoryCancel','directoryStatus','pharmacyQuickSearch'].forEach(id => { directoryUI[id] = document.getElementById(id); });
 
   const heroSub = document.getElementById('heroSub');
   const modeBtns = Array.prototype.slice.call(document.querySelectorAll('.mode-btn'));
@@ -1211,11 +2099,34 @@
   const matchedCols = document.getElementById('matchedCols');
   const dedupNote = document.getElementById('dedupNote');
   const invalidNote = document.getElementById('invalidNote');
+  const pharmacyReview = {
+    panel: document.getElementById('pharmacyWarehouseReview'),
+    reference: document.getElementById('pharmacyReviewReference'),
+    summary: document.getElementById('pharmacyReviewSummary'),
+    search: document.getElementById('pharmacyReviewSearch'),
+    filter: document.getElementById('pharmacyReviewFilter'),
+    table: document.getElementById('pharmacyReviewTable'),
+    shown: document.getElementById('pharmacyReviewShown'),
+    more: document.getElementById('pharmacyReviewMore'),
+    applyAll: document.getElementById('pharmacyApplyAll'),
+    undoAll: document.getElementById('pharmacyUndoAll'),
+    notice: document.getElementById('pharmacyReviewNotice'),
+  };
 
   const step2 = document.getElementById('step2');
   const step3 = document.getElementById('step3');
   const issueSettings = document.getElementById('issueSettings');
   const transferSettings = document.getElementById('transferSettings');
+  const expireSettings = document.getElementById('expireSettings');
+  const expireSetup = document.getElementById('expireSetup');
+  const expireWarehouseInput = document.getElementById('expireWarehouse');
+  const expireDateInput = document.getElementById('expireDate');
+  const expireIncludeBatchInput = document.getElementById('expireIncludeBatch');
+  const expireValidation = document.getElementById('expireValidation');
+  const eCompanyCodeInput = document.getElementById('eCompanyCode');
+  const ePurchOrgInput = document.getElementById('ePurchOrg');
+  const ePoUnitInput = document.getElementById('ePoUnit');
+  const eDocTypeInput = document.getElementById('eDocType');
 
   const issueDateInput = document.getElementById('issueDate');
   const docTypeInput = document.getElementById('docType');
@@ -1250,8 +2161,15 @@
   }
   issueDateInput.value = todayIso();
   transferDateInput.value = todayIso();
+  expireDateInput.value = todayIso();
+  try {
+    const savedWarehouse = Number(localStorage.getItem('upc-stocklink-expire-warehouse'));
+    if (KNOWN_WAREHOUSES.includes(savedWarehouse)) state.expireWarehouse = savedWarehouse;
+  } catch (error) {}
+  expireWarehouseInput.value = state.expireWarehouse ? String(state.expireWarehouse) : '';
 
   function scrollToSection(element) {
+    if (!element || Boolean(element.closest('#pharmacyDirectoryTool')) !== directory.open) return;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     element.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     const step = element.closest('.step');
@@ -1285,14 +2203,37 @@
       hint: "Upload your material + quantity list — any column headings work, we match a 6-digit material number and a quantity by their shape.",
       generate: "Generate transfer file",
     },
+    expire: {
+      sub: "Choose your warehouse once, then upload each expiry list and download its SAP file. Every material line stays in the order you uploaded it.",
+      hint: "Upload Material Number and Quantity columns, with optional Batch Number. Medicine, cosmetics, milk, and diapers can be in one file or separate sheets. Repeated lines and quantities are kept exactly as supplied.",
+      generate: "Generate expiry file",
+    },
   };
 
   function applyModeUI() {
     const stockMode = state.mode === 'stock';
-    document.getElementById('orderTool').hidden = stockMode;
-    document.getElementById('stockCheckTool').hidden = !stockMode;
-    document.querySelector('.main-inner').classList.toggle('stock-check-view', stockMode);
-    document.getElementById('topbarWorkflow').textContent = stockMode ? 'Stock Check' : state.mode === 'issue' ? 'Pharmacy Issue' : 'Warehouse Transfer';
+    const expireMode = state.mode === 'expire';
+    document.getElementById('orderTool').hidden = stockMode || directory.open;
+    document.getElementById('stockCheckTool').hidden = !stockMode || directory.open;
+    directoryUI.pharmacyDirectoryTool.hidden = !directory.open;
+    document.querySelector('.main-inner').classList.toggle('stock-check-view', stockMode && !directory.open);
+    document.querySelector('.main-inner').classList.toggle('pharmacy-directory-view', directory.open);
+    modeBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-mode') === (directory.open ? 'pharmacy' : state.mode)));
+    document.getElementById('topbarWorkflow').textContent = stockMode ? 'Stock Check' : state.mode === 'expire' ? 'Store Expire' : state.mode === 'issue' ? 'Pharmacy Issue' : 'Warehouse Transfer';
+    if (directory.open) {
+      directoryUI.directoryBack.textContent = 'Back to ' + document.getElementById('topbarWorkflow').textContent;
+      document.getElementById('topbarWorkflow').textContent = 'Pharmacy Search';
+      renderDirectory();
+      return;
+    }
+    expireSetup.hidden = !expireMode;
+    expireSettings.hidden = !expireMode || !state.expireWarehouse;
+    step2.hidden = expireMode;
+    generateBtn.hidden = expireMode;
+    document.querySelector('#step1 .step-marker span').textContent = expireMode ? '2' : '1';
+    document.querySelector('#step3 h2').textContent = expireMode ? 'Download your file' : 'Generate & download';
+    resetBtn.textContent = expireMode ? 'Upload next file' : 'Start over with a new file';
+    refreshExpireWarehouse();
     if (stockMode) return;
     const t = MODE_TEXT[state.mode];
     heroSub.textContent = t.sub;
@@ -1306,21 +2247,23 @@
       statCol3Label.textContent = 'warehouses';
     } else {
       issueSettings.hidden = true;
-      transferSettings.hidden = false;
+      transferSettings.hidden = state.mode !== 'transfer';
       statCol2Label.textContent = 'categories';
       statCol3Wrap.hidden = true;
     }
+    if (state.mode === 'expire') refreshExpireDetails();
   }
 
   modeBtns.forEach(btn => {
     btn.addEventListener('click', function () {
       const mode = btn.getAttribute('data-mode');
-      if (mode === state.mode) return;
+      if (mode === 'pharmacy') { openPharmacyDirectory(); return; }
+      if (mode === state.mode) { if (directory.open) closePharmacyDirectory(); return; }
+      directory.open = false;
       state.mode = mode;
-      modeBtns.forEach(b => b.classList.toggle('active', b === btn));
       resetTool(false);
       applyModeUI();
-      scrollToSection(document.getElementById(mode === 'stock' ? 'stockStep1' : 'step1'));
+      scrollToSection(document.getElementById(mode === 'stock' ? 'stockStep1' : mode === 'expire' && !state.expireWarehouse ? 'expireSetup' : 'step1'));
     });
   });
 
@@ -1331,6 +2274,17 @@
     matchedCols.hidden = true;
     dedupNote.hidden = true;
     invalidNote.hidden = true;
+    pharmacyReview.panel.hidden = true;
+  }
+
+  function resetPharmacyReview() {
+    state.issueSourceRows = null;
+    state.issueWarehouseOverrides.clear();
+    state.issueReviewLimit = 40;
+    pharmacyReview.search.value = '';
+    pharmacyReview.filter.value = 'all';
+    pharmacyReview.panel.hidden = true;
+    pharmacyReview.notice.hidden = true;
   }
 
   function resetTool(scroll) {
@@ -1340,8 +2294,13 @@
     setUploadLoading(fileLoading,dropzone,null);
     state.uniqueRows = null;
     state.finalRows = null;
+    resetPharmacyReview();
     state.fileName = '';
     state._unrecognizedCategoryCount = 0;
+    state.expireSourceWarehouse = null;
+    expireValidation.hidden = true;
+    document.getElementById('expireBatchSummary').textContent = '';
+    downloadBtn.disabled = false;
     fileInput.value = '';
     filenameRow.hidden = true;
     hideAll();
@@ -1353,13 +2312,21 @@
     generateBtn.disabled = true;
     resultBlock.hidden = true;
     downloadStatus.hidden = true;
+    if (state.mode === 'expire') refreshExpireDetails();
     if (scroll !== false) {
-      scrollToSection(document.getElementById('step1'));
-      dropzone.focus({ preventScroll: true });
+      const chooseWarehouse = state.mode === 'expire' && !state.expireWarehouse;
+      scrollToSection(chooseWarehouse ? expireSetup : document.getElementById('step1'));
+      (chooseWarehouse ? expireWarehouseInput : dropzone).focus({ preventScroll: true });
     }
   }
 
   async function handleFile(file) {
+    if (state.mode === 'expire' && !state.expireWarehouse) {
+      fileInput.value = '';
+      scrollToSection(expireSetup);
+      expireWarehouseInput.focus({ preventScroll: true });
+      return;
+    }
     if (state.fileReadController) state.fileReadController.abort();
     const controller = state.fileReadController = new AbortController();
     const uploadToken = ++state.fileReadToken;
@@ -1367,7 +2334,10 @@
     resultBlock.hidden = true;
     state.uniqueRows = null;
     state.finalRows = null;
+    resetPharmacyReview();
     state.fileName = file.name;
+    state.expireSourceWarehouse = null;
+    expireValidation.hidden = true;
     step2.classList.add('locked');
     step3.classList.add('locked');
     step2.inert = true;
@@ -1383,21 +2353,27 @@
     const requiredFields = state.mode === 'issue' ? ['plant', 'material', 'order', 'wh'] : ['material', 'order'];
 
     try {
-      const workbook = await readUploadWorkbook(file,{type:'array'},message => {
+      const workbook = await readUploadWorkbook(file,state.mode === 'expire' ? {type:'array',cellNF:true,raw:true} : {type:'array'},message => {
         if (uploadToken === state.fileReadToken) setUploadLoading(fileLoading,dropzone,message);
       },controller.signal);
       if (uploadToken !== state.fileReadToken) return;
       setUploadLoading(fileLoading,dropzone,'Checking columns and quantities…');
       await paintUploadState();
       if (uploadToken !== state.fileReadToken) return;
-      const parsed = parseWorkbook(workbook, requiredFields);
+      const parsed = state.mode === 'expire' ? parseExpireWorkbook(workbook) : parseWorkbook(workbook, requiredFields);
+      if (state.mode === 'expire' && parsed.invalidRowCount) {
+        parseError.hidden = false;
+        parseError.textContent = 'Fix ' + parsed.invalidRowCount + ' invalid row(s) before generating an expiry file. ' + parsed.errors.join(' ') + (parsed.invalidRowCount > parsed.errors.length ? ' Additional invalid rows were also found.' : '');
+        return;
+      }
 
       if (parsed.rows.length === 0) {
         parseError.hidden = false;
         const found = parsed.sampleHeaders.length
           ? 'Your file has columns: ' + parsed.sampleHeaders.join(', ') + '.'
           : "We couldn't find any data in it.";
-        const need = state.mode === 'issue'
+        const need = state.mode === 'expire' ? 'Material Number and Quantity column headings, with material numbers starting with 1–4'
+          : state.mode === 'issue'
           ? "a pharmacy/area code (like P164 or D069), a 6-digit material number, a quantity, and a warehouse code (1100 or 2100)"
           : "a 6-digit material number and a quantity";
         parseError.textContent = "Couldn't confidently match the columns we need — " + need + ". " + found;
@@ -1424,6 +2400,7 @@
         const { unique, duplicates } = dedupeRowsExact(parsed.rows);
         const sortedUnique = sortRowsForIssue(unique);
         state.uniqueRows = sortedUnique;
+        state.issueSourceRows = sortedUnique;
 
         const plants = new Set(sortedUnique.map(r => r.plant));
         const whs = Array.from(new Set(sortedUnique.map(r => r.wh))).sort((a, b) => a - b);
@@ -1440,6 +2417,19 @@
           dedupNote.hidden = false;
           dedupNote.textContent = 'Found ' + duplicates + ' repeated line' + (duplicates === 1 ? '' : 's') + ' across your sheets (same pharmacy, material, quantity and warehouse) — counted once.';
         }
+        renderPharmacyWarehouseReview();
+      } else if (state.mode === 'expire') {
+        state.uniqueRows = parsed.rows;
+        state.expireSourceWarehouse = parsed.sourceWarehouse;
+        statRows.textContent = parsed.rows.length;
+        const categories = EXPIRE_CATEGORY_ORDER.filter(category => parsed.rows.some(row => row.category === category));
+        statCol2.textContent = categories.length;
+        statRow.hidden = false;
+        whList.hidden = false;
+        whList.textContent = 'Categories found: ' + categories.map(category => CATEGORY_LABEL[category]).join(', ') + '. Total quantity: ' + parsed.rows.reduce((total, row) => total + row.order, 0).toLocaleString();
+        dedupNote.hidden = false;
+        dedupNote.textContent = 'Every material line stays in its original position. Repeated materials, repeated lines, and their quantities are kept exactly as uploaded.' + (parsed.skippedSheets.length ? ' Sheets without Material and Quantity headings were not included: ' + parsed.skippedSheets.join(', ') + '.' : '');
+        matchedCols.textContent += parsed.detectedColumns.batch ? ' · Batch: ' + parsed.detectedColumns.batch : ' · No batch column found';
       } else {
         const { merged, duplicates } = mergeDuplicateMaterials(parsed.rows);
         const sorted = sortRowsForTransfer(merged);
@@ -1492,8 +2482,20 @@
       continueBtn.disabled = false;
       generateBtn.disabled = false;
       resultBlock.hidden = true;
-      scrollToSection(step2);
-      (state.mode === 'issue' ? issueDateInput : directionInput).focus({ preventScroll: true });
+      if (state.mode === 'expire') {
+        refreshExpireDetails();
+        if (prepareOutput()) {
+          resultBlock.hidden = false;
+          scrollToSection(downloadBtn);
+          if (!directory.open) downloadBtn.focus({ preventScroll: true });
+        } else {
+          scrollToSection(expireValidation);
+          if (!directory.open) expireIncludeBatchInput.focus({ preventScroll: true });
+        }
+      } else {
+        scrollToSection(step2);
+        if (!directory.open) (state.mode === 'issue' ? pharmacyReview.search : directionInput).focus({ preventScroll: true });
+      }
     } catch (error) {
       if (uploadToken !== state.fileReadToken || error.name === 'AbortError') return;
       parseError.hidden = false;
@@ -1525,12 +2527,54 @@
       fileInput.click();
     }
   });
+  dropzone.addEventListener('click', function (event) {
+    if (state.mode === 'expire' && !state.expireWarehouse) {
+      event.preventDefault();
+      scrollToSection(expireSetup);
+      expireWarehouseInput.focus({ preventScroll: true });
+    }
+  });
   continueBtn.addEventListener('click', function () {
     scrollToSection(step3);
     generateBtn.focus({ preventScroll: true });
   });
   clearFileBtn.addEventListener('click', function (e) { e.preventDefault(); resetTool(); });
   resetBtn.addEventListener('click', function (e) { e.preventDefault(); resetTool(); });
+
+  function refreshExpireWarehouse() {
+    const active = state.mode === 'expire';
+    const selected = KNOWN_WAREHOUSES.includes(state.expireWarehouse);
+    document.getElementById('expireWarehouseChoose').hidden = selected;
+    document.getElementById('expireWarehouseLocked').hidden = !selected;
+    document.getElementById('expireWarehouseTitle').textContent = selected ? 'Selected warehouse' : 'Choose your warehouse';
+    document.getElementById('expireWarehouseLabel').textContent = selected
+      ? WAREHOUSE_LABEL[state.expireWarehouse] + ': ' + state.expireWarehouse + ' → ' + EXPIRE_DESTINATION[state.expireWarehouse].plant : '';
+    expireWarehouseInput.disabled = selected;
+    expireWarehouseInput.value = selected ? String(state.expireWarehouse) : '';
+    expireSettings.hidden = !active || !selected;
+    fileInput.disabled = active && !selected;
+    dropzone.setAttribute('aria-disabled', String(fileInput.disabled));
+    dropzone.setAttribute('aria-label', fileInput.disabled ? 'Choose a warehouse before uploading' : 'Choose an Excel file');
+    dropzone.tabIndex = fileInput.disabled ? -1 : 0;
+  }
+  expireWarehouseInput.addEventListener('change', function () {
+    if (state.mode !== 'expire' || state.expireWarehouse) { refreshExpireWarehouse(); return; }
+    const chosen = Number(expireWarehouseInput.value);
+    if (!KNOWN_WAREHOUSES.includes(chosen)) return;
+    state.expireWarehouse = chosen;
+    try { localStorage.setItem('upc-stocklink-expire-warehouse', String(chosen)); } catch (error) {}
+    resetTool(false);
+    scrollToSection(document.getElementById('step1'));
+    dropzone.focus({ preventScroll: true });
+  });
+  document.getElementById('expireChangeWarehouse').addEventListener('click', function () {
+    state.expireWarehouse = null;
+    try { localStorage.removeItem('upc-stocklink-expire-warehouse'); } catch (error) {}
+    resetTool(false);
+    refreshExpireWarehouse();
+    scrollToSection(expireSetup);
+    expireWarehouseInput.focus({ preventScroll: true });
+  });
 
   function currentIssueSettings() {
     const isoDate = issueDateInput.value || todayIso();
@@ -1562,6 +2606,401 @@
     };
   }
 
+  function currentExpireSettings() {
+    const company = eCompanyCodeInput.value.trim();
+    return {
+      warehouse: state.expireWarehouse,
+      dateNum: Number((expireDateInput.value || todayIso()).replace(/-/g, '')),
+      includeBatch: expireIncludeBatchInput.checked,
+      docType: eDocTypeInput.value.trim() || 'ZTDD',
+      companyCode: company ? (isNaN(Number(company)) ? company : Number(company)) : 1000,
+      purchOrg: ePurchOrgInput.value.trim() || 'INT',
+      poUnit: ePoUnitInput.value.trim() || 'EA',
+    };
+  }
+  function expireProblem() {
+    if (!state.uniqueRows || !state.uniqueRows.length) return '';
+    const warehouse = state.expireWarehouse;
+    if (!KNOWN_WAREHOUSES.includes(warehouse)) return 'Choose Jeddah (1100) or Riyadh (2100).';
+    if (state.expireSourceWarehouse && state.expireSourceWarehouse !== warehouse) {
+      return 'Your selected warehouse stays at ' + warehouse + ', but this file identifies ' + state.expireSourceWarehouse + '. Upload the matching file, or use Change warehouse above.';
+    }
+    if (expireIncludeBatchInput.checked) {
+      const invalid = state.uniqueRows.filter(row => row.batchProblem);
+      if (invalid.length) return invalid.length + ' batch number(s) need correction. ' + invalid[0].source + ': ' + invalid[0].batchProblem;
+      const missing = state.uniqueRows.filter(row => !row.batch);
+      if (missing.length) return 'Batch numbers are missing for ' + missing.length + ' line(s), starting at ' + missing[0].source + '. Add those batches to your file, or turn off Include batch numbers.';
+    }
+    return '';
+  }
+  function refreshExpireDetails() {
+    if (state.mode !== 'expire') return;
+    refreshExpireWarehouse();
+    const warehouse = state.expireWarehouse, destination = EXPIRE_DESTINATION[warehouse];
+    const rows = state.uniqueRows || [];
+    const categories = EXPIRE_CATEGORY_ORDER.filter(category => !rows.length || rows.some(row => row.category === category));
+    document.getElementById('expireRouteNote').textContent = destination
+      ? WAREHOUSE_LABEL[warehouse] + ' expiry transfer: ' + warehouse + ' → ' + destination.plant + '. Storage locations follow the material category. Row order stays exactly as uploaded.' : 'Choose a supplying warehouse.';
+    document.getElementById('expireMappingRows').innerHTML = destination ? categories.map(category => '<tr><td>' + CATEGORY_LABEL[category] + '</td><td>' + STORAGE_LOCATIONS[warehouse][category] + '</td><td>' + destination[category] + '</td></tr>').join('') : '';
+    const batches = rows.filter(row => row.batch && !row.batchProblem).length;
+    document.getElementById('expireBatchSummary').textContent = rows.length
+      ? batches + ' of ' + rows.length + ' lines have a usable batch number. ' + (expireIncludeBatchInput.checked ? 'Batch numbers will be copied as text into PO_BATCH.' : 'PO_BATCH will be blank in the downloaded file.') : '';
+    const problem = expireProblem();
+    expireValidation.textContent = problem;
+    expireValidation.hidden = !problem;
+    continueBtn.disabled = generateBtn.disabled = !rows.length || Boolean(problem);
+    if (problem) {
+      state.finalRows = null;
+      resultBlock.hidden = true;
+      downloadStatus.hidden = true;
+    }
+    downloadBtn.disabled = !state.finalRows || Boolean(problem);
+  }
+
+  function openPharmacyDirectory() {
+    if (!directory.open) directory.returnScroll = window.scrollY;
+    directory.open = true;
+    applyModeUI();
+    scrollToSection(document.getElementById('directorySearchSection'));
+    directoryUI.directorySearch.focus({ preventScroll: true });
+  }
+  function closePharmacyDirectory() {
+    directory.open = false;
+    applyModeUI();
+    window.requestAnimationFrame(() => window.scrollTo({ top: directory.returnScroll, behavior: 'auto' }));
+    directoryUI.pharmacyQuickSearch.focus({ preventScroll: true });
+  }
+
+  function normalizedDirectoryRows(rows) {
+    if (!Array.isArray(rows) || !rows.length) throw new Error('The pharmacy list must contain at least one pharmacy.');
+    const seen = new Set();
+    return rows.map(row => {
+      if (!Array.isArray(row) || row.length < 3 || typeof row[0] !== 'string' || typeof row[1] !== 'string' || (row[3] !== undefined && typeof row[3] !== 'string')) throw new Error('Invalid pharmacy list data.');
+      const code = row[0].trim().toUpperCase(), wh = Number(row[2]);
+      if (!isValidPlantValue(code) || !KNOWN_WAREHOUSES.includes(wh) || seen.has(code)) throw new Error('Invalid or repeated pharmacy code in saved list: ' + code);
+      seen.add(code);
+      return [code, row[1].trim(), wh, (row[3] || '').trim()];
+    }).sort((a, b) => naturalCompare(a[0], b[0]));
+  }
+
+  function installDirectory(rows, metadata) {
+    PHARMACY_WAREHOUSE_REFERENCE.clear();
+    rows.forEach(row => PHARMACY_WAREHOUSE_REFERENCE.set(row[0], { area: row[1], wh: row[2], name: row[3] || '' }));
+    directory.sourceName = metadata.fileName;
+    directory.savedAt = metadata.savedAt || null;
+    directory.saved = Boolean(metadata.saved);
+    directory.limit = 50;
+    renderDirectory();
+    renderPharmacyWarehouseReview();
+    if (directory.pending) renderDirectoryPreview();
+  }
+
+  function loadDirectoryFromStorage(announce) {
+    try {
+      const raw = localStorage.getItem(DIRECTORY_STORAGE_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved.version !== 1 || typeof saved.fileName !== 'string' || !saved.fileName.trim() || typeof saved.savedAt !== 'string' || !Number.isFinite(Date.parse(saved.savedAt))) throw new Error('Invalid saved list format.');
+        installDirectory(normalizedDirectoryRows(saved.rows), { fileName: saved.fileName, savedAt: saved.savedAt, saved: true });
+      } else {
+        installDirectory(normalizedDirectoryRows(PHARMACY_WAREHOUSE_ROWS), { fileName: 'Pharmacies.xlsx', saved: false });
+      }
+      if (announce) {
+        directoryUI.directoryStatus.textContent = raw ? 'The pharmacy list was updated in another tab. Search and suggestions now use that list.' : 'The saved list was cleared in another tab. The original pharmacy list is active.';
+        directoryUI.directoryStatus.hidden = false;
+      }
+    } catch (error) {
+      directoryUI.directoryError.textContent = 'The saved pharmacy list could not be loaded. Your current list stays active. Upload a complete pharmacy list and save it again.';
+      directoryUI.directoryError.hidden = false;
+    }
+  }
+
+  function renderDirectory() {
+    const rows = Array.from(PHARMACY_WAREHOUSE_REFERENCE, ([code, ref]) => ({ code, ...ref })).sort((a, b) => naturalCompare(a.code, b.code));
+    directoryUI.directoryTotal.textContent = rows.length;
+    directoryUI.directoryJeddah.textContent = rows.filter(row => row.wh === 1100).length;
+    directoryUI.directoryRiyadh.textContent = rows.filter(row => row.wh === 2100).length;
+    directoryUI.directoryActiveList.textContent = directory.saved
+      ? 'Active list: ' + directory.sourceName + ' · Saved in this browser on ' + new Date(directory.savedAt).toLocaleString()
+      : 'Active list: Pharmacies.xlsx · Original list included in the app';
+    const query = directoryUI.directorySearch.value.trim().toLowerCase();
+    const warehouse = directoryUI.directoryWarehouse.value;
+    const filtered = rows.filter(row => (warehouse === 'all' || String(row.wh) === warehouse) && (!query || [row.code, row.name || '', row.area, issueWarehouseLabel(row.wh)].join(' ').toLowerCase().includes(query)));
+    const shown = filtered.slice(0, directory.limit);
+    let html = '<thead><tr><th scope="col">Pharmacy</th><th scope="col">Area</th><th scope="col">Belongs to warehouse</th></tr></thead><tbody>';
+    shown.forEach(row => { html += '<tr data-pharmacy="' + row.code + '"><td><strong>' + row.code + '</strong>' + (row.name ? '<small>' + escapeHtml(row.name) + '</small>' : '') + '</td><td>' + escapeHtml(row.area || '—') + '</td><td>' + escapeHtml(issueWarehouseLabel(row.wh)) + '</td></tr>'; });
+    if (!shown.length) html += '<tr><td class="pharmacy-review-empty" colspan="3">No pharmacy found. Try its code, name, or area.</td></tr>';
+    directoryUI.directoryTable.innerHTML = html + '</tbody>';
+    directoryUI.directoryResultCount.textContent = 'Showing ' + shown.length + ' of ' + filtered.length + ' matching pharmacies.';
+    directoryUI.directoryMore.hidden = shown.length >= filtered.length;
+  }
+
+  function parseDirectoryWorkbook(workbook) {
+    const aliases = {
+      code: ['plant','pharmacycode','pharmacynumber','storecode','pharmacy','ph'],
+      wh: ['wh','warehouse','warehousecode','whcode','supplyingplant','supplyingwarehouse'],
+      area: ['areaname','area','city','region','location'],
+      name: ['pharmacyname','plantname','storename','name','description'],
+    };
+    const normalize = value => String(value == null ? '' : value).trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    const records = new Map(), errors = [], skippedSheets = [];
+    let invalidCount = 0, duplicates = 0, matchedSheets = 0;
+    function invalid(where, reason) { invalidCount++; if (errors.length < 6) errors.push(where + ': ' + reason); }
+    workbook.SheetNames.forEach(sheetName => {
+      const sheet = workbook.Sheets[sheetName], populated = new Map();
+      // Read actual cells, rather than a formatted range that may extend to a million rows.
+      Object.keys(sheet).forEach(address => {
+        if (address[0] === '!') return;
+        const cell = sheet[address];
+        if (!cell || cell.v == null || cell.v === '') return;
+        const pos = XLSX.utils.decode_cell(address);
+        if (!populated.has(pos.r)) populated.set(pos.r, new Map());
+        populated.get(pos.r).set(pos.c, cell.v);
+      });
+      const rows = Array.from(populated).sort((a, b) => a[0] - b[0]);
+      if (!rows.length) return;
+      let header = null, keys = null;
+      for (const [index, values] of rows.slice(0, 40)) {
+        const headers = new Map(Array.from(values, ([column, value]) => [normalize(value), column]));
+        const found = {};
+        Object.keys(aliases).forEach(field => { for (const alias of aliases[field]) if (headers.has(alias)) { found[field] = headers.get(alias); break; } });
+        if (found.code !== undefined && found.wh !== undefined) { header = index; keys = found; break; }
+      }
+      if (header === null) { skippedSheets.push(sheetName); return; }
+      matchedSheets++;
+      for (const [index, values] of rows) {
+        if (index <= header) continue;
+        const rawCode = values.get(keys.code), rawWh = values.get(keys.wh);
+        const rawArea = keys.area === undefined ? '' : values.get(keys.area);
+        const rawName = keys.name === undefined ? '' : values.get(keys.name);
+        if ([rawCode,rawWh,rawArea,rawName].every(value => value == null || String(value).trim() === '')) continue;
+        if (aliases.code.includes(normalize(rawCode)) && aliases.wh.includes(normalize(rawWh))) continue;
+        const code = String(rawCode == null ? '' : rawCode).trim().toUpperCase();
+        const whText = String(rawWh == null ? '' : rawWh).trim().toUpperCase();
+        const wh = whText === 'JEDDAH' ? 1100 : whText === 'RIYADH' || whText === 'RIYAD' ? 2100 : Number(whText);
+        const where = sheetName + ', row ' + (index + 1);
+        if (!isValidPlantValue(code)) { invalid(where, 'use a pharmacy code such as P001 or D069.'); continue; }
+        if (!KNOWN_WAREHOUSES.includes(wh)) { invalid(where, 'WH must be 1100 (Jeddah) or 2100 (Riyadh).'); continue; }
+        const record = [code, String(rawArea == null ? '' : rawArea).trim(), wh, String(rawName == null ? '' : rawName).trim()];
+        const previous = records.get(code);
+        if (previous) {
+          if (previous[2] !== wh) { invalid(where, code + ' is assigned to both warehouses. Keep one warehouse for that pharmacy.'); continue; }
+          if ([1,3].some(i => previous[i] && record[i] && previous[i].toLowerCase() !== record[i].toLowerCase())) { invalid(where, code + ' has conflicting names or areas. Keep one current entry.'); continue; }
+          if (!previous[1]) previous[1] = record[1];
+          if (!previous[3]) previous[3] = record[3];
+          duplicates++;
+        } else records.set(code, record);
+      }
+    });
+    if (!matchedSheets) throw new Error('No pharmacy list was found. Use Plant / Pharmacy and WH / Warehouse column headings.');
+    if (invalidCount) throw new Error('Fix ' + invalidCount + ' invalid pharmacy row(s) before saving. ' + errors.join(' '));
+    if (!records.size) throw new Error('No pharmacies were found. An empty list cannot replace your saved data.');
+    return { rows: normalizedDirectoryRows(Array.from(records.values())), duplicates, skippedSheets };
+  }
+
+  function directoryChanges(rows) {
+    const next = new Map(rows.map(row => [row[0], { area: row[1], wh: row[2], name: row[3] || '' }]));
+    const changes = [];
+    PHARMACY_WAREHOUSE_REFERENCE.forEach((ref, code) => {
+      const updated = next.get(code);
+      if (!updated) changes.push({ code, kind: 'Removed', previous: ref, next: null });
+      else if (ref.wh !== updated.wh || ref.area !== updated.area || (ref.name || '') !== updated.name) changes.push({ code, kind: 'Updated', previous: ref, next: updated });
+    });
+    next.forEach((ref, code) => { if (!PHARMACY_WAREHOUSE_REFERENCE.has(code)) changes.push({ code, kind: 'Added', previous: null, next: ref }); });
+    return changes.sort((a, b) => naturalCompare(a.code, b.code));
+  }
+
+  function renderDirectoryPreview() {
+    const pending = directory.pending;
+    directoryUI.directoryPreview.hidden = !pending;
+    if (!pending) return;
+    const changes = directoryChanges(pending.rows);
+    const added = changes.filter(row => row.kind === 'Added').length, removed = changes.filter(row => row.kind === 'Removed').length, updated = changes.filter(row => row.kind === 'Updated').length;
+    directoryUI.directoryPreviewTitle.textContent = pending.fileName;
+    directoryUI.directoryPreviewSummary.textContent = pending.rows.length + ' pharmacies in the new list · ' + added + ' added · ' + removed + ' removed · ' + updated + ' updated.' + (pending.duplicates ? ' ' + pending.duplicates + ' repeated entries combined.' : '') + (pending.skippedSheets.length ? ' Sheets without pharmacy and warehouse headings were not included: ' + pending.skippedSheets.join(', ') + '.' : '') + ' Saving replaces the complete active list.';
+    const detail = ref => ref ? escapeHtml(issueWarehouseLabel(ref.wh)) + '<small>' + escapeHtml([ref.name || '', ref.area].filter(Boolean).join(' · ') || '—') + '</small>' : '—';
+    directoryUI.directoryDiffTable.innerHTML = '<thead><tr><th scope="col">Pharmacy</th><th scope="col">Change</th><th scope="col">Previous</th><th scope="col">New</th></tr></thead><tbody>' + (changes.length ? changes.map(row => '<tr><td><strong>' + row.code + '</strong></td><td>' + row.kind + '</td><td>' + detail(row.previous) + '</td><td>' + detail(row.next) + '</td></tr>').join('') : '<tr><td colspan="4">The pharmacy assignments and details are unchanged.</td></tr>') + '</tbody>';
+  }
+
+  function cancelDirectoryUpload() {
+    directory.readToken++;
+    if (directory.controller) directory.controller.abort();
+    directory.controller = null;
+    directory.pending = null;
+    directoryUI.directoryFileInput.value = '';
+    directoryUI.directoryError.hidden = true;
+    directoryUI.directoryPreview.hidden = true;
+    setUploadLoading(directoryUI.directoryLoading, directoryUI.directoryDropzone, null);
+  }
+
+  async function uploadDirectory(file) {
+    cancelDirectoryUpload();
+    const token = ++directory.readToken, controller = directory.controller = new AbortController();
+    directoryUI.directoryStatus.hidden = true;
+    setUploadLoading(directoryUI.directoryLoading, directoryUI.directoryDropzone, 'Reading pharmacy list…');
+    try {
+      const workbook = await readUploadWorkbook(file, { type: 'array', raw: true }, message => {
+        if (token === directory.readToken) setUploadLoading(directoryUI.directoryLoading, directoryUI.directoryDropzone, message);
+      }, controller.signal);
+      if (token !== directory.readToken) return;
+      setUploadLoading(directoryUI.directoryLoading, directoryUI.directoryDropzone, 'Checking pharmacy codes and warehouses…');
+      await paintUploadState();
+      if (token !== directory.readToken) return;
+      directory.pending = { ...parseDirectoryWorkbook(workbook), fileName: file.name };
+      directoryUI.directoryChangeDetails.open = false;
+      renderDirectoryPreview();
+      scrollToSection(directoryUI.directoryPreview);
+      if (directory.open) directoryUI.directorySave.focus({ preventScroll: true });
+    } catch (error) {
+      if (token !== directory.readToken || error.name === 'AbortError') return;
+      directoryUI.directoryError.textContent = error.code === 'reader-unavailable' ? 'The Excel reader could not load. Connect to the internet, refresh, and try again.' : error.code ? 'This file could not be read. Save it as Excel or CSV and try again.' : error.message;
+      directoryUI.directoryError.hidden = false;
+    } finally {
+      if (token === directory.readToken) { directory.controller = null; setUploadLoading(directoryUI.directoryLoading, directoryUI.directoryDropzone, null); }
+    }
+  }
+
+  directoryUI.directorySave.addEventListener('click', function () {
+    if (!directory.pending || directory.controller) return;
+    const pending = directory.pending;
+    try {
+      const rows = normalizedDirectoryRows(pending.rows);
+      const saved = { version: 1, fileName: pending.fileName, savedAt: new Date().toISOString(), rows };
+      // Only activate the replacement after the browser confirms it was saved.
+      localStorage.setItem(DIRECTORY_STORAGE_KEY, JSON.stringify(saved));
+      cancelDirectoryUpload();
+      installDirectory(rows, { fileName: saved.fileName, savedAt: saved.savedAt, saved: true });
+      directoryUI.directoryStatus.textContent = 'Saved ' + rows.length + ' pharmacies in this browser. Searches and warehouse suggestions now use this list. Your issuing warehouses keep the choices you already made.';
+      directoryUI.directoryStatus.hidden = false;
+      scrollToSection(directoryUI.directoryStatus);
+    } catch (error) {
+      directoryUI.directoryError.textContent = 'This browser could not save the pharmacy list. The previous list stays active. Use a normal browser window with website storage enabled, then try saving again.';
+      directoryUI.directoryError.hidden = false;
+    }
+  });
+  directoryUI.directoryCancel.addEventListener('click', cancelDirectoryUpload);
+  directoryUI.directoryFileInput.addEventListener('change', function () { if (this.files[0]) uploadDirectory(this.files[0]); });
+  directoryUI.directoryDropzone.addEventListener('dragover', event => { event.preventDefault(); directoryUI.directoryDropzone.classList.add('dragover'); });
+  directoryUI.directoryDropzone.addEventListener('dragleave', () => directoryUI.directoryDropzone.classList.remove('dragover'));
+  directoryUI.directoryDropzone.addEventListener('drop', event => { event.preventDefault(); directoryUI.directoryDropzone.classList.remove('dragover'); if (event.dataTransfer.files[0]) uploadDirectory(event.dataTransfer.files[0]); });
+  directoryUI.directoryDropzone.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); directoryUI.directoryFileInput.click(); } });
+  directoryUI.directorySearch.addEventListener('input', function () { directory.limit = 50; renderDirectory(); });
+  directoryUI.directoryWarehouse.addEventListener('change', function () { directory.limit = 50; renderDirectory(); });
+  directoryUI.directoryMore.addEventListener('click', function () { directory.limit += 50; renderDirectory(); });
+  directoryUI.directoryBack.addEventListener('click', closePharmacyDirectory);
+  directoryUI.pharmacyQuickSearch.addEventListener('click', openPharmacyDirectory);
+  window.addEventListener('storage', event => { if (event.key === DIRECTORY_STORAGE_KEY || event.key === null) loadDirectoryFromStorage(true); });
+
+  function issueWarehouseLabel(warehouse) {
+    return WAREHOUSE_LABEL[warehouse] + ' (' + warehouse + ')';
+  }
+
+  function pharmacyWarehouseReviews() {
+    const pharmacies = new Map();
+    (state.issueSourceRows || []).forEach(row => {
+      if (!pharmacies.has(row.plant)) pharmacies.set(row.plant, { plant: row.plant, warehouses: new Set() });
+      pharmacies.get(row.plant).warehouses.add(row.wh);
+    });
+    return Array.from(pharmacies.values()).map(pharmacy => {
+      const reference = PHARMACY_WAREHOUSE_REFERENCE.get(pharmacy.plant);
+      const warehouses = Array.from(pharmacy.warehouses).sort((a, b) => a - b);
+      const hasOverride = state.issueWarehouseOverrides.has(pharmacy.plant);
+      const chosenWarehouse = state.issueWarehouseOverrides.get(pharmacy.plant);
+      const currentWarehouses = hasOverride ? [chosenWarehouse] : warehouses;
+      const status = !reference ? 'unknown' : hasOverride && chosenWarehouse === reference.wh ? 'applied' : currentWarehouses.some(wh => wh !== reference.wh) ? 'mismatch' : 'match';
+      return { plant: pharmacy.plant, warehouses, reference, status, hasOverride, chosenWarehouse };
+    }).sort((a, b) => naturalCompare(a.plant, b.plant));
+  }
+
+  function renderPharmacyWarehouseReview() {
+    const visible = state.mode === 'issue' && state.issueSourceRows && state.issueSourceRows.length;
+    pharmacyReview.panel.hidden = !visible;
+    if (!visible) return;
+    const reviews = pharmacyWarehouseReviews();
+    const counts = { mismatch: 0, match: 0, unknown: 0, applied: 0 };
+    reviews.forEach(row => counts[row.status]++);
+    pharmacyReview.reference.textContent = 'Reference: ' + directory.sourceName + ' · ' + PHARMACY_WAREHOUSE_REFERENCE.size + ' pharmacy codes. Suggestions use the WH column.';
+    pharmacyReview.summary.textContent = reviews.length + ' pharmacies checked · ' + counts.mismatch + ' warehouse mismatches · ' + counts.match + ' matches · ' + counts.unknown + ' not found · ' + counts.applied + ' applied';
+    pharmacyReview.applyAll.hidden = counts.mismatch === 0;
+    pharmacyReview.applyAll.textContent = 'Apply all ' + counts.mismatch + ' warehouse suggestions';
+    pharmacyReview.undoAll.hidden = state.issueWarehouseOverrides.size === 0;
+    const query = pharmacyReview.search.value.trim().toLowerCase();
+    const filter = pharmacyReview.filter.value;
+    const filtered = reviews.filter(row => {
+      if (filter !== 'all' && row.status !== filter) return false;
+      const terms = [row.plant, row.reference ? row.reference.area : '', row.reference ? row.reference.name || '' : '', ...row.warehouses.map(issueWarehouseLabel), row.reference ? issueWarehouseLabel(row.reference.wh) : 'not in reference list'];
+      return !query || terms.join(' ').toLowerCase().includes(query);
+    });
+    const shown = filtered.slice(0, state.issueReviewLimit);
+    const labels = { mismatch: 'Warehouse mismatch', match: 'Matches', unknown: 'Not found', applied: 'Suggestion applied' };
+    let html = '<thead><tr><th scope="col">Pharmacy / area</th><th scope="col">Uploaded warehouse</th><th scope="col">Belongs to</th><th scope="col">Status</th><th scope="col">Action</th></tr></thead><tbody>';
+    shown.forEach(row => {
+      const statusNote = row.hasOverride ? 'Export: ' + issueWarehouseLabel(row.chosenWarehouse) + (row.status !== 'applied' ? ' · Previous choice kept' : '') : 'Uploaded warehouse kept';
+      const actions = [];
+      if (row.status === 'mismatch') actions.push('<button class="text-btn" type="button" data-pharmacy-action="apply" data-pharmacy="' + row.plant + '" aria-label="Apply warehouse suggestion for ' + row.plant + '">Apply suggestion</button>');
+      if (row.hasOverride) actions.push('<button class="text-btn" type="button" data-pharmacy-action="undo" data-pharmacy="' + row.plant + '" aria-label="Undo change for ' + row.plant + '">Undo change</button>');
+      const action = actions.join('<br>') || '—';
+      html += '<tr data-pharmacy="' + row.plant + '" data-status="' + row.status + '"><td><strong>' + row.plant + '</strong>' + (row.reference ? '<small>' + escapeHtml(row.reference.area) + '</small>' : '') + '</td><td>' + row.warehouses.map(wh => escapeHtml(issueWarehouseLabel(wh))).join('<br>') + '</td><td>' + (row.reference ? escapeHtml(issueWarehouseLabel(row.reference.wh)) : 'Not in reference list') + '</td><td><span class="pharmacy-review-status ' + row.status + '">' + labels[row.status] + '</span><small>' + escapeHtml(statusNote) + '</small></td><td>' + action + '</td></tr>';
+    });
+    if (!shown.length) html += '<tr><td class="pharmacy-review-empty" colspan="5">No pharmacies match this search and filter.</td></tr>';
+    pharmacyReview.table.innerHTML = html + '</tbody>';
+    pharmacyReview.shown.textContent = 'Showing ' + shown.length + ' of ' + filtered.length + ' matching pharmacies. All order lines are included in the export.';
+    pharmacyReview.more.hidden = shown.length >= filtered.length;
+  }
+
+  function changePharmacyWarehouses(plants, undo) {
+    if (state.mode !== 'issue' || !state.issueSourceRows || state.fileReadController) return false;
+    const eligible = new Map(pharmacyWarehouseReviews().map(row => [row.plant, row]));
+    let changed = 0;
+    plants.forEach(plant => {
+      const pharmacy = eligible.get(plant);
+      if (!pharmacy) return;
+      if (undo) {
+        if (state.issueWarehouseOverrides.delete(plant)) changed++;
+      } else if (pharmacy.status === 'mismatch') {
+        state.issueWarehouseOverrides.set(plant, pharmacy.reference.wh);
+        changed++;
+      }
+    });
+    if (!changed) return false;
+    // Original duplicate removal is retained. Applying a warehouse must not
+    // remove lines that become identical only because their warehouse changed.
+    state.uniqueRows = sortRowsForIssue(state.issueSourceRows.map(row => Object.assign({}, row, {
+      wh: state.issueWarehouseOverrides.has(row.plant) ? state.issueWarehouseOverrides.get(row.plant) : row.wh,
+    })));
+    const warehouses = Array.from(new Set(state.uniqueRows.map(row => row.wh))).sort((a, b) => a - b);
+    statCol3.textContent = warehouses.length;
+    whList.innerHTML = 'Warehouses for export: <b>' + warehouses.join(', ') + '</b>';
+    renderPharmacyWarehouseReview();
+    pharmacyReview.notice.textContent = undo
+      ? 'Restored uploaded warehouses for ' + changed + ' ' + (changed === 1 ? 'pharmacy.' : 'pharmacies.')
+      : 'Applied warehouse suggestions to ' + changed + ' ' + (changed === 1 ? 'pharmacy.' : 'pharmacies.') + ' Material lines and quantities are kept.';
+    pharmacyReview.notice.hidden = false;
+    if (state.finalRows) prepareOutput();
+    downloadStatus.hidden = true;
+    return true;
+  }
+
+  pharmacyReview.table.addEventListener('click', function (event) {
+    const button = event.target.closest('button[data-pharmacy-action]');
+    if (!button || !pharmacyReview.table.contains(button)) return;
+    const plant = button.getAttribute('data-pharmacy');
+    if (changePharmacyWarehouses([plant], button.getAttribute('data-pharmacy-action') === 'undo')) {
+      const nextButton = pharmacyReview.table.querySelector('button[data-pharmacy="' + plant + '"]');
+      (nextButton || pharmacyReview.filter).focus({ preventScroll: true });
+    }
+  });
+  pharmacyReview.applyAll.addEventListener('click', function () {
+    const plants = pharmacyWarehouseReviews().filter(row => row.status === 'mismatch').map(row => row.plant);
+    if (changePharmacyWarehouses(plants, false)) pharmacyReview.undoAll.focus({ preventScroll: true });
+  });
+  pharmacyReview.undoAll.addEventListener('click', function () {
+    if (changePharmacyWarehouses(Array.from(state.issueWarehouseOverrides.keys()), true)) pharmacyReview.search.focus({ preventScroll: true });
+  });
+  pharmacyReview.search.addEventListener('input', function () { state.issueReviewLimit = 40; renderPharmacyWarehouseReview(); });
+  pharmacyReview.filter.addEventListener('change', function () { state.issueReviewLimit = 40; renderPharmacyWarehouseReview(); });
+  pharmacyReview.more.addEventListener('click', function () { state.issueReviewLimit += 40; renderPharmacyWarehouseReview(); });
+
   function renderIssuePreview(rows) {
     const cols = ['Doc', 'Item', 'Pharmacy', 'Material', 'Qty', 'Group', 'Wh'];
     let html = '<thead><tr>' + cols.map(c => '<th>' + c + '</th>').join('') + '</tr></thead><tbody>';
@@ -1576,6 +3015,7 @@
       ? 'Showing ' + shown.length + ' of ' + rows.length + ' lines — every line is included in the download.'
       : rows.length + ' line' + (rows.length === 1 ? '' : 's') + ', ready to download.';
     ruleNote.textContent = "Duplicate lines are removed, then everything is sorted by warehouse, then pharmacy/area, then material — same as the manual process. Material numbers starting with 1 are treated as medicine (INM), everything else as general stock (INC), and each pharmacy + group combination becomes one document with lines numbered 10, 20, 30…";
+    if (state.issueWarehouseOverrides.size) ruleNote.textContent += ' Warehouse suggestions applied to ' + state.issueWarehouseOverrides.size + ' pharmacies.';
   }
 
   function renderTransferPreview(rows, settings) {
@@ -1597,26 +3037,52 @@
       ". Each material's category comes from its leading digit — 1 is Medicine (INM), 2 Cosmetics, 3 Milk, 4 Diaper (all INC) — sorted by material, with every category becoming its own document and lines numbered 10, 20, 30…";
   }
 
+  function renderExpirePreview(rows, settings) {
+    const cols = ['Doc', 'Item', 'Material', 'Qty', 'Group', 'From plant / storage', 'To plant / storage'];
+    if (settings.includeBatch) cols.push('Batch');
+    const shown = rows.slice(0, 20);
+    previewTable.innerHTML = '<thead><tr>' + cols.map(label => '<th>' + label + '</th>').join('') + '</tr></thead><tbody>' + shown.map(row => {
+      const values = [row.docNm, row.slNo, row.material, row.qty, row.purGroup, row.supplyingPlant + ' / ' + row.supplyingStgeLoc, row.toWhere + ' / ' + row.destStgeLoc];
+      if (settings.includeBatch) values.push(row.poBatch);
+      return '<tr>' + values.map(value => '<td>' + escapeHtml(value) + '</td>').join('') + '</tr>';
+    }).join('') + '</tbody>';
+    previewNote.textContent = (rows.length > shown.length ? 'Showing ' + shown.length + ' of ' + rows.length + ' lines. ' : rows.length + ' lines. ') + rows[rows.length - 1].docNm + ' document(s), all included in the download.';
+    ruleNote.textContent = 'Every material line and quantity stays in the exact upload order, including repeats. A new SAP document starts when the material category changes, with items numbered 10, 20, 30… ' + (settings.includeBatch ? 'Batch numbers are included in PO_BATCH.' : 'PO_BATCH is blank.');
+  }
+
   function prepareOutput() {
     if (!state.uniqueRows || !state.uniqueRows.length) return false;
     if (state.mode === 'issue') {
       const settings = currentIssueSettings();
       state.finalRows = buildIssueRows(state.uniqueRows, settings);
       renderIssuePreview(state.finalRows);
+    } else if (state.mode === 'expire') {
+      if (expireProblem()) { refreshExpireDetails(); return false; }
+      const settings = currentExpireSettings();
+      state.finalRows = buildExpireRows(state.uniqueRows, settings);
+      renderExpirePreview(state.finalRows, settings);
     } else {
       const settings = currentTransferSettings();
       state.finalRows = buildTransferRows(state.uniqueRows, settings);
       renderTransferPreview(state.finalRows, settings);
     }
     downloadName.textContent = 'Download as: ' + outputFilename();
+    downloadBtn.disabled = false;
     return true;
   }
 
   const settingsInputs = [issueDateInput, docTypeInput, companyCodeInput, purchOrgInput,
     poUnitInput, destStgeLocInput, directionInput, transferDateInput, tCompanyCodeInput,
-    tPurchOrgInput, tPoUnitInput, tDocTypeInput];
+    tPurchOrgInput, tPoUnitInput, tDocTypeInput, expireDateInput,
+    expireIncludeBatchInput, eCompanyCodeInput, ePurchOrgInput, ePoUnitInput, eDocTypeInput];
   settingsInputs.forEach(function (input) {
     function refreshResult() {
+      if (state.mode === 'expire') {
+        refreshExpireDetails();
+        if (!state.fileReadController && state.uniqueRows && prepareOutput()) resultBlock.hidden = false;
+        downloadStatus.hidden = true;
+        return;
+      }
       if (!state.finalRows) return;
       prepareOutput();
       downloadStatus.hidden = true;
@@ -2210,6 +3676,7 @@
     refreshReadiness(false);
   })();
 
+  loadDirectoryFromStorage(false);
   applyModeUI();
 })();
 </script>
