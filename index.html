@@ -71,8 +71,32 @@
     -webkit-font-smoothing: antialiased; transition: background 0.2s ease, color 0.2s ease;
   }
 
-  .app-shell { display: flex; min-height: 100vh; align-items: flex-start; }
+  .app-shell { display: flex; min-height: 100vh; align-items: flex-start; position: relative; z-index: 1; }
   body.sidebar-open { overflow: hidden; }
+
+  .ambient-background { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .ambient-orb { position: absolute; width: clamp(200px, 28vw, 420px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, var(--brand-soft-line) 0%, transparent 70%); opacity: 0.48; animation: ambient-float 26s ease-in-out infinite alternate; }
+  .ambient-orb:nth-child(1) { left: -8%; top: 8%; }
+  .ambient-orb:nth-child(2) { right: -6%; top: 40%; animation-duration: 32s; animation-delay: -12s; }
+  .ambient-orb:nth-child(3) { left: 15%; bottom: -18%; animation-duration: 29s; animation-delay: -19s; }
+  .ambient-dot { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: var(--brand); opacity: 0.12; animation: ambient-drift 20s ease-in-out infinite alternate; }
+  .ambient-dot:nth-child(4) { left: 8%; top: 25%; }
+  .ambient-dot:nth-child(5) { right: 12%; top: 12%; animation-delay: -7s; }
+  .ambient-dot:nth-child(6) { left: 20%; bottom: 18%; animation-delay: -13s; }
+  .ambient-dot:nth-child(7) { right: 7%; bottom: 32%; animation-delay: -4s; }
+  @keyframes ambient-float { from { transform: translate3d(0, 0, 0) scale(0.94); } to { transform: translate3d(35px, -45px, 0) scale(1.08); } }
+  @keyframes ambient-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(12px, -35px, 0); } }
+  .page-scroll-controls { position: fixed; right: 18px; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 45; display: flex; flex-direction: column; gap: 8px; }
+  .page-scroll-controls .page-scroll-btn { width: 40px; height: 40px; border-radius: 12px; color: var(--brand-dark); box-shadow: var(--shadow-sm); }
+  .page-scroll-controls .page-scroll-btn:disabled { opacity: 0.38; cursor: default; box-shadow: none; }
+  .page-scroll-controls .page-scroll-btn:hover:not(:disabled) { background: var(--brand-soft); transform: translateY(-2px); }
+  body.sidebar-open .page-scroll-controls { visibility: hidden; }
+  .transfer-route { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 16px; padding: 16px; border: 1px solid var(--brand-soft-line); border-radius: 12px; background: var(--brand-soft); }
+  .transfer-route > div { flex: 1; min-width: 0; }
+  .transfer-route small { display: block; color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 7px; }
+  .transfer-route strong { display: block; color: var(--brand-dark); font-size: 14px; line-height: 1.6; }
+  .transfer-route > span { color: var(--brand); font-size: 24px; }
+  .transfer-route-review { margin: 0 0 18px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--brand-soft-line); background: var(--brand-soft); color: var(--brand-dark); font-size: 12.5px; line-height: 1.7; }
 
   .topbar {
     position: sticky; top: 0; z-index: 40; padding: 14px 24px;
@@ -117,6 +141,7 @@
   body.sidebar-open .sidebar-nav .nav-item:nth-child(3) { animation-delay: 0.12s; }
   body.sidebar-open .sidebar-nav .nav-item:nth-child(4) { animation-delay: 0.16s; }
   body.sidebar-open .sidebar-nav .nav-item:nth-child(5) { animation-delay: 0.20s; }
+  body.sidebar-open .sidebar-nav .nav-item:nth-child(6) { animation-delay: 0.24s; }
   @keyframes sidebar-item-in { from { opacity: 0; translate: -14px 0; } to { opacity: 1; translate: 0 0; } }
   .sidebar-close { width: 30px; height: 30px; margin-left: auto; border-color: transparent; }
   .sidebar-brand { display: flex; align-items: center; gap: 11px; padding: 4px 8px 26px; }
@@ -168,6 +193,22 @@
   .main-inner { max-width: 760px; margin: 0 auto; padding: 40px 32px 100px; }
   .main-inner.stock-check-view { max-width: 1180px; }
   .main-inner.pharmacy-directory-view { max-width: 960px; }
+  .main-inner.overstock-view { max-width: 1080px; }
+  .overstock-rules { margin-top: 16px; padding: 14px 16px; border: 1px solid var(--brand-soft-line); border-radius: 10px; background: var(--brand-soft); }
+  .overstock-rules p { margin: 5px 0; font-size: 12px; line-height: 1.8; color: var(--ink-soft); }
+  .overstock-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 20px 0; }
+  .overstock-stats .stat-label { white-space: normal; }
+  #overstockFileName { max-width: 100%; overflow-wrap: anywhere; border-radius: 10px; line-height: 1.5; }
+  #overstockTableWrap { max-height: 460px; overflow: auto; margin-top: 16px; }
+  .overstock-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .overstock-table th, .overstock-table td { padding: 11px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border-soft); }
+  .overstock-table th { position: sticky; top: 0; z-index: 1; background: var(--surface-alt); color: var(--muted); font-size: 10px; text-transform: uppercase; white-space: nowrap; }
+  .overstock-table td { min-width: 70px; overflow-wrap: anywhere; }
+  .overstock-table .description-cell { min-width: 190px; }
+  .overstock-table .problem-cell { min-width: 230px; color: var(--error); }
+  .overstock-note { color: var(--muted); font-size: 12px; line-height: 1.8; margin-top: 12px; overflow-wrap: anywhere; }
+  #overstockError, #overstockDownloadStatus { scroll-margin-top: 100px; overflow-wrap: anywhere; }
+  @media (max-width: 480px) { .overstock-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } }
   #heroSub, .static-hint { display: none; }
 
   @media (max-width: 860px) {
@@ -227,6 +268,32 @@
   .upload-loading small { display: block; margin-top: 2px; color: var(--muted); font-size: 11.5px; line-height: 1.6; }
   .upload-spinner { flex: none; width: 24px; height: 24px; border: 3px solid var(--brand-soft-line); border-top-color: var(--brand); border-radius: 50%; animation: upload-spin 0.8s linear infinite; }
   @keyframes upload-spin { to { transform: rotate(360deg); } }
+
+  .issue-file-check { margin-top: 18px; padding: 16px; border: 1px solid var(--border-soft); border-radius: 10px; background: var(--surface-alt); scroll-margin-top: 100px; }
+  .issue-file-check h3 { margin: 0 0 8px; font-size: 14px; color: var(--ink-soft); }
+  .issue-file-check p { margin: 8px 0; font-size: 12.5px; line-height: 1.7; color: var(--muted); }
+  .issue-file-check.has-errors { border-color: var(--error); }
+  .issue-file-check.has-errors h3 { color: var(--error); }
+  .issue-file-check .table-wrap { max-height: 380px; overflow: auto; margin-top: 14px; }
+  .issue-errors-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .issue-errors-table th, .issue-errors-table td { padding: 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border-soft); }
+  .issue-errors-table th { position: sticky; top: 0; z-index: 1; background: var(--surface-alt); color: var(--muted); white-space: nowrap; }
+  .issue-errors-table td { overflow-wrap: anywhere; min-width: 65px; }
+  .issue-errors-table td:last-child { min-width: 220px; color: var(--error); }
+  @media (max-width: 700px) {
+    .issue-errors-table, .issue-errors-table tbody, .issue-errors-table tr, .issue-errors-table td { display: block; width: 100%; }
+    .issue-errors-table thead { display: none; }
+    .issue-errors-table tr { padding: 10px 12px; border-bottom: 1px solid var(--border-soft); }
+    .issue-errors-table td, .issue-errors-table td:last-child { min-width: 0; padding: 4px 0; border: 0; }
+    .issue-errors-table td::before { content: attr(data-label) ': '; color: var(--muted); font-weight: 700; }
+  }
+  .duplicate-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+  .duplicate-actions .primary-btn { font-size: 12px; padding: 10px 14px; background: var(--surface); color: var(--brand-dark); border: 1px solid var(--brand-soft-line); }
+  .duplicate-actions .primary-btn[aria-pressed="true"] { background: var(--brand); color: white; }
+  .task-loading { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px; background: rgba(15,23,42,0.3); backdrop-filter: blur(3px); cursor: progress; }
+  .task-loading-card { display: flex; align-items: center; gap: 16px; width: min(100%, 420px); padding: 24px; border: 1px solid var(--border-soft); border-radius: 16px; background: var(--surface); box-shadow: 0 18px 60px rgba(15,23,42,0.2); }
+  .task-loading-card strong { display: block; color: var(--ink); font-size: 14px; }
+  .task-loading-card small { display: block; margin-top: 7px; color: var(--muted); line-height: 1.6; }
 
   .filename-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
   .file-chip {
@@ -423,7 +490,7 @@
   table#stockReportTable tbody tr:hover { background: var(--surface-alt); }
   .compare-empty { color: var(--muted); font-family: var(--font-sans); white-space: normal; line-height: 1.6; }
   @media (max-width: 700px) { .compare-upload-grid { grid-template-columns: 1fr; } }
-  #downloadStatus { overflow-wrap: anywhere; scroll-margin-top: 100px; }
+  #downloadStatus, #issueMergeError { overflow-wrap: anywhere; scroll-margin-top: 100px; }
   .primary-btn, .nav-item, .icon-btn, .theme-toggle { position: relative; overflow: hidden; }
   .button-ripple {
     position: absolute; width: 12px; height: 12px; border-radius: 50%; pointer-events: none;
@@ -442,6 +509,10 @@
     .primary-btn:hover:not(:disabled) { transform: translateY(-2px); }
   }
   @media (max-width: 480px) {
+    .page-scroll-controls { right: 10px; gap: 6px; }
+    .page-scroll-controls .page-scroll-btn { width: 36px; height: 36px; }
+    .transfer-route { padding: 12px; gap: 10px; }
+    .transfer-route strong { font-size: 12.5px; }
     .step { gap: 12px; padding: 20px 16px; }
     .step-marker { flex-basis: 32px; width: 32px; height: 32px; font-size: 13px; }
     .expire-warehouse-summary { align-items: flex-start; flex-direction: column; gap: 10px; }
@@ -451,6 +522,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .ambient-background { display: none; }
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition: none !important; animation: none !important; }
     .step:not(.locked):hover, .primary-btn:hover:not(:disabled), .nav-item:hover, .stock-jump-btn:hover { transform: none; }
@@ -459,7 +531,13 @@
 </head>
 <body>
 
+<div class="ambient-background" aria-hidden="true"><span class="ambient-orb"></span><span class="ambient-orb"></span><span class="ambient-orb"></span><span class="ambient-dot"></span><span class="ambient-dot"></span><span class="ambient-dot"></span><span class="ambient-dot"></span></div>
+
 <div class="app-shell">
+  <nav class="page-scroll-controls" id="pageScrollControls" aria-label="Page scrolling">
+    <button class="icon-btn page-scroll-btn" id="pageScrollTop" type="button" aria-label="Go to top of page" title="Go up"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V4m-6 6 6-6 6 6"/></svg></button>
+    <button class="icon-btn page-scroll-btn" id="pageScrollBottom" type="button" aria-label="Go to bottom of page" title="Go down"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-6-6 6 6 6-6"/></svg></button>
+  </nav>
   <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
   <aside class="sidebar" id="sidebar" aria-label="Workflows" inert>
     <div class="sidebar-brand">
@@ -488,6 +566,10 @@
       <button class="nav-item mode-btn" data-mode="expire" type="button">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18M12 14v3l2 1"/></svg>
         Store Expire
+      </button>
+      <button class="nav-item mode-btn" data-mode="overstock" type="button">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 8v9l9 5 9-5V8M12 13v9M7 16h4m-2-2 2 2-2 2"/></svg>
+        Overstock Issue
       </button>
       <button class="nav-item mode-btn" data-mode="stock" type="button">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9 5-9-5M12 13v8M3 8l9-5 9 5v9l-9 5-9-5V8"/><path d="M7 10l9-5"/></svg>
@@ -527,6 +609,26 @@
       <p class="sub" id="heroSub"></p>
 
       <div class="sheet" id="orderTool">
+
+        <section class="step" id="transferSetup" data-step="1" hidden>
+          <div class="step-marker"><span>1</span></div>
+          <div class="step-content">
+            <h2>Choose transfer direction</h2>
+            <div class="field">
+              <label for="direction">From warehouse → To warehouse</label>
+              <select id="direction">
+                <option value="jed2ryd">1100 Jeddah → 2100 Riyadh</option>
+                <option value="ryd2jed">2100 Riyadh → 1100 Jeddah</option>
+              </select>
+            </div>
+            <div class="transfer-route" role="status" aria-live="polite">
+              <div><small>From warehouse</small><strong id="transferFromWarehouse">Jeddah · 1100</strong></div>
+              <span aria-hidden="true">→</span>
+              <div><small>To warehouse</small><strong id="transferToWarehouse">Riyadh · 2100</strong></div>
+            </div>
+            <div class="step-actions"><button class="primary-btn" id="transferToUpload" type="button">Continue to upload <span aria-hidden="true">→</span></button></div>
+          </div>
+        </section>
 
         <section class="step" id="expireSetup" data-step="1" hidden>
           <div class="step-marker"><span>1</span></div>
@@ -606,6 +708,38 @@
 
             <div class="callout note" id="dedupNote" hidden></div>
             <div class="callout note" id="invalidNote" hidden></div>
+
+            <section class="issue-file-check" id="issueValidationPanel" aria-labelledby="issueValidationTitle" hidden>
+              <h3 id="issueValidationTitle">File checks</h3>
+              <p id="issueValidationSummary" role="status" aria-live="polite"></p>
+              <div class="table-wrap" id="issueValidationTableWrap" tabindex="0" role="region" aria-label="Rows that need correction" hidden><table class="issue-errors-table" id="issueValidationTable"></table></div>
+              <p id="issueValidationCount" hidden></p>
+              <button class="text-btn" id="issueValidationMore" type="button" hidden>Show more errors</button>
+            </section>
+            <section class="issue-file-check" id="issueDuplicatesPanel" aria-labelledby="issueDuplicatesTitle" hidden>
+              <h3 id="issueDuplicatesTitle">Repeated pharmacy materials</h3>
+              <p id="issueDuplicatesSummary"></p>
+              <p>Combine quantities adds every uploaded quantity for the same pharmacy, material, and selected warehouse, including exact duplicate rows. Different pharmacies, materials, or selected warehouses stay separate.</p>
+              <p>Remove exact duplicates keeps one copy of each identical uploaded line. Keep all rows preserves every line separately.</p>
+              <div class="duplicate-actions">
+                <button class="primary-btn" id="issueRemoveDuplicates" type="button" aria-pressed="false">Remove exact duplicates</button>
+                <button class="primary-btn" id="issueKeepDuplicates" type="button" aria-pressed="false">Keep all rows</button>
+                <button class="primary-btn" id="issueCombineQuantities" type="button" aria-pressed="false">Combine quantities</button>
+              </div>
+              <p id="issueDuplicatesStatus" role="status" aria-live="polite">Choose an option before generating your file.</p>
+            </section>
+            <div class="callout error" id="issueMergeError" role="alert" hidden></div>
+            <section class="issue-file-check" id="transferDuplicatesPanel" aria-labelledby="transferDuplicatesTitle" hidden>
+              <h3 id="transferDuplicatesTitle">Repeated materials found</h3>
+              <p id="transferDuplicatesSummary"></p>
+              <p>Exact duplicates have the same material and quantity. Different quantities stay separate when removing exact duplicates. Combining quantities adds every uploaded quantity into one line per material.</p>
+              <div class="duplicate-actions">
+                <button class="primary-btn" id="transferRemoveDuplicates" type="button" aria-pressed="false">Remove exact duplicates</button>
+                <button class="primary-btn" id="transferKeepDuplicates" type="button" aria-pressed="false">Keep all rows</button>
+                <button class="primary-btn" id="transferCombineDuplicates" type="button" aria-pressed="false">Combine quantities by material</button>
+              </div>
+              <p id="transferDuplicatesStatus" role="status" aria-live="polite">Choose an option before generating your file.</p>
+            </section>
           </div>
         </section>
 
@@ -655,14 +789,8 @@
             </div>
 
             <div id="transferSettings" hidden>
+              <p class="transfer-route-review" id="transferRouteReview" aria-live="polite"></p>
               <div class="field-grid">
-                <div class="field">
-                  <label for="direction">Direction</label>
-                  <select id="direction">
-                    <option value="jed2ryd">Jeddah → Riyadh</option>
-                    <option value="ryd2jed">Riyadh → Jeddah</option>
-                  </select>
-                </div>
                 <div class="field">
                   <label for="transferDate">Issue date</label>
                   <input type="date" id="transferDate">
@@ -709,6 +837,52 @@
           </div>
         </section>
 
+      </div>
+
+      <div class="sheet" id="overstockTool" hidden>
+        <section class="step" id="overstockUploadSection">
+          <div class="step-marker"><span>1</span></div>
+          <div class="step-content">
+            <h2>Upload the SAP stock export</h2>
+            <p class="overstock-note">Upload your file to detect the warehouse automatically from the Plant column: 1200 for Jeddah or 2200 for Riyadh. The SAP issue date is today.</p>
+            <p class="overstock-note">Required columns: Material, Plant, Storage Location, Batch, and Unrestricted Quantity. The heading “Unrestriced Quantity” in your export is also recognized.</p>
+            <label class="dropzone" id="overstockDropzone" for="overstockFileInput" tabindex="0" role="button" aria-label="Upload stock export to detect the warehouse">
+              <input type="file" id="overstockFileInput" accept=".xlsx,.xls,.csv">
+              <span class="drop-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span>
+              <p class="drop-main">Upload stock export</p><p class="drop-alt">or drop an Excel or CSV file here</p>
+            </label>
+            <div class="upload-loading" id="overstockLoading" role="status" aria-live="polite" hidden><span class="upload-spinner" aria-hidden="true"></span><div><strong>Reading your export…</strong><small>Filtering storage locations and checking batch rules.</small></div></div>
+            <div class="filename-row" id="overstockFileRow" hidden><span class="file-chip" id="overstockFileName"></span><button class="text-btn" id="overstockRemove" type="button">Remove</button></div>
+            <div class="callout error" id="overstockError" role="alert" hidden></div>
+          </div>
+        </section>
+        <section class="step" id="overstockResults" hidden>
+          <div class="step-marker"><span>2</span></div>
+          <div class="step-content">
+            <h2>Check and download</h2>
+            <div class="overstock-rules" id="overstockRules"></div>
+            <p class="overstock-note" id="overstockResultSummary" role="status" aria-live="polite"></p>
+            <div class="overstock-stats">
+              <div class="stat"><span class="stat-num" id="overstockReadyCount">0</span><span class="stat-label">ready lines</span></div>
+              <div class="stat"><span class="stat-num" id="overstockProblemCount">0</span><span class="stat-label">batch / data problems</span></div>
+              <div class="stat"><span class="stat-num" id="overstockIgnoredCount">0</span><span class="stat-label">other rows ignored</span></div>
+            </div>
+            <div class="pharmacy-review-controls">
+              <div class="field"><label for="overstockSearch">Search material, description, or batch</label><input type="search" id="overstockSearch" placeholder="Example: 100020 or DUMMY" spellcheck="false"></div>
+              <div class="field"><label for="overstockView">Preview</label><select id="overstockView"><option value="ready">Ready to issue</option><option value="problems">Batch / data problems</option></select></div>
+            </div>
+            <div class="table-wrap" id="overstockTableWrap" tabindex="0" role="region" aria-label="Overstock preview"><table class="overstock-table" id="overstockTable"></table></div>
+            <p class="overstock-note" id="overstockShown"></p><button class="text-btn" id="overstockMore" type="button" hidden>Show more rows</button>
+            <p class="overstock-note">Search only changes this preview. Downloads include all accepted lines or all problem rows. Batch problems are excluded from the SAP issue file; download the report to review them.</p>
+            <div class="result-actions">
+              <button class="primary-btn accent" id="overstockDownload" type="button" disabled>Download SAP issue Excel</button>
+              <button class="primary-btn" id="overstockProblemsDownload" type="button" disabled>Download batch problems Excel</button>
+              <button class="text-btn" id="overstockNext" type="button">Upload next file</button>
+            </div>
+            <p class="download-name" id="overstockDownloadName"></p>
+            <div class="callout note" id="overstockDownloadStatus" role="status" aria-live="polite" hidden></div>
+          </div>
+        </section>
       </div>
 
       <div class="sheet" id="pharmacyDirectoryTool" hidden>
@@ -883,6 +1057,10 @@
   </main>
 </div>
 
+<div class="task-loading" id="taskLoading" role="status" aria-live="polite" aria-atomic="true" hidden>
+  <div class="task-loading-card"><span class="upload-spinner" aria-hidden="true"></span><div><strong id="taskLoadingMessage">Processing…</strong><small>Please wait. Large files can take a moment.</small></div></div>
+</div>
+
 <script>
 (function () {
   "use strict";
@@ -941,7 +1119,8 @@
       const choice = document.getElementById('expireWarehouse');
       const needsWarehouse = choice && !choice.disabled && !document.getElementById('expireSetup').hidden;
       const directory = document.getElementById('pharmacyDirectoryTool');
-      const upload = directory && !directory.hidden ? document.getElementById('directorySearch') : needsWarehouse ? choice : document.querySelector('.sheet:not([hidden]) .dropzone');
+      const overstock = document.getElementById('overstockTool');
+      const upload = directory && !directory.hidden ? document.getElementById('directorySearch') : overstock && !overstock.hidden ? document.getElementById('overstockDropzone') : needsWarehouse ? choice : document.querySelector('.sheet:not([hidden]) .dropzone');
       if (upload) upload.focus({ preventScroll: true });
     }
   });
@@ -980,7 +1159,7 @@
   // or foreign headings still work.
   // ============================================================
   const COLUMN_ALIASES = {
-    plant: ['plant', 'pharmacy', 'area', 'ph'],
+    plant: ['plant', 'pharmacy', 'pharmacycode', 'pharmacynumber', 'storecode', 'area', 'ph'],
     material: ['materialnumber', 'material', 'materialno', 'materialcode', 'itemcode', 'itemnumber', 'm'],
     order: ['order', 'qty', 'quantity', 'orderqty', 'q'],
     wh: ['wh', 'warehouse', 'whcode', 'w'],
@@ -1567,7 +1746,7 @@
     ["P657", "RIYADH", 2100]
   ];
   const PHARMACY_WAREHOUSE_REFERENCE = new Map(PHARMACY_WAREHOUSE_ROWS.map(row => [row[0], { area: row[1], wh: row[2] }]));
-  const PLANT_REGEX = /^[PD]\d{3}$/i;     // P164, D069 — 1 letter (P/D) + 3 digits
+  const PLANT_REGEX = /^[PD](?:00[1-9]|0[1-9]\d|[1-9]\d{2})$/i; // P001–P999 and D001–D999
   const MATERIAL_MIN = 100000, MATERIAL_MAX = 999999; // 6-digit material numbers
   const PATTERN_MATCH_THRESHOLD = 0.8;
 
@@ -1580,6 +1759,22 @@
   function isValidQuantityValue(v) {
     const n = Number(v);
     return Number.isInteger(n) && n > 0;
+  }
+
+  function issueValueText(value) { return value == null ? '' : String(value).trim(); }
+  function isValidIssueMaterial(value) {
+    return (typeof value === 'number' || typeof value === 'string') && /^\d{6}$/.test(issueValueText(value)) && isValidMaterialValue(value);
+  }
+  function isValidIssueQuantity(value) {
+    return (typeof value === 'number' || typeof value === 'string') && /^\d+$/.test(issueValueText(value)) && Number.isSafeInteger(Number(value)) && Number(value) > 0;
+  }
+  function isValidIssueWarehouse(value) {
+    return (typeof value === 'number' || typeof value === 'string') && /^(1100|2100)$/.test(issueValueText(value));
+  }
+
+  async function yieldFileWork(signal) {
+    await new Promise(resolve => window.setTimeout(resolve, 0));
+    if (signal && signal.aborted) throw uploadAbort();
   }
 
   const FIELD_PRIORITY = ['wh', 'plant', 'material', 'order']; // most to least distinctive shape
@@ -1694,6 +1889,86 @@
     return result;
   }
 
+  async function parseIssueWorkbook(workbook, signal, onPhase) {
+    const required = ['plant', 'material', 'order', 'wh'];
+    const labels = { plant: 'Pharmacy', material: 'Material', order: 'Quantity', wh: 'Warehouse' };
+    const result = { rows: [], issues: [], invalidRowCount: 0, skippedSheets: [], sampleHeaders: [], detectedColumns: null };
+    let lastYield = performance.now();
+    for (const sheetName of workbook.SheetNames) {
+      const sheet = workbook.Sheets[sheetName], populated = new Map();
+      onPhase('Checking ' + sheetName + '…');
+      // Ignore unused formatting, but retain real Excel row numbers for corrections.
+      for (const address of Object.keys(sheet)) {
+        if (!/^[A-Z]+\d+$/.test(address)) continue;
+        const cell = sheet[address];
+        if (!cell || cell.v == null || issueValueText(cell.v) === '') continue;
+        const position = XLSX.utils.decode_cell(address);
+        if (!populated.has(position.r)) populated.set(position.r, new Map());
+        populated.get(position.r).set(position.c, cell.t === 'e' ? (cell.w || 'Excel cell error') : cell.v);
+        if (performance.now() - lastYield > 12) { await yieldFileWork(signal); lastYield = performance.now(); }
+      }
+      const entries = Array.from(populated).sort((a, b) => a[0] - b[0]);
+      if (!entries.length) { result.skippedSheets.push(sheetName); continue; }
+      let headerIndex = null, columnKeys = null, detected = null;
+      for (let candidate = 0; candidate < Math.min(40, entries.length); candidate++) {
+        const [rowIndex, values] = entries[candidate];
+        const headers = {}, columns = {};
+        for (const [column, value] of values) {
+          let key = issueValueText(value);
+          if (Object.prototype.hasOwnProperty.call(columns, key)) key += ' (' + XLSX.utils.encode_col(column) + ')';
+          headers[column] = key; columns[key] = column;
+        }
+        const names = Object.keys(columns);
+        const namedFields = required.filter(field => findKey(names, COLUMN_ALIASES[field]));
+        // A row of order values cannot be mistaken for a header and dropped.
+        if (!namedFields.length && (names.length < 4 || names.some(name => isValidPlantValue(name) || /^\d+$/.test(name)))) continue;
+        const examples = entries.slice(candidate + 1, candidate + 61).map(([, rowValues]) => {
+          const row = {};
+          Object.keys(headers).forEach(column => { row[headers[column]] = rowValues.get(Number(column)); });
+          return row;
+        });
+        // Named headings are enough to report errors even if every data value is invalid.
+        const keys = examples.length ? detectColumns(examples, required) : {};
+        const claimed = new Set(Object.values(keys));
+        required.forEach(field => {
+          if (keys[field]) return;
+          const found = findKey(names.filter(name => !claimed.has(name)), COLUMN_ALIASES[field]);
+          if (found) { keys[field] = found; claimed.add(found); }
+        });
+        if (!required.every(field => keys[field])) continue;
+        headerIndex = rowIndex; detected = keys;
+        columnKeys = Object.fromEntries(required.map(field => [field, columns[keys[field]]]));
+        if (!result.sampleHeaders.length) result.sampleHeaders = names;
+        break;
+      }
+      if (headerIndex === null) {
+        result.issues.push({ sheet: sheetName, row: entries[0][0] + 1, plant: '', material: '', order: '', wh: '', reasons: ['Could not match all required columns. Use Pharmacy, Material, Quantity, and WH headings on this sheet.'] });
+        continue;
+      }
+      if (!result.detectedColumns) result.detectedColumns = detected;
+      for (const [rowIndex, values] of entries) {
+        if (rowIndex <= headerIndex) continue;
+        const raw = Object.fromEntries(required.map(field => [field, values.get(columnKeys[field])]));
+        if (required.every(field => COLUMN_ALIASES[field].includes(normalizeKey(raw[field]))) ||
+            required.every(field => normalizeKey(raw[field]) === normalizeKey(detected[field]))) continue;
+        const reasons = [];
+        if (!isValidIssueMaterial(raw.material)) reasons.push('Material must contain exactly 6 digits (100000–999999).');
+        if (!isValidIssueQuantity(raw.order)) reasons.push('Quantity must be a positive whole number, without decimals.');
+        if (!isValidPlantValue(raw.plant)) reasons.push('Pharmacy must be P001–P999 or D001–D999. P000 and D000 are not allowed.');
+        if (!isValidIssueWarehouse(raw.wh)) reasons.push('Warehouse must be 1100 (Jeddah) or 2100 (Riyadh).');
+        if (reasons.length) result.issues.push({ sheet: sheetName, row: rowIndex + 1, ...raw, reasons });
+        else result.rows.push({ plant: issueValueText(raw.plant).toUpperCase(), material: Number(raw.material), order: Number(raw.order), wh: Number(raw.wh) });
+        if (performance.now() - lastYield > 12) {
+          onPhase('Checking ' + sheetName + ' — row ' + (rowIndex + 1).toLocaleString() + '…');
+          await yieldFileWork(signal); lastYield = performance.now();
+        }
+      }
+    }
+    if (signal.aborted) throw uploadAbort();
+    result.invalidRowCount = result.issues.length;
+    return result;
+  }
+
   // ============================================================
   // Issue mode: exact-row dedupe, sort warehouse -> pharmacy ->
   // material, group into documents per pharmacy + material group.
@@ -1709,6 +1984,22 @@
       unique.push(row);
     }
     return { unique, duplicates };
+  }
+
+  function issueMaterialGroups(rows, totalQuantities) {
+    const groups = new Map();
+    rows.forEach(row => {
+      const key = row.plant + '|' + row.material + '|' + row.wh;
+      const group = groups.get(key);
+      if (!group) { groups.set(key, { row: Object.assign({}, row), count: 1 }); return; }
+      group.count++;
+      if (totalQuantities) {
+        const quantity = group.row.order + row.order;
+        if (!Number.isSafeInteger(quantity)) throw new Error('The combined quantity for ' + row.plant + ' / ' + row.material + ' / ' + row.wh + ' is too large to export accurately. Keep these rows separate or reduce the quantities.');
+        group.row.order = quantity;
+      }
+    });
+    return { rows: Array.from(groups.values(), group => group.row), repeatedGroups: Array.from(groups.values()).filter(group => group.count > 1).length };
   }
 
   function naturalCompare(a, b) {
@@ -1897,6 +2188,18 @@
     return { merged, duplicates: rows.length - merged.length };
   }
 
+  function transferDuplicateSummary(rows) {
+    const seen = new Set(), materials = new Map(), unique = [];
+    let duplicates = 0;
+    rows.forEach(row => {
+      const key = row.material + '|' + row.order;
+      if (seen.has(key)) duplicates++;
+      else { seen.add(key); unique.push(row); }
+      materials.set(row.material, (materials.get(row.material) || 0) + 1);
+    });
+    return { unique, duplicates, repeatedMaterials: Array.from(materials.values()).filter(count => count > 1).length };
+  }
+
   function sortRowsForTransfer(rows) {
     return rows.slice().sort((a, b) => a.material - b.material);
   }
@@ -1999,17 +2302,161 @@
     });
   }
 
+  let taskRunning = false;
+  async function runWithLoading(message, work, focusAfter) {
+    if (taskRunning) return false;
+    taskRunning = true;
+    const panel = document.getElementById('taskLoading');
+    const shell = document.querySelector('.app-shell');
+    const previousInert = shell.inert, previousFocus = document.activeElement;
+    document.getElementById('taskLoadingMessage').textContent = message;
+    panel.hidden = false; shell.inert = true;
+    try {
+      await paintUploadState();
+      return await work();
+    } finally {
+      panel.hidden = true; shell.inert = previousInert; taskRunning = false;
+      const target = focusAfter ? focusAfter() : previousFocus;
+      if (target && target.isConnected && !target.closest('[hidden]')) target.focus({ preventScroll: true });
+    }
+  }
+
+  async function downloadWorkbook(workbook, filename) {
+    // Excel encoding runs in a worker so the loading animation keeps moving.
+    let bytes = await new Promise((resolve, reject) => {
+      if (typeof Worker === 'undefined') { resolve(null); return; }
+      const source = '(' + function () {
+        self.onmessage = function (event) {
+          try { importScripts(event.data.readerUrl); }
+          catch (error) { self.postMessage({ fallback: true }); return; }
+          try {
+            const buffer = XLSX.write(event.data.workbook, { type: 'array', bookType: 'xlsx', compression: true });
+            self.postMessage({ buffer }, [buffer]);
+          } catch (error) { self.postMessage({ error: true }); }
+        };
+      }.toString() + ')();';
+      let worker, url, timer;
+      function cleanup() {
+        window.clearTimeout(timer);
+        if (worker) worker.terminate();
+        if (url) URL.revokeObjectURL(url);
+      }
+      try {
+        url = URL.createObjectURL(new Blob([source], { type: 'text/javascript' }));
+        worker = new Worker(url);
+        worker.onmessage = event => {
+          cleanup();
+          if (event.data.error) reject(new Error('Excel export failed'));
+          else resolve(event.data.buffer || null);
+        };
+        worker.onerror = event => { event.preventDefault(); cleanup(); resolve(null); };
+        timer = window.setTimeout(() => { cleanup(); resolve(null); }, 20000);
+        worker.postMessage({ workbook, readerUrl: document.querySelector('script[src*="xlsx.full.min.js"]').src });
+      } catch (error) { cleanup(); resolve(null); }
+    });
+    if (!bytes) {
+      await paintUploadState();
+      bytes = XLSX.write(workbook, { type: 'array', bookType: 'xlsx', compression: true });
+    }
+    const url = URL.createObjectURL(new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+    const link = document.createElement('a');
+    link.href = url; link.download = filename; document.body.appendChild(link);
+    try { link.click(); }
+    finally { link.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  }
+
   function uploadError(code) { const error = new Error(code); error.code = code; return error; }
   function uploadAbort() { const error = new Error('Upload cancelled'); error.name = 'AbortError'; return error; }
 
-  async function readUploadWorkbook(file, options, onPhase, signal) {
+  const OVERSTOCK_COLUMNS = {
+    material: ['material','materialnumber','materialcode','materialno','matnr'],
+    description: ['materialdescription','materialdesc','description','itemdescription'],
+    plant: ['plant','sourceplant','supplyingplant','warehouse','warehousecode','wh'],
+    storage: ['storagelocation','storageloc','sloc','lgort','supplyingstoragelocation'],
+    batch: ['batch','batchnumber','batchno','batchcode','charg','lotnumber'],
+    qty: ['unrestricedquantity','unrestrictedquantity','unrestricted','unrestrictedstock','availablequantity','quantity','qty'],
+  };
+  const OVERSTOCK_REQUIRED = ['material','plant','storage','batch','qty'];
+  function overstockHeaderAt(sheet, row, lastColumn) {
+    const found = {};
+    for (let c = 0; c <= lastColumn; c++) {
+      const cell = Array.isArray(sheet) ? sheet[row]?.[c] : sheet[XLSX.utils.encode_col(c) + (row+1)];
+      if (!cell || cell.v == null) continue;
+      const key = expireKey(cell.v);
+      for (const role of Object.keys(OVERSTOCK_COLUMNS)) {
+        if (OVERSTOCK_COLUMNS[role].includes(key)) {
+          if (found[role] === undefined) found[role] = c;
+          else found[role] = -1;
+        }
+      }
+    }
+    return OVERSTOCK_REQUIRED.every(role => found[role] !== undefined && found[role] >= 0) ? found : null;
+  }
+  function compactOverstockWorkbook(workbook) {
+    // Detect source plants and filter in the worker before returning a large file.
+    const sourcePlants = new Set();
+    for (const name of workbook.SheetNames) {
+      const sheet = workbook.Sheets[name];
+      if (!sheet || !sheet['!ref']) continue;
+      const dense = Array.isArray(sheet);
+      const range = XLSX.utils.decode_range(sheet['!ref']);
+      let header = null, headerRow = -1;
+      for (let r = range.s.r; r <= Math.min(range.e.r,range.s.r + 39); r++) {
+        header = overstockHeaderAt(sheet,r,Math.min(range.e.c,511));
+        if (header) { headerRow = r; break; }
+      }
+      if (!header) {
+        let populated = dense && sheet.some(row => Array.isArray(row) && row.some(cell => cell && cell.v != null && String(cell.v).trim() !== ''));
+        if (!dense) for (const address of Object.keys(sheet)) {
+          if (/^[A-Z]+[1-9][0-9]*$/.test(address) && sheet[address] && sheet[address].v != null && String(sheet[address].v).trim() !== '') { populated = true; break; }
+        }
+        workbook.Sheets[name] = { '!ref': 'A1', '!overstockInvalid': populated };
+        continue;
+      }
+      const letters = {};
+      Object.keys(header).forEach(role => { if (header[role] >= 0) letters[role] = XLSX.utils.encode_col(header[role]); });
+      const roles = Object.keys(letters), selectedLetters = new Set(Object.values(letters)), rows = new Set();
+      if (dense) {
+        for (let r = headerRow+1; r < sheet.length; r++) {
+          if (sheet[r] && roles.some(role => { const cell = sheet[r][header[role]]; return cell && cell.v != null && String(cell.v).trim() !== ''; })) rows.add(r+1);
+        }
+      } else for (const address of Object.keys(sheet)) {
+        const match = /^([A-Z]+)([1-9][0-9]*)$/.exec(address);
+        if (match && selectedLetters.has(match[1]) && Number(match[2]) > headerRow + 1 && sheet[address] && sheet[address].v != null && String(sheet[address].v).trim() !== '') rows.add(Number(match[2]));
+      }
+      const counts = { sourceRows: 0, matchingPlant: 0, ignored: 0 };
+      const compact = { '!ref': sheet['!ref'], '!overstockCounts': counts };
+      const cellAt = (role, excelRow) => dense ? sheet[excelRow-1]?.[header[role]] : sheet[letters[role]+excelRow];
+      function copy(role, excelRow) {
+        const cell = cellAt(role,excelRow);
+        if (cell && cell.v != null) compact[letters[role]+excelRow] = { t:cell.t, v:cell.v, ...(cell.z ? {z:cell.z} : {}) };
+      }
+      for (const role of roles) copy(role,headerRow+1);
+      for (const excelRow of rows) {
+        const value = role => { const cell = cellAt(role,excelRow); return cell && cell.v != null ? cell.v : ''; };
+        if (OVERSTOCK_COLUMNS.material.includes(expireKey(value('material'))) && OVERSTOCK_COLUMNS.plant.includes(expireKey(value('plant'))) && OVERSTOCK_COLUMNS.storage.includes(expireKey(value('storage')))) continue;
+        counts.sourceRows++;
+        const plant = String(value('plant')).trim(), storage = String(value('storage')).trim();
+        const sourcePlant = Number(plant);
+        const supportedPlant = plant === '1200' || plant === '2200';
+        if (supportedPlant) { sourcePlants.add(sourcePlant); counts.matchingPlant++; }
+        if (supportedPlant && [String(sourcePlant+4),String(sourcePlant+8)].includes(storage)) {
+          for (const role of roles) copy(role,excelRow);
+        } else counts.ignored++;
+      }
+      workbook.Sheets[name] = compact;
+    }
+    return { SheetNames:workbook.SheetNames, Sheets:workbook.Sheets, overstockPlants:Array.from(sourcePlants) };
+  }
+
+  async function readUploadWorkbook(file, options, onPhase, signal, overstockMode) {
     if (typeof XLSX === 'undefined') throw uploadError('reader-unavailable');
     await paintUploadState();
     if (signal.aborted) throw uploadAbort();
     // Read and unpack large files off the page so the spinner stays responsive.
     const workbook = await new Promise((resolve,reject) => {
       if (typeof Worker === 'undefined') { resolve(null); return; }
-      const workerSource = '(' + function () {
+      const workerSource = 'const OVERSTOCK_COLUMNS=' + JSON.stringify(OVERSTOCK_COLUMNS) + ';const OVERSTOCK_REQUIRED=' + JSON.stringify(OVERSTOCK_REQUIRED) + ';' + expireKey.toString() + overstockHeaderAt.toString() + compactOverstockWorkbook.toString() + '(' + function () {
         self.onmessage = function (event) {
           const data = event.data;
           if (typeof FileReaderSync === 'undefined') { self.postMessage({fallback:true}); return; }
@@ -2019,7 +2466,14 @@
           self.postMessage({phase:'Processing Excel data…'});
           try { importScripts(data.readerUrl); }
           catch (error) { self.postMessage({fallback:true}); return; }
-          try { self.postMessage({workbook:XLSX.read(new Uint8Array(buffer),data.options)}); }
+          try {
+            let workbook = XLSX.read(new Uint8Array(buffer),data.options);
+            if (data.overstockMode) {
+              self.postMessage({phase:'Detecting warehouse and selecting overstock storage locations…'});
+              workbook = compactOverstockWorkbook(workbook);
+            }
+            self.postMessage({workbook});
+          }
           catch (error) { self.postMessage({error:'excel-parse'}); }
         };
       }.toString() + ')();';
@@ -2034,14 +2488,16 @@
         url = URL.createObjectURL(new Blob([workerSource],{type:'text/javascript'}));
         worker = new Worker(url);
         worker.onmessage = event => {
+          if (!event.data) { cleanup(); resolve(null); return; }
           if (event.data.phase) { onPhase(event.data.phase); return; }
           cleanup();
           if (event.data.error) reject(uploadError(event.data.error));
           else resolve(event.data.workbook || null);
         };
         worker.onerror = event => { event.preventDefault(); cleanup(); resolve(null); };
+        worker.onmessageerror = () => { cleanup(); resolve(null); };
         signal.addEventListener('abort',abort,{once:true});
-        worker.postMessage({file,options,readerUrl:document.querySelector('script[src*="xlsx.full.min.js"]').src});
+        worker.postMessage({file,options,overstockMode,readerUrl:document.querySelector('script[src*="xlsx.full.min.js"]').src});
       } catch (error) { cleanup(); resolve(null); }
     });
     if (signal.aborted) throw uploadAbort();
@@ -2061,12 +2517,17 @@
     onPhase('Processing Excel data…');
     await paintUploadState();
     if (signal.aborted) throw uploadAbort();
-    try { return XLSX.read(new Uint8Array(buffer),options); }
+    try {
+      const parsed = XLSX.read(new Uint8Array(buffer),options);
+      return overstockMode ? compactOverstockWorkbook(parsed) : parsed;
+    }
     catch (error) { throw uploadError('excel-parse'); }
   }
 
   const state = { mode: 'issue', uniqueRows: null, finalRows: null, fileName: '', fileReadToken: 0, fileReadController: null, expireWarehouse: null,
-    issueSourceRows: null, issueWarehouseOverrides: new Map(), issueReviewLimit: 40 };
+    transferAllRows: null, transferDuplicateChoice: null, transferDuplicates: 0, transferRepeatedMaterials: 0,
+    issueSourceRows: null, issueAllRows: null, issueDuplicateChoice: null, issueDuplicates: 0, issueRepeatedGroups: 0, issueValidationIssues: [], issueValidationLimit: 50,
+    issueWarehouseOverrides: new Map(), issueReviewLimit: 40 };
   const DIRECTORY_STORAGE_KEY = 'upc-stocklink-pharmacy-directory-v1';
   const directory = { open: false, sourceName: 'Pharmacies.xlsx', savedAt: null, saved: false,
     pending: null, limit: 50, readToken: 0, controller: null, returnScroll: 0 };
@@ -2099,6 +2560,14 @@
   const matchedCols = document.getElementById('matchedCols');
   const dedupNote = document.getElementById('dedupNote');
   const invalidNote = document.getElementById('invalidNote');
+  const issueChecks = {};
+  ['issueValidationPanel', 'issueValidationTitle', 'issueValidationSummary', 'issueValidationTableWrap', 'issueValidationTable',
+    'issueValidationCount', 'issueValidationMore', 'issueDuplicatesPanel', 'issueDuplicatesSummary', 'issueDuplicatesStatus',
+    'issueRemoveDuplicates', 'issueKeepDuplicates', 'issueCombineQuantities', 'issueMergeError'].forEach(id => { issueChecks[id] = document.getElementById(id); });
+  const transferChecks = {};
+  ['transferDuplicatesPanel', 'transferDuplicatesSummary', 'transferDuplicatesStatus', 'transferRemoveDuplicates',
+    'transferKeepDuplicates', 'transferCombineDuplicates', 'transferFromWarehouse', 'transferToWarehouse',
+    'transferRouteReview', 'transferToUpload'].forEach(id => { transferChecks[id] = document.getElementById(id); });
   const pharmacyReview = {
     panel: document.getElementById('pharmacyWarehouseReview'),
     reference: document.getElementById('pharmacyReviewReference'),
@@ -2117,6 +2586,7 @@
   const step3 = document.getElementById('step3');
   const issueSettings = document.getElementById('issueSettings');
   const transferSettings = document.getElementById('transferSettings');
+  const transferSetup = document.getElementById('transferSetup');
   const expireSettings = document.getElementById('expireSettings');
   const expireSetup = document.getElementById('expireSetup');
   const expireWarehouseInput = document.getElementById('expireWarehouse');
@@ -2195,12 +2665,12 @@
   const MODE_TEXT = {
     issue: {
       sub: "Upload your warehouse pick list, confirm the details, and download a file ready to upload into SAP.",
-      hint: "Upload it exactly as you get it from the doctors — any column headings work. We match pharmacy/area codes (like P164 or D069), material numbers, quantities, and warehouse codes (1100 or 2100) by their shape, so nothing needs cleaning up first.",
+      hint: "Upload Pharmacy, Material, Quantity, and WH columns. Column names are detected automatically. Materials need 6 digits (100000–999999), quantities must be positive whole numbers, pharmacies must be P001–P999 or D001–D999, and WH must be 1100 or 2100. Correct any errors, then choose whether to keep rows, remove exact duplicates, or combine quantities for matching pharmacy, material, and warehouse codes.",
       generate: "Generate issue file",
     },
     transfer: {
-      sub: "Upload a material + quantity list, pick the direction and category, and download a file ready to upload into SAP.",
-      hint: "Upload your material + quantity list — any column headings work, we match a 6-digit material number and a quantity by their shape.",
+      sub: "Choose the supplying and receiving warehouses first, then upload materials and quantities and download your SAP transfer file.",
+      hint: "Upload your material + quantity list — column names are detected automatically. Repeated materials give you a choice: keep every row, remove exact duplicates, or combine quantities into one line per material.",
       generate: "Generate transfer file",
     },
     expire: {
@@ -2212,28 +2682,37 @@
 
   function applyModeUI() {
     const stockMode = state.mode === 'stock';
+    const overstockMode = state.mode === 'overstock';
     const expireMode = state.mode === 'expire';
-    document.getElementById('orderTool').hidden = stockMode || directory.open;
+    document.getElementById('orderTool').hidden = stockMode || overstockMode || directory.open;
+    document.getElementById('overstockTool').hidden = !overstockMode || directory.open;
     document.getElementById('stockCheckTool').hidden = !stockMode || directory.open;
     directoryUI.pharmacyDirectoryTool.hidden = !directory.open;
     document.querySelector('.main-inner').classList.toggle('stock-check-view', stockMode && !directory.open);
+    document.querySelector('.main-inner').classList.toggle('overstock-view', overstockMode && !directory.open);
     document.querySelector('.main-inner').classList.toggle('pharmacy-directory-view', directory.open);
     modeBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-mode') === (directory.open ? 'pharmacy' : state.mode)));
-    document.getElementById('topbarWorkflow').textContent = stockMode ? 'Stock Check' : state.mode === 'expire' ? 'Store Expire' : state.mode === 'issue' ? 'Pharmacy Issue' : 'Warehouse Transfer';
+    document.getElementById('topbarWorkflow').textContent = overstockMode ? 'Overstock Issue' : stockMode ? 'Stock Check' : state.mode === 'expire' ? 'Store Expire' : state.mode === 'issue' ? 'Pharmacy Issue' : 'Warehouse Transfer';
     if (directory.open) {
       directoryUI.directoryBack.textContent = 'Back to ' + document.getElementById('topbarWorkflow').textContent;
       document.getElementById('topbarWorkflow').textContent = 'Pharmacy Search';
       renderDirectory();
       return;
     }
+    if (overstockMode) return;
     expireSetup.hidden = !expireMode;
+    transferSetup.hidden = state.mode !== 'transfer';
     expireSettings.hidden = !expireMode || !state.expireWarehouse;
     step2.hidden = expireMode;
     generateBtn.hidden = expireMode;
-    document.querySelector('#step1 .step-marker span').textContent = expireMode ? '2' : '1';
+    const transferMode = state.mode === 'transfer';
+    document.querySelector('#step1 .step-marker span').textContent = expireMode || transferMode ? '2' : '1';
+    document.querySelector('#step2 .step-marker span').textContent = transferMode ? '3' : '2';
+    document.querySelector('#step3 .step-marker span').textContent = transferMode ? '4' : '3';
     document.querySelector('#step3 h2').textContent = expireMode ? 'Download your file' : 'Generate & download';
     resetBtn.textContent = expireMode ? 'Upload next file' : 'Start over with a new file';
     refreshExpireWarehouse();
+    refreshTransferRoute();
     if (stockMode) return;
     const t = MODE_TEXT[state.mode];
     heroSub.textContent = t.sub;
@@ -2263,7 +2742,7 @@
       state.mode = mode;
       resetTool(false);
       applyModeUI();
-      scrollToSection(document.getElementById(mode === 'stock' ? 'stockStep1' : mode === 'expire' && !state.expireWarehouse ? 'expireSetup' : 'step1'));
+      scrollToSection(document.getElementById(mode === 'overstock' ? 'overstockUploadSection' : mode === 'stock' ? 'stockStep1' : mode === 'transfer' ? 'transferSetup' : mode === 'expire' && !state.expireWarehouse ? 'expireSetup' : 'step1'));
     });
   });
 
@@ -2274,17 +2753,35 @@
     matchedCols.hidden = true;
     dedupNote.hidden = true;
     invalidNote.hidden = true;
+    issueChecks.issueValidationPanel.hidden = true;
+    issueChecks.issueDuplicatesPanel.hidden = true;
+    issueChecks.issueMergeError.hidden = true;
+    transferChecks.transferDuplicatesPanel.hidden = true;
     pharmacyReview.panel.hidden = true;
   }
 
   function resetPharmacyReview() {
     state.issueSourceRows = null;
+    state.issueAllRows = null;
+    state.issueDuplicateChoice = null;
+    state.issueDuplicates = 0;
+    state.issueRepeatedGroups = 0;
+    state.issueValidationIssues = [];
+    state.issueValidationLimit = 50;
     state.issueWarehouseOverrides.clear();
     state.issueReviewLimit = 40;
     pharmacyReview.search.value = '';
     pharmacyReview.filter.value = 'all';
     pharmacyReview.panel.hidden = true;
     pharmacyReview.notice.hidden = true;
+  }
+
+  function resetTransferReview() {
+    state.transferAllRows = null;
+    state.transferDuplicateChoice = null;
+    state.transferDuplicates = 0;
+    state.transferRepeatedMaterials = 0;
+    transferChecks.transferDuplicatesPanel.hidden = true;
   }
 
   function resetTool(scroll) {
@@ -2295,6 +2792,7 @@
     state.uniqueRows = null;
     state.finalRows = null;
     resetPharmacyReview();
+    resetTransferReview();
     state.fileName = '';
     state._unrecognizedCategoryCount = 0;
     state.expireSourceWarehouse = null;
@@ -2315,10 +2813,163 @@
     if (state.mode === 'expire') refreshExpireDetails();
     if (scroll !== false) {
       const chooseWarehouse = state.mode === 'expire' && !state.expireWarehouse;
-      scrollToSection(chooseWarehouse ? expireSetup : document.getElementById('step1'));
-      (chooseWarehouse ? expireWarehouseInput : dropzone).focus({ preventScroll: true });
+      scrollToSection(state.mode === 'transfer' ? transferSetup : chooseWarehouse ? expireSetup : document.getElementById('step1'));
+      (state.mode === 'transfer' ? directionInput : chooseWarehouse ? expireWarehouseInput : dropzone).focus({ preventScroll: true });
     }
   }
+
+  function renderIssueValidation(parsed) {
+    if (parsed) { state.issueValidationIssues = parsed.issues; state.issueValidationLimit = 50; }
+    const issues = state.issueValidationIssues, invalid = issues.length > 0;
+    issueChecks.issueValidationPanel.hidden = false;
+    issueChecks.issueValidationPanel.classList.toggle('has-errors', invalid);
+    issueChecks.issueValidationTitle.textContent = invalid ? 'Your file needs correction' : 'File checks passed';
+    issueChecks.issueValidationTableWrap.hidden = !invalid;
+    issueChecks.issueValidationCount.hidden = !invalid;
+    if (parsed && !parsed.rows.length && !invalid) {
+      issueChecks.issueValidationPanel.classList.add('has-errors');
+      issueChecks.issueValidationTitle.textContent = 'No order rows found';
+      issueChecks.issueValidationSummary.textContent = 'Add order rows beneath Pharmacy, Material, Quantity, and WH headings, then upload again.';
+      issueChecks.issueValidationMore.hidden = true;
+      return;
+    }
+    if (!invalid) {
+      issueChecks.issueValidationSummary.textContent = parsed.rows.length.toLocaleString() + ' order row(s) checked: 6-digit materials, positive whole quantities, valid pharmacy codes, and warehouses 1100 / 2100.';
+      issueChecks.issueValidationMore.hidden = true;
+      return;
+    }
+    issueChecks.issueValidationSummary.textContent = issues.length.toLocaleString() + ' issue(s) found. Correct the listed rows or headings in Excel and upload again. Generating and downloading are blocked until all checks pass.';
+    const shown = issues.slice(0, state.issueValidationLimit);
+    const headers = ['Sheet', 'Excel row', 'Pharmacy', 'Material', 'Quantity', 'WH', 'What to correct'];
+    issueChecks.issueValidationTable.innerHTML = '<thead><tr>' + headers.map(header => '<th scope="col">' + header + '</th>').join('') + '</tr></thead><tbody>' + shown.map(issue => {
+      const values = [issue.sheet, issue.row, issueValueText(issue.plant) || '—', issueValueText(issue.material) || '—', issueValueText(issue.order) || '—', issueValueText(issue.wh) || '—', issue.reasons.join(' ')];
+      return '<tr>' + values.map((value, index) => '<td data-label="' + headers[index] + '">' + escapeHtml(value) + '</td>').join('') + '</tr>';
+    }).join('') + '</tbody>';
+    issueChecks.issueValidationCount.textContent = 'Showing ' + shown.length.toLocaleString() + ' of ' + issues.length.toLocaleString() + ' issues. Excel row numbers include the heading row.';
+    issueChecks.issueValidationMore.hidden = shown.length >= issues.length;
+  }
+  issueChecks.issueValidationMore.addEventListener('click', function () {
+    state.issueValidationLimit += 50; renderIssueValidation();
+  });
+
+  function rebuildIssueRows(choice = state.issueDuplicateChoice) {
+    if (!state.issueAllRows) return;
+    const withWarehouse = row => Object.assign({}, row, {
+      wh: state.issueWarehouseOverrides.has(row.plant) ? state.issueWarehouseOverrides.get(row.plant) : row.wh,
+    });
+    const allWithWarehouses = state.issueAllRows.map(withWarehouse);
+    const grouping = issueMaterialGroups(allWithWarehouses, choice === 'combine');
+    // Exact duplicate removal compares original uploads. Quantity merging uses
+    // the selected warehouses and always starts from every uploaded quantity.
+    const base = choice === 'remove' ? dedupeRowsExact(state.issueAllRows).unique : state.issueAllRows.slice();
+    const outputRows = choice === 'combine' ? grouping.rows : choice === 'remove' ? base.map(withWarehouse) : allWithWarehouses;
+    const sorted = sortRowsForIssue(outputRows);
+    state.issueDuplicateChoice = choice;
+    state.issueRepeatedGroups = grouping.repeatedGroups;
+    state.issueSourceRows = sortRowsForIssue(base);
+    state.uniqueRows = sorted;
+    issueChecks.issueMergeError.hidden = true;
+    const whs = Array.from(new Set(state.uniqueRows.map(row => row.wh))).sort((a, b) => a - b);
+    statRows.textContent = state.uniqueRows.length.toLocaleString();
+    statCol2.textContent = new Set(state.uniqueRows.map(row => row.plant)).size.toLocaleString();
+    statCol3.textContent = whs.length;
+    statRow.hidden = false; whList.hidden = false;
+    whList.innerHTML = 'Warehouses for export: <b>' + whs.join(', ') + '</b>';
+    const pending = (state.issueDuplicates > 0 || state.issueRepeatedGroups > 0) && !choice;
+    continueBtn.disabled = generateBtn.disabled = pending;
+    downloadBtn.disabled = pending || !state.finalRows;
+    issueChecks.issueRemoveDuplicates.disabled = !state.issueDuplicates;
+    issueChecks.issueCombineQuantities.disabled = !state.issueRepeatedGroups;
+    issueChecks.issueRemoveDuplicates.setAttribute('aria-pressed', String(choice === 'remove'));
+    issueChecks.issueKeepDuplicates.setAttribute('aria-pressed', String(choice === 'keep'));
+    issueChecks.issueCombineQuantities.setAttribute('aria-pressed', String(choice === 'combine'));
+    issueChecks.issueDuplicatesPanel.hidden = !state.issueDuplicates && !state.issueRepeatedGroups;
+    issueChecks.issueDuplicatesSummary.textContent = state.issueRepeatedGroups.toLocaleString() + ' pharmacy / material / warehouse group(s) can be combined from ' + state.issueAllRows.length.toLocaleString() + ' uploaded lines. ' + state.issueDuplicates.toLocaleString() + ' extra exact duplicate row(s) found in the upload.';
+    issueChecks.issueDuplicatesStatus.textContent = pending ? 'Choose an option before generating your file.'
+      : choice === 'combine' ? 'Combined into ' + state.uniqueRows.length.toLocaleString() + ' lines. Every uploaded quantity is included, including exact duplicates. You can change this choice.'
+      : choice === 'remove' ? 'Exact duplicates removed. ' + state.uniqueRows.length.toLocaleString() + ' lines will be exported. You can change this choice.'
+      : 'All ' + state.uniqueRows.length.toLocaleString() + ' uploaded lines will be kept, including duplicates. You can change this choice.';
+    renderPharmacyWarehouseReview();
+  }
+
+  async function chooseIssueDuplicates(choice) {
+    if (state.mode !== 'issue' || !state.issueAllRows || state.fileReadController || taskRunning) return;
+    if (!['remove', 'keep', 'combine'].includes(choice) || (choice === 'remove' && !state.issueDuplicates) || (choice === 'combine' && !state.issueRepeatedGroups)) return;
+    const hadResult = Boolean(state.finalRows);
+    let failed = false;
+    const buttons = { remove: issueChecks.issueRemoveDuplicates, keep: issueChecks.issueKeepDuplicates, combine: issueChecks.issueCombineQuantities };
+    const messages = { remove: 'Removing exact duplicates…', keep: 'Keeping all uploaded rows…', combine: 'Combining pharmacy material quantities…' };
+    await runWithLoading(messages[choice], function () {
+      try {
+        rebuildIssueRows(choice);
+        downloadStatus.hidden = true;
+        if (hadResult) prepareOutput(); else scrollToSection(step2);
+      } catch (error) {
+        failed = true;
+        issueChecks.issueMergeError.textContent = error.message;
+        issueChecks.issueMergeError.hidden = false;
+        scrollToSection(issueChecks.issueMergeError);
+      }
+    }, () => hadResult || failed ? buttons[choice] : pharmacyReview.search);
+  }
+  issueChecks.issueRemoveDuplicates.addEventListener('click', () => chooseIssueDuplicates('remove'));
+  issueChecks.issueKeepDuplicates.addEventListener('click', () => chooseIssueDuplicates('keep'));
+  issueChecks.issueCombineQuantities.addEventListener('click', () => chooseIssueDuplicates('combine'));
+
+  function refreshTransferRoute() {
+    const from = directionInput.value === 'ryd2jed' ? 2100 : 1100;
+    const to = from === 1100 ? 2100 : 1100;
+    transferChecks.transferFromWarehouse.textContent = WAREHOUSE_LABEL[from] + ' · ' + from;
+    transferChecks.transferToWarehouse.textContent = WAREHOUSE_LABEL[to] + ' · ' + to;
+    transferChecks.transferRouteReview.textContent = 'From ' + WAREHOUSE_LABEL[from] + ' (' + from + ') → To ' + WAREHOUSE_LABEL[to] + ' (' + to + ')';
+  }
+  directionInput.addEventListener('change', refreshTransferRoute);
+  transferChecks.transferToUpload.addEventListener('click', function () {
+    scrollToSection(document.getElementById('step1')); dropzone.focus({ preventScroll: true });
+  });
+
+  function rebuildTransferRows() {
+    if (!state.transferAllRows) return;
+    const choice = state.transferDuplicateChoice;
+    const rows = choice === 'combine' ? mergeDuplicateMaterials(state.transferAllRows).merged
+      : choice === 'remove' ? transferDuplicateSummary(state.transferAllRows).unique : state.transferAllRows.slice();
+    state.uniqueRows = sortRowsForTransfer(rows);
+    const categories = categorizeRows(state.uniqueRows).categoryCounts;
+    statRows.textContent = state.uniqueRows.length.toLocaleString();
+    statCol2.textContent = Object.keys(categories).length;
+    statRow.hidden = false; whList.hidden = !state.uniqueRows.length;
+    whList.textContent = 'Categories found — ' + Object.keys(categories).map(category => CATEGORY_LABEL[category] + ': ' + categories[category]).join(' · ');
+    const pending = state.transferRepeatedMaterials > 0 && !choice;
+    continueBtn.disabled = generateBtn.disabled = pending;
+    downloadBtn.disabled = pending || !state.finalRows;
+    transferChecks.transferDuplicatesPanel.hidden = !state.transferRepeatedMaterials;
+    transferChecks.transferDuplicatesSummary.textContent = state.transferRepeatedMaterials.toLocaleString() + ' material number(s) appear more than once. ' + state.transferDuplicates.toLocaleString() + ' extra exact duplicate row(s) found across the uploaded sheets.';
+    transferChecks.transferRemoveDuplicates.disabled = !state.transferDuplicates;
+    transferChecks.transferRemoveDuplicates.setAttribute('aria-pressed', String(choice === 'remove'));
+    transferChecks.transferKeepDuplicates.setAttribute('aria-pressed', String(choice === 'keep'));
+    transferChecks.transferCombineDuplicates.setAttribute('aria-pressed', String(choice === 'combine'));
+    const count = state.uniqueRows.length.toLocaleString();
+    transferChecks.transferDuplicatesStatus.textContent = pending ? 'Choose an option before generating your file.'
+      : choice === 'remove' ? 'Removed ' + state.transferDuplicates.toLocaleString() + ' identical repeat(s). ' + count + ' lines will be exported; different quantities are kept.'
+      : choice === 'combine' ? 'Every uploaded quantity is included in the total. ' + count + ' material line(s) will be exported.'
+      : 'All ' + count + ' uploaded lines will be kept, including duplicates.';
+  }
+
+  async function chooseTransferDuplicates(choice) {
+    if (state.mode !== 'transfer' || !state.transferAllRows || state.fileReadController || taskRunning ||
+        (choice === 'remove' && !state.transferDuplicates)) return;
+    const hadResult = Boolean(state.finalRows);
+    const buttons = { remove: transferChecks.transferRemoveDuplicates, keep: transferChecks.transferKeepDuplicates, combine: transferChecks.transferCombineDuplicates };
+    const messages = { remove: 'Removing exact transfer duplicates…', keep: 'Keeping all transfer rows…', combine: 'Combining material quantities…' };
+    await runWithLoading(messages[choice], function () {
+      state.transferDuplicateChoice = choice; rebuildTransferRows();
+      downloadStatus.hidden = true;
+      if (hadResult) prepareOutput(); else scrollToSection(step2);
+    }, () => hadResult ? buttons[choice] : transferDateInput);
+  }
+  transferChecks.transferRemoveDuplicates.addEventListener('click', () => chooseTransferDuplicates('remove'));
+  transferChecks.transferKeepDuplicates.addEventListener('click', () => chooseTransferDuplicates('keep'));
+  transferChecks.transferCombineDuplicates.addEventListener('click', () => chooseTransferDuplicates('combine'));
 
   async function handleFile(file) {
     if (state.mode === 'expire' && !state.expireWarehouse) {
@@ -2335,6 +2986,7 @@
     state.uniqueRows = null;
     state.finalRows = null;
     resetPharmacyReview();
+    resetTransferReview();
     state.fileName = file.name;
     state.expireSourceWarehouse = null;
     expireValidation.hidden = true;
@@ -2353,14 +3005,26 @@
     const requiredFields = state.mode === 'issue' ? ['plant', 'material', 'order', 'wh'] : ['material', 'order'];
 
     try {
-      const workbook = await readUploadWorkbook(file,state.mode === 'expire' ? {type:'array',cellNF:true,raw:true} : {type:'array'},message => {
+      const workbook = await readUploadWorkbook(file,state.mode === 'expire' ? {type:'array',cellNF:true,raw:true} : state.mode === 'issue' ? {type:'array',raw:true} : {type:'array'},message => {
         if (uploadToken === state.fileReadToken) setUploadLoading(fileLoading,dropzone,message);
       },controller.signal);
       if (uploadToken !== state.fileReadToken) return;
       setUploadLoading(fileLoading,dropzone,'Checking columns and quantities…');
       await paintUploadState();
       if (uploadToken !== state.fileReadToken) return;
-      const parsed = state.mode === 'expire' ? parseExpireWorkbook(workbook) : parseWorkbook(workbook, requiredFields);
+      const parsed = state.mode === 'expire' ? parseExpireWorkbook(workbook) : state.mode === 'issue'
+        ? await parseIssueWorkbook(workbook, controller.signal, message => {
+          if (uploadToken === state.fileReadToken) setUploadLoading(fileLoading, dropzone, message);
+        }) : parseWorkbook(workbook, requiredFields);
+      if (uploadToken !== state.fileReadToken) return;
+      if (state.mode === 'issue') {
+        renderIssueValidation(parsed);
+        if (parsed.invalidRowCount) {
+          scrollToSection(issueChecks.issueValidationPanel);
+          if (!directory.open) issueChecks.issueValidationTableWrap.focus({ preventScroll: true });
+          return;
+        }
+      }
       if (state.mode === 'expire' && parsed.invalidRowCount) {
         parseError.hidden = false;
         parseError.textContent = 'Fix ' + parsed.invalidRowCount + ' invalid row(s) before generating an expiry file. ' + parsed.errors.join(' ') + (parsed.invalidRowCount > parsed.errors.length ? ' Additional invalid rows were also found.' : '');
@@ -2397,27 +3061,11 @@
       }
 
       if (state.mode === 'issue') {
-        const { unique, duplicates } = dedupeRowsExact(parsed.rows);
-        const sortedUnique = sortRowsForIssue(unique);
-        state.uniqueRows = sortedUnique;
-        state.issueSourceRows = sortedUnique;
-
-        const plants = new Set(sortedUnique.map(r => r.plant));
-        const whs = Array.from(new Set(sortedUnique.map(r => r.wh))).sort((a, b) => a - b);
-
-        statRows.textContent = unique.length;
-        statCol2.textContent = plants.size;
-        statCol3.textContent = whs.length;
-        statRow.hidden = false;
-
-        whList.hidden = false;
-        whList.innerHTML = 'Warehouses found: <b>' + whs.join(', ') + '</b>';
-
-        if (duplicates > 0) {
-          dedupNote.hidden = false;
-          dedupNote.textContent = 'Found ' + duplicates + ' repeated line' + (duplicates === 1 ? '' : 's') + ' across your sheets (same pharmacy, material, quantity and warehouse) — counted once.';
-        }
-        renderPharmacyWarehouseReview();
+        state.issueAllRows = parsed.rows;
+        state.issueDuplicates = dedupeRowsExact(parsed.rows).duplicates;
+        state.issueRepeatedGroups = issueMaterialGroups(parsed.rows, false).repeatedGroups;
+        state.issueDuplicateChoice = state.issueDuplicates || state.issueRepeatedGroups ? null : 'keep';
+        rebuildIssueRows();
       } else if (state.mode === 'expire') {
         state.uniqueRows = parsed.rows;
         state.expireSourceWarehouse = parsed.sourceWarehouse;
@@ -2431,27 +3079,13 @@
         dedupNote.textContent = 'Every material line stays in its original position. Repeated materials, repeated lines, and their quantities are kept exactly as uploaded.' + (parsed.skippedSheets.length ? ' Sheets without Material and Quantity headings were not included: ' + parsed.skippedSheets.join(', ') + '.' : '');
         matchedCols.textContent += parsed.detectedColumns.batch ? ' · Batch: ' + parsed.detectedColumns.batch : ' · No batch column found';
       } else {
-        const { merged, duplicates } = mergeDuplicateMaterials(parsed.rows);
-        const sorted = sortRowsForTransfer(merged);
-        const { valid, unrecognized, categoryCounts } = categorizeRows(sorted);
-        state.uniqueRows = valid;
-
-        statRows.textContent = valid.length;
-        statCol2.textContent = Object.keys(categoryCounts).length;
-        statRow.hidden = false;
-
-        const catKeys = Object.keys(categoryCounts);
-        if (catKeys.length) {
-          whList.hidden = false;
-          whList.innerHTML = 'Categories found — <b>' + catKeys.map(c => CATEGORY_LABEL[c] + ': ' + categoryCounts[c]).join(' · ') + '</b>';
-        } else {
-          whList.hidden = true;
-        }
-
-        if (duplicates > 0) {
-          dedupNote.hidden = false;
-          dedupNote.textContent = 'Found ' + duplicates + ' material' + (duplicates === 1 ? '' : 's') + ' listed more than once — combined into a single line with the total quantity.';
-        }
+        const { valid, unrecognized } = categorizeRows(parsed.rows);
+        const summary = transferDuplicateSummary(valid);
+        state.transferAllRows = valid;
+        state.transferDuplicates = summary.duplicates;
+        state.transferRepeatedMaterials = summary.repeatedMaterials;
+        state.transferDuplicateChoice = summary.repeatedMaterials ? null : 'keep';
+        rebuildTransferRows();
         state._unrecognizedCategoryCount = unrecognized;
       }
 
@@ -2479,8 +3113,10 @@
       step3.classList.remove('locked');
       step2.inert = false;
       step3.inert = false;
-      continueBtn.disabled = false;
-      generateBtn.disabled = false;
+      const duplicateChoicePending = (state.mode === 'issue' && (state.issueDuplicates > 0 || state.issueRepeatedGroups > 0) && !state.issueDuplicateChoice) ||
+        (state.mode === 'transfer' && state.transferRepeatedMaterials > 0 && !state.transferDuplicateChoice);
+      continueBtn.disabled = duplicateChoicePending;
+      generateBtn.disabled = duplicateChoicePending;
       resultBlock.hidden = true;
       if (state.mode === 'expire') {
         refreshExpireDetails();
@@ -2492,9 +3128,12 @@
           scrollToSection(expireValidation);
           if (!directory.open) expireIncludeBatchInput.focus({ preventScroll: true });
         }
+      } else if (duplicateChoicePending) {
+        scrollToSection(state.mode === 'transfer' ? transferChecks.transferDuplicatesPanel : issueChecks.issueDuplicatesPanel);
+        if (!directory.open) (state.mode === 'transfer' ? state.transferDuplicates ? transferChecks.transferRemoveDuplicates : transferChecks.transferKeepDuplicates : state.issueRepeatedGroups ? issueChecks.issueCombineQuantities : issueChecks.issueRemoveDuplicates).focus({ preventScroll: true });
       } else {
         scrollToSection(step2);
-        if (!directory.open) (state.mode === 'issue' ? pharmacyReview.search : directionInput).focus({ preventScroll: true });
+        if (!directory.open) (state.mode === 'issue' ? pharmacyReview.search : transferDateInput).focus({ preventScroll: true });
       }
     } catch (error) {
       if (uploadToken !== state.fileReadToken || error.name === 'AbortError') return;
@@ -2860,9 +3499,10 @@
     }
   }
 
-  directoryUI.directorySave.addEventListener('click', function () {
+  directoryUI.directorySave.addEventListener('click', async function () {
     if (!directory.pending || directory.controller) return;
     const pending = directory.pending;
+    await runWithLoading('Saving your pharmacy list…', function () {
     try {
       const rows = normalizedDirectoryRows(pending.rows);
       const saved = { version: 1, fileName: pending.fileName, savedAt: new Date().toISOString(), rows };
@@ -2877,6 +3517,7 @@
       directoryUI.directoryError.textContent = 'This browser could not save the pharmacy list. The previous list stays active. Use a normal browser window with website storage enabled, then try saving again.';
       directoryUI.directoryError.hidden = false;
     }
+    }, () => directoryUI.directorySearch);
   });
   directoryUI.directoryCancel.addEventListener('click', cancelDirectoryUpload);
   directoryUI.directoryFileInput.addEventListener('change', function () { if (this.files[0]) uploadDirectory(this.files[0]); });
@@ -2951,6 +3592,7 @@
   function changePharmacyWarehouses(plants, undo) {
     if (state.mode !== 'issue' || !state.issueSourceRows || state.fileReadController) return false;
     const eligible = new Map(pharmacyWarehouseReviews().map(row => [row.plant, row]));
+    const previousOverrides = new Map(state.issueWarehouseOverrides);
     let changed = 0;
     plants.forEach(plant => {
       const pharmacy = eligible.get(plant);
@@ -2963,39 +3605,38 @@
       }
     });
     if (!changed) return false;
-    // Original duplicate removal is retained. Applying a warehouse must not
-    // remove lines that become identical only because their warehouse changed.
-    state.uniqueRows = sortRowsForIssue(state.issueSourceRows.map(row => Object.assign({}, row, {
-      wh: state.issueWarehouseOverrides.has(row.plant) ? state.issueWarehouseOverrides.get(row.plant) : row.wh,
-    })));
-    const warehouses = Array.from(new Set(state.uniqueRows.map(row => row.wh))).sort((a, b) => a - b);
-    statCol3.textContent = warehouses.length;
-    whList.innerHTML = 'Warehouses for export: <b>' + warehouses.join(', ') + '</b>';
-    renderPharmacyWarehouseReview();
+    // Original rows remain available for Undo. A chosen quantity merge is
+    // recalculated using the selected warehouses, without losing quantities.
+    try { rebuildIssueRows(); }
+    catch (error) {
+      state.issueWarehouseOverrides = previousOverrides;
+      issueChecks.issueMergeError.textContent = error.message;
+      issueChecks.issueMergeError.hidden = false;
+      scrollToSection(issueChecks.issueMergeError);
+      return false;
+    }
     pharmacyReview.notice.textContent = undo
       ? 'Restored uploaded warehouses for ' + changed + ' ' + (changed === 1 ? 'pharmacy.' : 'pharmacies.')
-      : 'Applied warehouse suggestions to ' + changed + ' ' + (changed === 1 ? 'pharmacy.' : 'pharmacies.') + ' Material lines and quantities are kept.';
+      : 'Applied warehouse suggestions to ' + changed + ' ' + (changed === 1 ? 'pharmacy.' : 'pharmacies.') + (state.issueDuplicateChoice === 'combine' ? ' Combined totals now follow the selected warehouses.' : ' Material lines and quantities are kept.');
     pharmacyReview.notice.hidden = false;
     if (state.finalRows) prepareOutput();
     downloadStatus.hidden = true;
     return true;
   }
 
-  pharmacyReview.table.addEventListener('click', function (event) {
+  pharmacyReview.table.addEventListener('click', async function (event) {
     const button = event.target.closest('button[data-pharmacy-action]');
     if (!button || !pharmacyReview.table.contains(button)) return;
     const plant = button.getAttribute('data-pharmacy');
-    if (changePharmacyWarehouses([plant], button.getAttribute('data-pharmacy-action') === 'undo')) {
-      const nextButton = pharmacyReview.table.querySelector('button[data-pharmacy="' + plant + '"]');
-      (nextButton || pharmacyReview.filter).focus({ preventScroll: true });
-    }
+    await runWithLoading('Updating pharmacy warehouse…', () => changePharmacyWarehouses([plant], button.getAttribute('data-pharmacy-action') === 'undo'),
+      () => pharmacyReview.table.querySelector('button[data-pharmacy="' + plant + '"]') || pharmacyReview.filter);
   });
-  pharmacyReview.applyAll.addEventListener('click', function () {
+  pharmacyReview.applyAll.addEventListener('click', async function () {
     const plants = pharmacyWarehouseReviews().filter(row => row.status === 'mismatch').map(row => row.plant);
-    if (changePharmacyWarehouses(plants, false)) pharmacyReview.undoAll.focus({ preventScroll: true });
+    await runWithLoading('Applying warehouse suggestions…', () => changePharmacyWarehouses(plants, false), () => pharmacyReview.undoAll);
   });
-  pharmacyReview.undoAll.addEventListener('click', function () {
-    if (changePharmacyWarehouses(Array.from(state.issueWarehouseOverrides.keys()), true)) pharmacyReview.search.focus({ preventScroll: true });
+  pharmacyReview.undoAll.addEventListener('click', async function () {
+    await runWithLoading('Restoring uploaded warehouses…', () => changePharmacyWarehouses(Array.from(state.issueWarehouseOverrides.keys()), true), () => pharmacyReview.search);
   });
   pharmacyReview.search.addEventListener('input', function () { state.issueReviewLimit = 40; renderPharmacyWarehouseReview(); });
   pharmacyReview.filter.addEventListener('change', function () { state.issueReviewLimit = 40; renderPharmacyWarehouseReview(); });
@@ -3014,7 +3655,11 @@
     previewNote.textContent = rows.length > shown.length
       ? 'Showing ' + shown.length + ' of ' + rows.length + ' lines — every line is included in the download.'
       : rows.length + ' line' + (rows.length === 1 ? '' : 's') + ', ready to download.';
-    ruleNote.textContent = "Duplicate lines are removed, then everything is sorted by warehouse, then pharmacy/area, then material — same as the manual process. Material numbers starting with 1 are treated as medicine (INM), everything else as general stock (INC), and each pharmacy + group combination becomes one document with lines numbered 10, 20, 30…";
+    ruleNote.textContent = (state.issueDuplicateChoice === 'combine'
+      ? 'All ' + state.issueAllRows.length + ' uploaded quantities are combined into ' + rows.length + ' lines by pharmacy, material, and selected warehouse. Exact duplicate quantities are included. '
+      : state.issueDuplicates ? state.issueDuplicateChoice === 'remove'
+      ? state.issueDuplicates + ' exact duplicate row(s) removed by your choice. ' : 'All duplicate rows kept by your choice. '
+      : 'No exact duplicate rows found. ') + "Everything is sorted by warehouse, then pharmacy/area, then material. Material numbers starting with 1 are treated as medicine (INM), everything else as general stock (INC), and each pharmacy + group combination becomes one document with lines numbered 10, 20, 30…";
     if (state.issueWarehouseOverrides.size) ruleNote.textContent += ' Warehouse suggestions applied to ' + state.issueWarehouseOverrides.size + ' pharmacies.';
   }
 
@@ -3035,6 +3680,10 @@
     ruleNote.textContent = WAREHOUSE_LABEL[settings.direction === 'jed2ryd' ? 1100 : 2100] + ' → ' +
       WAREHOUSE_LABEL[settings.direction === 'jed2ryd' ? 2100 : 1100] +
       ". Each material's category comes from its leading digit — 1 is Medicine (INM), 2 Cosmetics, 3 Milk, 4 Diaper (all INC) — sorted by material, with every category becoming its own document and lines numbered 10, 20, 30…";
+    if (state.transferRepeatedMaterials) ruleNote.textContent += state.transferDuplicateChoice === 'remove'
+      ? ' ' + state.transferDuplicates + ' exact duplicate row(s) removed by your choice; different quantities are kept.'
+      : state.transferDuplicateChoice === 'combine' ? ' All uploaded quantities were combined into one line per material by your choice.'
+      : ' All repeated rows are kept by your choice.';
   }
 
   function renderExpirePreview(rows, settings) {
@@ -3052,6 +3701,8 @@
 
   function prepareOutput() {
     if (!state.uniqueRows || !state.uniqueRows.length) return false;
+    if (state.mode === 'issue' && (state.issueValidationIssues.length || ((state.issueDuplicates > 0 || state.issueRepeatedGroups > 0) && !state.issueDuplicateChoice))) return false;
+    if (state.mode === 'transfer' && state.transferRepeatedMaterials > 0 && !state.transferDuplicateChoice) return false;
     if (state.mode === 'issue') {
       const settings = currentIssueSettings();
       state.finalRows = buildIssueRows(state.uniqueRows, settings);
@@ -3091,29 +3742,261 @@
     input.addEventListener('change', refreshResult);
   });
 
-  generateBtn.addEventListener('click', function () {
-    if (!prepareOutput()) return;
-    downloadStatus.hidden = true;
-    resultBlock.hidden = false;
-    scrollToSection(resultBlock);
-    downloadBtn.focus({ preventScroll: true });
+  generateBtn.addEventListener('click', async function () {
+    if (generateBtn.disabled || state.fileReadController) return;
+    await runWithLoading('Generating your SAP file…', function () {
+      if (!prepareOutput()) return;
+      downloadStatus.hidden = true;
+      resultBlock.hidden = false;
+      scrollToSection(resultBlock);
+    }, () => downloadBtn);
   });
 
-  downloadBtn.addEventListener('click', function () {
-    if (!state.finalRows) return;
-    try {
-      if (!prepareOutput()) return;
-      const filename = outputFilename();
-      XLSX.writeFile(buildWorkbook(state.finalRows), filename);
-      downloadStatus.className = 'callout note';
-      downloadStatus.textContent = 'Download started: ' + filename;
-    } catch (error) {
-      downloadStatus.className = 'callout error';
-      downloadStatus.textContent = 'The download could not start. Please try again.';
-    }
-    downloadStatus.hidden = false;
-    scrollToSection(downloadStatus);
+  downloadBtn.addEventListener('click', async function () {
+    if (!state.finalRows || downloadBtn.disabled || state.fileReadController) return;
+    await runWithLoading('Preparing your Excel download…', async function () {
+      try {
+        if (!prepareOutput()) return;
+        const filename = outputFilename();
+        await downloadWorkbook(buildWorkbook(state.finalRows), filename);
+        downloadStatus.className = 'callout note';
+        downloadStatus.textContent = 'Download started: ' + filename;
+      } catch (error) {
+        downloadStatus.className = 'callout error';
+        downloadStatus.textContent = 'The download could not start. Please try again.';
+      }
+      downloadStatus.hidden = false;
+      scrollToSection(downloadStatus);
+    });
   });
+
+  // Overstock uses its own source data and keeps each accepted Excel line.
+  (function initOverstock() {
+    const ui = {};
+    ['Rules','FileInput','Dropzone','Loading','FileRow','FileName','Remove','Error',
+      'Results','ResultSummary','ReadyCount','ProblemCount','IgnoredCount','Search','View','Table',
+      'Shown','More','Download','ProblemsDownload','Next','DownloadName','DownloadStatus'].forEach(name => {
+      ui[name] = document.getElementById('overstock' + name);
+    });
+    const data = { warehouse: '', token: 0, controller: null, fileName: '', result: null, limit: 100 };
+    const columns = OVERSTOCK_COLUMNS;
+    const count = number => number.toLocaleString();
+    const quantityText = number => number.toLocaleString(undefined, { maximumFractionDigits: 8 });
+    const active = () => state.mode === 'overstock' && !directory.open;
+    function route() {
+      if (!data.warehouse) return null;
+      const destination = Number(data.warehouse), source = destination + 100;
+      return { destination, source, realStorage: source + 4, dummyStorage: source + 8 };
+    }
+    function filename(kind) {
+      const prefix = data.warehouse === '1100' ? 'JED OS' : 'RYD OS';
+      const date = todayIso().split('-').reverse().join('-');
+      return prefix + (kind === 'Batch_Problems' ? ' Batch Problems' : '') + ' ' + date + '.xlsx';
+    }
+    function resetFile() {
+      data.token++;
+      if (data.controller) data.controller.abort();
+      data.controller = null; data.warehouse = ''; data.fileName = ''; data.result = null; data.limit = 100;
+      ui.FileInput.value = ''; ui.FileRow.hidden = true; ui.Results.hidden = true; ui.Error.hidden = true;
+      ui.Search.value = ''; ui.View.value = 'ready'; ui.Table.replaceChildren();
+      ui.Download.disabled = true; ui.ProblemsDownload.disabled = true; ui.DownloadStatus.hidden = true;
+      ui.Rules.replaceChildren();
+      setUploadLoading(ui.Loading, ui.Dropzone, null);
+    }
+    function showDetectedWarehouse() {
+      const selected = route();
+      ui.Rules.innerHTML = '<p><strong>Detected ' + WAREHOUSE_LABEL[selected.destination] + ': plant ' + selected.source + ' → ' + selected.destination + '</strong></p>' +
+          '<p><strong>' + selected.realStorage + ':</strong> take real batches only. DUMMY and missing batches go to the problem report.</p>' +
+          '<p><strong>' + selected.dummyStorage + ':</strong> take DUMMY batches only. Other or missing batches go to the problem report.</p>' +
+          '<p>Accepted batches are copied into PO_BATCH. Destination storage: medicine ' + STORAGE_LOCATIONS[selected.destination].medicine + ', cosmetics ' + STORAGE_LOCATIONS[selected.destination].cosmetics + ', milk ' + STORAGE_LOCATIONS[selected.destination].milk + ', diaper ' + STORAGE_LOCATIONS[selected.destination].diaper + '.</p>';
+    }
+    function detectWarehouse(workbook) {
+      for (const name of workbook.SheetNames) {
+        if (workbook.Sheets[name]?.['!overstockInvalid']) throw new Error('Sheet “' + name + '” needs unique Material, Plant, Storage Location, Batch, and Unrestricted Quantity columns within its first 40 rows.');
+      }
+      const plants = workbook.overstockPlants || [];
+      if (plants.length > 1) throw new Error('Both Jeddah (plant 1200) and Riyadh (plant 2200) were found. Upload one warehouse at a time to create its SAP file.');
+      if (!plants.length) throw new Error('The warehouse could not be detected. The Plant column must contain 1200 for Jeddah or 2200 for Riyadh.');
+      data.warehouse = String(plants[0] - 100);
+      return route();
+    }
+    async function parse(workbook, selected, signal, onPhase) {
+      const result = { ready: [], problems: [], ignored: 0, sourceRows: 0, matchingPlant: 0 };
+      let lastYield = performance.now(), sheetsRead = 0;
+      for (const sheetName of workbook.SheetNames) {
+        if (signal.aborted) throw uploadAbort();
+        const sheet = workbook.Sheets[sheetName];
+        if (!sheet || !sheet['!ref']) continue;
+        if (sheet['!overstockInvalid']) throw new Error('Sheet “' + sheetName + '” needs unique Material, Plant, Storage Location, Batch, and Unrestricted Quantity columns within its first 40 rows.');
+        const range = XLSX.utils.decode_range(sheet['!ref']);
+        let header = null, headerRow = -1;
+        for (let row = range.s.r; row <= Math.min(range.e.r, range.s.r + 39); row++) {
+          header = overstockHeaderAt(sheet, row, Math.min(range.e.c, 511));
+          if (header) { headerRow = row; break; }
+        }
+        const addresses = Object.keys(sheet);
+        if (!header) {
+          let populated = false;
+          for (const address of addresses) {
+            if (/^[A-Z]+[1-9][0-9]*$/.test(address) && sheet[address] && sheet[address].v != null && String(sheet[address].v).trim() !== '') { populated = true; break; }
+            if (performance.now() - lastYield > 12) { await yieldFileWork(signal); lastYield = performance.now(); }
+          }
+          if (populated) throw new Error('Sheet “' + sheetName + '” needs unique Material, Plant, Storage Location, Batch, and Unrestricted Quantity columns within its first 40 rows.');
+          continue;
+        }
+        sheetsRead++;
+        const counts = sheet['!overstockCounts'];
+        if (counts) { result.sourceRows += counts.sourceRows; result.matchingPlant += counts.matchingPlant; result.ignored += counts.ignored; }
+        onPhase('Checking storage locations and batches in ' + sheetName + '…');
+        // Use actual cells, not a potentially million-row formatted sheet range.
+        const letters = {};
+        Object.keys(header).forEach(role => { if (header[role] >= 0) letters[role] = XLSX.utils.encode_col(header[role]); });
+        const requiredLetters = new Set(Object.values(letters));
+        const populatedRows = new Set();
+        for (const address of addresses) {
+          const match = /^([A-Z]+)([1-9][0-9]*)$/.exec(address);
+          if (match && requiredLetters.has(match[1]) && Number(match[2]) > headerRow + 1) {
+            const cell = sheet[address];
+            if (cell && cell.v != null && String(cell.v).trim() !== '') populatedRows.add(Number(match[2]));
+          }
+          if (performance.now() - lastYield > 12) { await yieldFileWork(signal); lastYield = performance.now(); }
+        }
+        for (const excelRow of Array.from(populatedRows).sort((a,b) => a-b)) {
+          const cell = role => letters[role] ? sheet[letters[role] + excelRow] : null;
+          const value = role => { const entry = cell(role); return entry && entry.v != null ? entry.v : ''; };
+          if (expireKey(value('material')) === 'material' && columns.plant.includes(expireKey(value('plant'))) && columns.storage.includes(expireKey(value('storage')))) continue;
+          if (!counts) result.sourceRows++;
+          const plant = String(value('plant')).trim(), storage = String(value('storage')).trim();
+          if (!counts && plant === String(selected.source)) result.matchingPlant++;
+          if (plant !== String(selected.source) || ![String(selected.realStorage), String(selected.dummyStorage)].includes(storage)) {
+            if (!counts) result.ignored++;
+          } else {
+            const rawMaterial = value('material'), rawQty = value('qty');
+            const batchValue = expireBatch(cell('batch'));
+            const materialText = String(rawMaterial).trim(), batch = batchValue.batch;
+            const category = LEADING_DIGIT_CATEGORY[materialText[0]];
+            const quantity = typeof rawQty === 'number' || typeof rawQty === 'string' && rawQty.trim() !== '' ? Number(rawQty) : NaN;
+            const problems = [];
+            if (!/^\d{6}$/.test(materialText) || !category || cell('material')?.t === 'e') problems.push('Material must be a 6-digit medicine, cosmetics, milk, or diaper code (starting 1–4).');
+            if (!Number.isFinite(quantity) || quantity <= 0 || quantity > Number.MAX_SAFE_INTEGER || cell('qty')?.t === 'e') problems.push('Quantity must be a positive number within Excel’s safe numeric range.');
+            if (batchValue.batchProblem) problems.push(batchValue.batchProblem);
+            else if (!batch) problems.push('Missing batch. ' + storage + ' requires ' + (Number(storage) === selected.realStorage ? 'a real batch.' : 'DUMMY.'));
+            else if (Number(storage) === selected.realStorage && batch.toUpperCase() === 'DUMMY') problems.push('DUMMY batch is not allowed in ' + storage + '; a real batch is required.');
+            else if (Number(storage) === selected.dummyStorage && batch.toUpperCase() !== 'DUMMY') problems.push('Only DUMMY batches are allowed in ' + storage + '; this row has a real batch.');
+            const row = { material: problems.length ? materialText : Number(materialText), description: String(value('description')).trim(),
+              plant: selected.source, storage: Number(storage), batch: batchValue.batchProblem ? String(value('batch')) : batch,
+              quantity: Number.isFinite(quantity) ? quantity : String(rawQty), category, sheet: sheetName, excelRow };
+            if (problems.length) result.problems.push({ ...row, problem: problems.join(' ') });
+            else result.ready.push(row);
+          }
+          if (performance.now() - lastYield > 12) { await yieldFileWork(signal); lastYield = performance.now(); }
+        }
+      }
+      if (!sheetsRead || !result.sourceRows) throw new Error('No stock rows were found. Upload the SAP stock export with Material, Plant, Storage Location, Batch, and Unrestricted Quantity columns.');
+      if (!result.matchingPlant) throw new Error('No stock rows were found for the detected plant ' + selected.source + '. Upload its SAP stock export again.');
+      return result;
+    }
+    function buildIssueRows() {
+      const selected = route(), date = Number(todayIso().replace(/-/g, ''));
+      let docNm = 0, slNo = 0, previousCategory = null;
+      return data.result.ready.map(row => {
+        if (row.category !== previousCategory) { docNm++; slNo = 10; }
+        else slNo += 10;
+        previousCategory = row.category;
+        return { docNm, date, type: 'ZTDD', companyCode: 1000, purchOrg: 'INT', purGroup: CATEGORY_PUR_GROUP[row.category],
+          supplyingPlant: selected.source, slNo, material: row.material, stgeLoc: null, toWhere: selected.destination,
+          qty: row.quantity, poUnit: 'EA', poReason: null, poBatch: row.batch,
+          destStgeLoc: STORAGE_LOCATIONS[selected.destination][row.category], supplyingStgeLoc: row.storage };
+      });
+    }
+    function buildProblemWorkbook() {
+      const headings = ['Material','Material description','Plant','Storage location','Batch','Quantity'];
+      const aoa = [headings];
+      data.result.problems.forEach(row => aoa.push([row.material,row.description,row.plant,row.storage,row.batch,row.quantity]));
+      const sheet = XLSX.utils.aoa_to_sheet(aoa);
+      sheet['!cols'] = [14,44,12,18,24,14].map(wch => ({wch}));
+      sheet['!autofilter'] = { ref: 'A1:F' + aoa.length };
+      for (let r = 1; r < aoa.length; r++) if (sheet['F' + (r+1)]) sheet['F' + (r+1)].z = Number.isInteger(aoa[r][5]) ? '#,##0' : '#,##0.########';
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook,sheet,'Batch problems');
+      return workbook;
+    }
+    function render() {
+      if (!data.result) return;
+      const {ready,problems,ignored,sourceRows} = data.result, selected = route();
+      const total = ready.reduce((sum,row) => sum + row.quantity,0);
+      ui.Results.hidden = false;
+      showDetectedWarehouse();
+      ui.ReadyCount.textContent = count(ready.length); ui.ProblemCount.textContent = count(problems.length); ui.IgnoredCount.textContent = count(ignored);
+      ui.ResultSummary.textContent = count(sourceRows) + ' source lines checked for ' + WAREHOUSE_LABEL[selected.destination] + '. ' + count(ready.length) + ' ready lines, total quantity ' + quantityText(total) + '. ' + count(problems.length) + ' problem lines excluded; ' + count(ignored) + ' rows from other plants or storage locations ignored.';
+      const showProblems = ui.View.value === 'problems', all = showProblems ? problems : ready;
+      const query = ui.Search.value.trim().toLowerCase();
+      const filtered = query ? all.filter(row => [row.material,row.description,row.batch].some(value => String(value).toLowerCase().includes(query))) : all;
+      const headers = ['Material','Description','Source storage','Batch','Quantity',showProblems ? 'Problem' : 'Destination storage','Excel row'];
+      const rows = filtered.slice(0,data.limit);
+      ui.Table.innerHTML = '<thead><tr>' + headers.map(label => '<th scope="col">' + label + '</th>').join('') + '</tr></thead><tbody>' +
+        (rows.length ? rows.map(row => '<tr>' + [row.material,row.description,row.storage,row.batch,typeof row.quantity === 'number' ? quantityText(row.quantity) : row.quantity,showProblems ? row.problem : STORAGE_LOCATIONS[selected.destination][row.category],row.sheet + ' · ' + row.excelRow].map((value,index) => '<td' + (index === 1 ? ' class="description-cell"' : index === 5 && showProblems ? ' class="problem-cell"' : '') + '>' + escapeHtml(value) + '</td>').join('') + '</tr>').join('') : '<tr><td colspan="7">' + (query ? 'No matching rows.' : showProblems ? 'No batch or data problems found.' : 'No lines match the selected storage and batch rules.') + '</td></tr>') + '</tbody>';
+      ui.Shown.textContent = 'Showing ' + count(rows.length) + ' of ' + count(filtered.length) + (query ? ' matching' : '') + ' ' + (showProblems ? 'problem' : 'ready') + ' lines.';
+      ui.More.hidden = rows.length >= filtered.length;
+      ui.Download.disabled = !ready.length; ui.ProblemsDownload.disabled = false;
+      ui.DownloadName.textContent = ready.length ? 'SAP file: ' + filename('Overstock_Issue') : 'The SAP download becomes available when at least one line passes the rules.';
+    }
+    async function upload(file) {
+      if (!file) return;
+      resetFile();
+      const token = data.token, controller = new AbortController();
+      data.controller = controller; data.fileName = file.name; ui.FileName.textContent = file.name; ui.FileRow.hidden = false;
+      setUploadLoading(ui.Loading, ui.Dropzone, 'Reading your export…');
+      const phase = message => { if (token === data.token) setUploadLoading(ui.Loading, ui.Dropzone, message); };
+      try {
+        const workbook = await readUploadWorkbook(file,{type:'array',dense:true,cellNF:true,cellText:false,cellHTML:false,raw:true},phase,controller.signal,true);
+        if (token !== data.token) return;
+        const selected = detectWarehouse(workbook);
+        const result = await parse(workbook,selected,controller.signal,phase);
+        if (token !== data.token) return;
+        data.result = result;
+        ui.View.value = result.ready.length ? 'ready' : 'problems';
+        render();
+        if (active()) scrollToSection(ui.Results);
+      } catch (error) {
+        if (token !== data.token || error.name === 'AbortError') return;
+        const messages = { 'reader-unavailable': 'The Excel reader did not load. Check your connection and refresh the page.',
+          'file-read': 'The file could not be read. Save a local copy and upload it again.', 'excel-parse': 'This file could not be opened as Excel or CSV. Export it again and retry.' };
+        ui.Error.textContent = messages[error.code] || error.message || 'The export could not be processed. Please try again.';
+        ui.Error.hidden = false;
+        if (active()) scrollToSection(ui.Error);
+      } finally {
+        if (token === data.token) { data.controller = null; setUploadLoading(ui.Loading,ui.Dropzone,null); }
+      }
+    }
+    async function download(problemsOnly) {
+      if (!data.result || !problemsOnly && !data.result.ready.length) return;
+      await runWithLoading(problemsOnly ? 'Preparing the batch problem report…' : 'Preparing the overstock SAP issue file…', async () => {
+        try {
+          const name = filename(problemsOnly ? 'Batch_Problems' : 'Overstock_Issue');
+          await downloadWorkbook(problemsOnly ? buildProblemWorkbook() : buildWorkbook(buildIssueRows()),name);
+          ui.DownloadStatus.className = 'callout note'; ui.DownloadStatus.textContent = 'Download started: ' + name;
+        } catch (error) {
+          ui.DownloadStatus.className = 'callout error'; ui.DownloadStatus.textContent = 'The Excel download could not be prepared. Please try again.';
+        }
+        ui.DownloadStatus.hidden = false;
+        if (active()) scrollToSection(ui.DownloadStatus);
+      });
+    }
+    ui.FileInput.addEventListener('change', function () { if (this.files[0]) upload(this.files[0]); });
+    ui.Dropzone.addEventListener('keydown', event => {
+      if ((event.key === 'Enter' || event.key === ' ') && !ui.FileInput.disabled) { event.preventDefault(); ui.FileInput.click(); }
+    });
+    ui.Dropzone.addEventListener('dragover', event => { event.preventDefault(); if (!ui.FileInput.disabled) ui.Dropzone.classList.add('dragover'); });
+    ui.Dropzone.addEventListener('dragleave', () => ui.Dropzone.classList.remove('dragover'));
+    ui.Dropzone.addEventListener('drop', event => { event.preventDefault(); ui.Dropzone.classList.remove('dragover'); if (event.dataTransfer.files[0]) upload(event.dataTransfer.files[0]); });
+    ui.Remove.addEventListener('click', () => { resetFile(); if (active()) ui.Dropzone.focus({preventScroll:true}); });
+    ui.Next.addEventListener('click', () => { resetFile(); if (active()) { scrollToSection(document.getElementById('overstockUploadSection')); ui.Dropzone.focus({preventScroll:true}); } });
+    [ui.Search,ui.View].forEach(input => input.addEventListener(input === ui.Search ? 'input' : 'change', () => { data.limit = 100; render(); }));
+    ui.More.addEventListener('click', () => { data.limit += 100; render(); });
+    ui.Download.addEventListener('click', () => download(false));
+    ui.ProblemsDownload.addEventListener('click', () => download(true));
+  })();
 
   // Stock comparison is separate from the SAP issuing export.
   (function initStockCheck() {
@@ -3560,12 +4443,14 @@
         : filtered.length > shown.length ? 'Showing ' + count(shown.length) + ' of ' + count(filtered.length) + ' checks. The Excel report includes every check.' : count(filtered.length) + ' check' + (filtered.length === 1 ? '' : 's') + ' in this view.';
       el('stockReportDownloadName').textContent = 'Download as: ' + reportFilename();
     }
-    compareButton.addEventListener('click', () => {
+    compareButton.addEventListener('click', async () => {
       if (!stockReady() || mappingProblem() || !scope.value) return;
+      await runWithLoading(method === 'quantity' ? 'Comparing material quantities…' : 'Checking stock availability…', async () => {
       invalidateReport();
       try {
         const demand = extractDemand(), rows = [], compareQuantities = method === 'quantity';
-        demand.required.forEach(item => {
+        let lastYield = performance.now();
+        for (const item of demand.required.values()) {
           const inventory = warehouses[item.wh].materials.get(item.material);
           const other = warehouses[item.wh === '1100' ? '2100' : '1100'].materials.get(item.material);
           const available = inventory ? inventory.qty : null;
@@ -3580,7 +4465,8 @@
             if (fallback) itemCategories = [fallback];
           }
           rows.push({wh:item.wh, material:item.material, description:item.description || (inventory && inventory.description) || (other && other.description) || '', categories:itemCategories, required:item.qty, available, shortfall, status});
-        });
+          if (performance.now() - lastYield > 12) { await yieldFileWork(); lastYield = performance.now(); }
+        }
         const priority = {'no-stock':0, insufficient:1, missing:2, 'in-stock':3};
         rows.sort((a,b) => priority[a.status] - priority[b.status] || naturalCompare(a.wh,b.wh) || naturalCompare(a.material,b.material));
         report = {rows, kind:method, sourceName:method === 'search' ? 'Material_Search' : issue.fileName, zeroDemand:demand.zeroDemand, positiveRows:demand.positiveRows, sourceRows:demand.sourceRows, excluded:demand.excluded, sheetNames:method === 'search' ? [] : selectedIssueSheets(), scope:scope.value === '__file__' ? 'Each supplying warehouse separately' : warehouseLabel(scope.value)};
@@ -3604,6 +4490,7 @@
         step3.classList.remove('locked'); step3.inert = false; reportResult.hidden = false; quickNav.hidden = false;
         scrollToSection(step3);
       } catch (error) { compareError.textContent = error.message; compareError.hidden = false; scrollToSection(compareError); }
+      });
     });
     reportFilter.addEventListener('change', renderReport);
     reportCategory.addEventListener('change', renderReport);
@@ -3656,13 +4543,15 @@
       appendSheet('All materials',report.rows);
       return wb;
     }
-    el('stockReportDownload').addEventListener('click', () => {
+    el('stockReportDownload').addEventListener('click', async () => {
       if (!report) return;
+      await runWithLoading('Preparing your stock report…', async () => {
       try {
-        const filename = reportFilename(); XLSX.writeFile(buildReportWorkbook(),filename);
+        const filename = reportFilename(); await downloadWorkbook(buildReportWorkbook(),filename);
         downloadStatus.className = 'callout note'; downloadStatus.textContent = 'Download started: ' + filename;
       } catch (error) { downloadStatus.className = 'callout error'; downloadStatus.textContent = 'The stock report could not be downloaded. Please try again.'; }
       downloadStatus.hidden = false; scrollToSection(downloadStatus);
+      });
     });
     el('stockResetBtn').addEventListener('click', () => {
       searchInput.value = ''; clearSource(issue); scrollToSection(step2);
@@ -3678,6 +4567,32 @@
 
   loadDirectoryFromStorage(false);
   applyModeUI();
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  const up = document.getElementById('pageScrollTop');
+  const down = document.getElementById('pageScrollBottom');
+  let queued = false;
+  function pageHeight() { return Math.max(document.documentElement.scrollHeight, document.body.scrollHeight); }
+  function update() {
+    queued = false;
+    up.disabled = window.scrollY <= 4;
+    down.disabled = window.scrollY + window.innerHeight >= pageHeight() - 4;
+  }
+  function queueUpdate() { if (!queued) { queued = true; window.requestAnimationFrame(update); } }
+  function jump(bottom) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: bottom ? pageHeight() : 0, behavior: reduce ? 'instant' : 'smooth' });
+    queueUpdate();
+  }
+  up.addEventListener('click', () => jump(false));
+  down.addEventListener('click', () => jump(true));
+  window.addEventListener('scroll', queueUpdate, { passive: true });
+  window.addEventListener('resize', queueUpdate, { passive: true });
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(queueUpdate).observe(document.body);
+  update();
 })();
 </script>
 </body>
