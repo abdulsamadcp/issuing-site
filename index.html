@@ -97,6 +97,10 @@
   .transfer-route strong { display: block; color: var(--brand-dark); font-size: 14px; line-height: 1.6; }
   .transfer-route > span { color: var(--brand); font-size: 24px; }
   .transfer-route-review { margin: 0 0 18px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--brand-soft-line); background: var(--brand-soft); color: var(--brand-dark); font-size: 12.5px; line-height: 1.7; }
+  #expireRouteFields { margin-top: 20px; }
+  #expireRouteFields select:disabled { opacity: 1; color: var(--brand-dark); background-color: var(--brand-soft); cursor: default; }
+  .transfer-storage-help { color: var(--muted); font-size: 12px; line-height: 1.7; margin: 8px 0 0; }
+  #transferRouteError, #transferFileError { scroll-margin-top: 100px; overflow-wrap: anywhere; }
 
   .topbar {
     position: sticky; top: 0; z-index: 40; padding: 14px 24px;
@@ -142,6 +146,7 @@
   body.sidebar-open .sidebar-nav .nav-item:nth-child(4) { animation-delay: 0.16s; }
   body.sidebar-open .sidebar-nav .nav-item:nth-child(5) { animation-delay: 0.20s; }
   body.sidebar-open .sidebar-nav .nav-item:nth-child(6) { animation-delay: 0.24s; }
+  body.sidebar-open .sidebar-nav .nav-item:nth-child(7) { animation-delay: 0.28s; }
   @keyframes sidebar-item-in { from { opacity: 0; translate: -14px 0; } to { opacity: 1; translate: 0 0; } }
   .sidebar-close { width: 30px; height: 30px; margin-left: auto; border-color: transparent; }
   .sidebar-brand { display: flex; align-items: center; gap: 11px; padding: 4px 8px 26px; }
@@ -194,6 +199,27 @@
   .main-inner.stock-check-view { max-width: 1180px; }
   .main-inner.pharmacy-directory-view { max-width: 960px; }
   .main-inner.overstock-view { max-width: 1080px; }
+  .main-inner.history-view { max-width: 1080px; }
+  .history-toolbar { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 12px; margin: 22px 0 12px; }
+  .history-toolbar .field { min-width: 0; }
+  .history-actions, .history-entry-top, .history-entry-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .history-actions { margin: 16px 0; }
+  .history-entry { padding: 20px; border: 1px solid var(--border); background: var(--surface); border-radius: 12px; box-shadow: var(--shadow-sm); margin-top: 14px; min-width: 0; }
+  .history-entry-top { justify-content: space-between; font-size: 11px; color: var(--muted); }
+  .history-module { color: var(--brand-dark); background: var(--brand-soft); padding: 6px 9px; border-radius: 7px; font-weight: 700; }
+  .history-entry h3 { font-size: 14px; line-height: 1.7; margin: 12px 0 5px; overflow-wrap: anywhere; }
+  .history-entry .summary-headline { margin: 12px 0; }
+  .history-entry details > summary { cursor: pointer; color: var(--brand-dark); font-size: 12px; font-weight: 700; padding: 7px 0; }
+  .history-entry details > summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+  .history-entry .category-total-grid { margin-top: 14px; }
+  .history-entry .warehouse-total-card .category-total-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .history-entry-actions { margin-top: 18px; }
+  .history-delete { color: var(--error); }
+  .history-empty { border: 1px dashed var(--border); border-radius: 12px; text-align: center; padding: 30px 18px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+  #historySection, #historyStatus { scroll-margin-top: 94px; }
+  #historyResultCount { margin: 14px 0; }
+  @media (max-width: 760px) { .history-toolbar { grid-template-columns: repeat(2,minmax(0,1fr)); } .history-toolbar > :first-child { grid-column: 1 / -1; } }
+  @media (max-width: 480px) { .history-toolbar { grid-template-columns: 1fr; } .history-entry { padding: 15px; } }
   .overstock-rules { margin-top: 16px; padding: 14px 16px; border: 1px solid var(--brand-soft-line); border-radius: 10px; background: var(--brand-soft); }
   .overstock-rules p { margin: 5px 0; font-size: 12px; line-height: 1.8; color: var(--ink-soft); }
   .overstock-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 20px 0; }
@@ -210,6 +236,32 @@
   #overstockError, #overstockDownloadStatus { scroll-margin-top: 100px; overflow-wrap: anywhere; }
   @media (max-width: 480px) { .overstock-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } }
   #heroSub, .static-hint { display: none; }
+  /* Keep workflow screens focused on controls, results, and actionable messages. */
+  .transfer-storage-help,
+  .batch-option small,
+  .upload-loading small,
+  .task-loading small,
+  .expire-warehouse-summary small,
+  .sidebar-note,
+  .summary-panel > .summary-note,
+  #matchedCols,
+  #expireRouteNote,
+  #pharmacyReviewNotice,
+  #issueValidationPanel:not(.has-errors),
+  #overstockRules p:not(:first-child),
+  #overstockResultSummary,
+  #stockFilesNote,
+  #stockUploadHint,
+  #stockMappingHint,
+  #stockReportIntro,
+  #stockReportSearchHint,
+  #stockExportHint,
+  #historyStatus:not(.error),
+  #directoryStatus:not(.error),
+  #downloadStatus:not(.error),
+  #overstockDownloadStatus:not(.error),
+  #stockReportDownloadStatus:not(.error) { display: none !important; }
+  .overstock-rules:empty { display: none; }
 
   @media (max-width: 860px) {
     .topbar { padding: 12px 18px; }
@@ -334,6 +386,8 @@
     background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; padding-right: 34px;
   }
   .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3.5px var(--brand-soft); }
+  .field .issue-date-auto { display: flex; align-items: center; gap: 8px; margin: 10px 0 0; cursor: pointer; font-size: 12px; font-weight: 500; }
+  .field .issue-date-auto input { width: 16px; height: 16px; flex: none; margin: 0; padding: 0; accent-color: var(--brand); }
   .field textarea { resize: vertical; min-height: 92px; line-height: 1.7; }
   .batch-option { display: flex; align-items: flex-start; gap: 11px; margin-top: 20px; padding: 15px; border: 1px solid var(--brand-soft-line); border-radius: 10px; background: var(--brand-soft); cursor: pointer; }
   .batch-option input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--brand); flex: none; }
@@ -427,6 +481,44 @@
   .result-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
   #resultBlock { scroll-margin-top: 94px; }
   #resultBlock:not([hidden]) { animation: result-reveal 0.32s ease both; }
+  .summary-panel { margin: 20px 0; padding: 18px; border: 1px solid var(--brand-soft-line); border-radius: 12px; background: var(--surface); min-width: 0; }
+  #uploadCategorySummary, .warehouse-categories { scroll-margin-top: 94px; }
+  #uploadCategorySummary:focus, .warehouse-categories:focus { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 12px; }
+  .summary-panel h3 { margin: 0 0 7px; color: var(--ink); font-size: 14px; }
+  .summary-note { margin: 0 0 14px; font-size: 12px; line-height: 1.7; color: var(--muted); overflow-wrap: anywhere; }
+  .summary-headline { display: flex; flex-wrap: wrap; gap: 7px 18px; margin: 12px 0 14px; color: var(--ink-soft); font-size: 12px; }
+  .summary-headline b { color: var(--ink); }
+  .category-total-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+  .category-total { padding: 13px 11px; min-width: 0; border-radius: 9px; background: var(--surface-alt); border: 1px solid var(--border-soft); }
+  .category-total-label { display: block; color: var(--ink-soft); font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+  .category-total strong { display: block; color: var(--brand-dark); font: 700 21px var(--font-mono); overflow-wrap: anywhere; }
+  .category-total small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+  .category-total-meta { display: block; margin-top: 10px; color: var(--ink-soft); font-size: 11px; line-height: 1.6; }
+  .download-summary-panel { background: var(--surface-alt); }
+  .download-summary-panel .category-total { background: var(--surface); }
+  .summary-details { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px 20px; margin: 18px 0; }
+  .summary-details div { min-width: 0; }
+  .summary-details dt { color: var(--muted); font-size: 11px; margin-bottom: 5px; }
+  .summary-details dd { margin: 0; color: var(--ink); font-size: 13px; font-weight: 650; line-height: 1.6; overflow-wrap: anywhere; }
+  .summary-details [data-summary-date] { color: var(--brand-dark); }
+  .warehouse-summary-title { margin: 16px 0 10px; color: var(--ink-soft); font-size: 12px; font-weight: 700; }
+  .warehouse-summary-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; gap: 12px; margin-bottom: 16px; }
+  .warehouse-total-card { min-width: 0; padding: 13px; border: 1px solid var(--brand-soft-line); border-radius: 10px; background: var(--surface-alt); }
+  .warehouse-total-card h4 { margin: 0; color: var(--brand-dark); font-size: 13px; overflow-wrap: anywhere; }
+  .warehouse-total-metrics { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 12px 0; }
+  .warehouse-total-metrics span { min-width: 0; }
+  .warehouse-total-metrics strong { display: block; color: var(--ink); font: 700 19px var(--font-mono); overflow-wrap: anywhere; }
+  .warehouse-total-metrics small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+  .warehouse-total-card details summary { cursor: pointer; color: var(--brand-dark); font-size: 11px; line-height: 1.7; }
+  .warehouse-category-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
+  .warehouse-category-table th, .warehouse-category-table td { padding: 8px 4px; border-bottom: 1px solid var(--border-soft); text-align: right; white-space: normal; overflow-wrap: anywhere; }
+  .warehouse-category-table th:first-child, .warehouse-category-table td:first-child { text-align: left; }
+  .warehouse-category-table th { color: var(--muted); font-weight: 600; }
+  .warehouse-category-table td { color: var(--ink-soft); }
+  .download-summary-panel .warehouse-total-card { background: var(--surface); }
+  @media (max-width: 480px) { .warehouse-summary-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) { .category-total-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+  @media (max-width: 480px) { .summary-panel { padding: 14px; } .summary-details { grid-template-columns: 1fr; gap: 12px; } }
   @keyframes result-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .download-name { font-size: 12px; color: var(--muted); margin: 14px 0 0; overflow-wrap: anywhere; }
   .section-hint { color: var(--muted); font-size: 12.5px; line-height: 1.7; margin: -4px 0 18px; }
@@ -579,6 +671,10 @@
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5M7 10h6M10 7v6"/></svg>
         Pharmacy Search
       </button>
+      <button class="nav-item mode-btn" data-mode="history" type="button">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a9 9 0 1 1 2.5 7M3 4v7h7M12 7v5l3 2"/></svg>
+        Process History
+      </button>
     </nav>
 
     <div class="sidebar-spacer"></div>
@@ -621,6 +717,7 @@
                 <option value="ryd2jed">2100 Riyadh → 1100 Jeddah</option>
               </select>
             </div>
+            <div class="callout error" id="transferRouteError" role="alert" hidden></div>
             <div class="transfer-route" role="status" aria-live="polite">
               <div><small>From warehouse</small><strong id="transferFromWarehouse">Jeddah · 1100</strong></div>
               <span aria-hidden="true">→</span>
@@ -633,43 +730,34 @@
         <section class="step" id="expireSetup" data-step="1" hidden>
           <div class="step-marker"><span>1</span></div>
           <div class="step-content">
-            <h2 id="expireWarehouseTitle">Choose your warehouse</h2>
-            <div class="field" id="expireWarehouseChoose">
-              <label for="expireWarehouse">Supplying warehouse</label>
-              <select id="expireWarehouse">
-                <option value="">Select Jeddah or Riyadh</option>
-                <option value="1100">Jeddah: 1100 → 1200</option>
-                <option value="2100">Riyadh: 2100 → 2200</option>
-              </select>
-            </div>
-            <div class="expire-warehouse-summary" id="expireWarehouseLocked" hidden>
-              <div><strong id="expireWarehouseLabel"></strong><small>Kept for every upload until you change it.</small></div>
-              <button class="text-btn" id="expireChangeWarehouse" type="button">Change warehouse</button>
-            </div>
+            <h2>Choose expiry route</h2>
             <div id="expireSettings" hidden>
+              <div class="field-grid" id="expireRouteFields">
+                <div class="field"><label for="expireFromWarehouse">From warehouse / plant</label><select id="expireFromWarehouse"><option value="1100">1100 — Jeddah main warehouse</option><option value="1200">1200 — Jeddah</option><option value="2100">2100 — Riyadh main warehouse</option><option value="2200">2200 — Riyadh</option></select></div>
+                <div class="field"><label for="expireToWarehouse">To warehouse / plant</label><select id="expireToWarehouse"><option value="1100">1100 — Jeddah main warehouse</option><option value="1200" selected>1200 — Jeddah</option><option value="2100">2100 — Riyadh main warehouse</option><option value="2200">2200 — Riyadh</option></select></div>
+                <div class="field"><label for="expireFromStorage">From storage location</label><select id="expireFromStorage" disabled><option value="auto">Automatic by material</option></select></div>
+                <div class="field"><label for="expireToStorage">To storage location</label><select id="expireToStorage"><option value="auto">Automatic by material</option></select></div>
+              </div>
+              <div class="callout error" id="expireRouteError" role="alert" hidden></div>
               <label class="batch-option" for="expireIncludeBatch">
                 <input type="checkbox" id="expireIncludeBatch" aria-describedby="expireBatchHelp">
                 <span><strong>Include batch numbers</strong><small id="expireBatchHelp">Off by default. Turn on only when needed. Every material line stays in its original order, including repeats.</small></span>
               </label>
               <p class="hint" id="expireBatchSummary" aria-live="polite"></p>
               <div class="callout error" id="expireValidation" role="alert" hidden></div>
+              <div class="table-wrap" style="margin-top:16px" tabindex="0" role="region" aria-label="Expiry storage mapping"><table class="expire-map"><thead><tr><th scope="col">Material category</th><th scope="col">From storage</th><th scope="col">To storage</th></tr></thead><tbody id="expireMappingRows"></tbody></table></div>
+              <div class="transfer-route" role="status" aria-live="polite"><div><small>From warehouse</small><strong id="expireFromSummary"></strong></div><span aria-hidden="true">→</span><div><small>To warehouse</small><strong id="expireToSummary"></strong></div></div>
+              <div class="field-grid" style="margin-top:16px"><div class="field"><label for="expireDate">Issue date</label><input type="date" id="expireDate" required readonly aria-describedby="expireDateHelp expireDateError"><label class="issue-date-auto" for="expireUseToday"><input type="checkbox" id="expireUseToday" checked><span>Use today’s date</span></label><p class="transfer-storage-help" id="expireDateHelp">Uses today’s date when you download.</p><p class="callout error" id="expireDateError" role="alert" hidden></p></div></div>
               <details class="advanced">
-                <summary>Issue date and SAP settings</summary>
+                <summary>SAP settings</summary>
                 <div class="field-grid">
-                  <div class="field"><label for="expireDate">Issue date</label><input type="date" id="expireDate"></div>
                   <div class="field"><label for="eDocType">Document type</label><input id="eDocType" value="ZTDD" maxlength="12"></div>
                   <div class="field"><label for="eCompanyCode">Company code</label><input id="eCompanyCode" value="1000"></div>
                   <div class="field"><label for="ePurchOrg">Purchasing org</label><input id="ePurchOrg" value="INT"></div>
                   <div class="field"><label for="ePoUnit">Order unit</label><input id="ePoUnit" value="EA"></div>
                 </div>
-                <p class="hint" id="expireRouteNote"></p>
-                <div class="table-wrap">
-                  <table class="expire-map" aria-label="Expiry storage locations">
-                    <thead><tr><th>Category</th><th>From storage</th><th>To storage</th></tr></thead>
-                    <tbody id="expireMappingRows"></tbody>
-                  </table>
-                </div>
               </details>
+              <div class="step-actions"><button class="primary-btn" id="expireToUpload" type="button">Continue to upload <span aria-hidden="true">→</span></button></div>
             </div>
           </div>
         </section>
@@ -704,6 +792,7 @@
               <div class="stat" id="statCol3Wrap"><span class="stat-num" id="statCol3"></span><span class="stat-label" id="statCol3Label">warehouses</span></div>
             </div>
             <div class="wh-list" id="whList" hidden></div>
+            <div id="uploadCategorySummary" aria-live="polite" hidden></div>
             <div class="wh-list" id="matchedCols" hidden></div>
 
             <div class="callout note" id="dedupNote" hidden></div>
@@ -719,8 +808,6 @@
             <section class="issue-file-check" id="issueDuplicatesPanel" aria-labelledby="issueDuplicatesTitle" hidden>
               <h3 id="issueDuplicatesTitle">Repeated pharmacy materials</h3>
               <p id="issueDuplicatesSummary"></p>
-              <p>Combine quantities adds every uploaded quantity for the same pharmacy, material, and selected warehouse, including exact duplicate rows. Different pharmacies, materials, or selected warehouses stay separate.</p>
-              <p>Remove exact duplicates keeps one copy of each identical uploaded line. Keep all rows preserves every line separately.</p>
               <div class="duplicate-actions">
                 <button class="primary-btn" id="issueRemoveDuplicates" type="button" aria-pressed="false">Remove exact duplicates</button>
                 <button class="primary-btn" id="issueKeepDuplicates" type="button" aria-pressed="false">Keep all rows</button>
@@ -732,7 +819,6 @@
             <section class="issue-file-check" id="transferDuplicatesPanel" aria-labelledby="transferDuplicatesTitle" hidden>
               <h3 id="transferDuplicatesTitle">Repeated materials found</h3>
               <p id="transferDuplicatesSummary"></p>
-              <p>Exact duplicates have the same material and quantity. Different quantities stay separate when removing exact duplicates. Combining quantities adds every uploaded quantity into one line per material.</p>
               <div class="duplicate-actions">
                 <button class="primary-btn" id="transferRemoveDuplicates" type="button" aria-pressed="false">Remove exact duplicates</button>
                 <button class="primary-btn" id="transferKeepDuplicates" type="button" aria-pressed="false">Keep all rows</button>
@@ -740,6 +826,8 @@
               </div>
               <p id="transferDuplicatesStatus" role="status" aria-live="polite">Choose an option before generating your file.</p>
             </section>
+            <div class="callout error" id="transferFileError" role="alert" hidden></div>
+            <div class="callout note" id="transferSourceLocations" role="status" aria-live="polite" hidden></div>
           </div>
         </section>
 
@@ -751,7 +839,6 @@
             <div id="issueSettings">
               <section class="pharmacy-review" id="pharmacyWarehouseReview" aria-labelledby="pharmacyReviewTitle" hidden>
                 <h3 id="pharmacyReviewTitle">Pharmacy warehouse check</h3>
-                <p>Each pharmacy code is checked against your reference list. The uploaded warehouse stays unchanged until you apply a suggestion.</p>
                 <p class="pharmacy-review-reference" id="pharmacyReviewReference"></p>
                 <p class="pharmacy-review-summary" id="pharmacyReviewSummary" aria-live="polite"></p>
                 <div class="pharmacy-review-controls">
@@ -770,7 +857,10 @@
               <div class="field-grid">
                 <div class="field">
                   <label for="issueDate">Issue date</label>
-                  <input type="date" id="issueDate">
+                  <input type="date" id="issueDate" required readonly aria-describedby="issueDateHelp issueDateError">
+                  <label class="issue-date-auto" for="issueUseToday"><input type="checkbox" id="issueUseToday" checked><span>Use today’s date</span></label>
+                  <p class="transfer-storage-help" id="issueDateHelp">Uses today’s date when you generate or download.</p>
+                  <p class="callout error" id="issueDateError" role="alert" hidden></p>
                 </div>
                 <div class="field">
                   <label for="docType">Document type</label>
@@ -791,10 +881,7 @@
             <div id="transferSettings" hidden>
               <p class="transfer-route-review" id="transferRouteReview" aria-live="polite"></p>
               <div class="field-grid">
-                <div class="field">
-                  <label for="transferDate">Issue date</label>
-                  <input type="date" id="transferDate">
-                </div>
+                <div class="field"><label for="transferDate">Issue date</label><input type="date" id="transferDate" required readonly aria-describedby="transferDateHelp transferDateError"><label class="issue-date-auto" for="transferUseToday"><input type="checkbox" id="transferUseToday" checked><span>Use today’s date</span></label><p class="transfer-storage-help" id="transferDateHelp">Uses today’s date when you download.</p><p class="callout error" id="transferDateError" role="alert" hidden></p></div>
               </div>
               <details class="advanced">
                 <summary>Advanced settings</summary>
@@ -822,6 +909,7 @@
             <button class="primary-btn" id="generateBtn" type="button" disabled>Generate file</button>
 
             <div id="resultBlock" hidden>
+              <div id="finalDownloadSummary" aria-live="polite"></div>
               <div class="table-wrap">
                 <table id="previewTable"></table>
               </div>
@@ -844,8 +932,8 @@
           <div class="step-marker"><span>1</span></div>
           <div class="step-content">
             <h2>Upload the SAP stock export</h2>
-            <p class="overstock-note">Upload your file to detect the warehouse automatically from the Plant column: 1200 for Jeddah or 2200 for Riyadh. The SAP issue date is today.</p>
-            <p class="overstock-note">Required columns: Material, Plant, Storage Location, Batch, and Unrestricted Quantity. The heading “Unrestriced Quantity” in your export is also recognized.</p>
+            <div class="field-grid" style="margin:16px 0"><div class="field"><label for="overstockDate">Issue date</label><input type="date" id="overstockDate" required readonly aria-describedby="overstockDateHelp overstockDateError"><label class="issue-date-auto" for="overstockUseToday"><input type="checkbox" id="overstockUseToday" checked><span>Use today’s date</span></label><p class="transfer-storage-help" id="overstockDateHelp">Uses today’s date when you download.</p><p class="callout error" id="overstockDateError" role="alert" hidden></p></div></div>
+            <p class="overstock-note">Required columns: Material, Plant, Storage Location, Batch, Quantity.</p>
             <label class="dropzone" id="overstockDropzone" for="overstockFileInput" tabindex="0" role="button" aria-label="Upload stock export to detect the warehouse">
               <input type="file" id="overstockFileInput" accept=".xlsx,.xls,.csv">
               <span class="drop-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span>
@@ -862,6 +950,7 @@
             <h2>Check and download</h2>
             <div class="overstock-rules" id="overstockRules"></div>
             <p class="overstock-note" id="overstockResultSummary" role="status" aria-live="polite"></p>
+            <div id="overstockCategorySummary" aria-live="polite"></div>
             <div class="overstock-stats">
               <div class="stat"><span class="stat-num" id="overstockReadyCount">0</span><span class="stat-label">ready lines</span></div>
               <div class="stat"><span class="stat-num" id="overstockProblemCount">0</span><span class="stat-label">batch / data problems</span></div>
@@ -873,7 +962,7 @@
             </div>
             <div class="table-wrap" id="overstockTableWrap" tabindex="0" role="region" aria-label="Overstock preview"><table class="overstock-table" id="overstockTable"></table></div>
             <p class="overstock-note" id="overstockShown"></p><button class="text-btn" id="overstockMore" type="button" hidden>Show more rows</button>
-            <p class="overstock-note">Search only changes this preview. Downloads include all accepted lines or all problem rows. Batch problems are excluded from the SAP issue file; download the report to review them.</p>
+            <div id="overstockDownloadSummary" aria-live="polite"></div>
             <div class="result-actions">
               <button class="primary-btn accent" id="overstockDownload" type="button" disabled>Download SAP issue Excel</button>
               <button class="primary-btn" id="overstockProblemsDownload" type="button" disabled>Download batch problems Excel</button>
@@ -890,7 +979,6 @@
           <div class="step-marker"><span>1</span></div>
           <div class="step-content">
             <h2>Pharmacy Search</h2>
-            <p class="directory-note">Find a pharmacy’s warehouse by its code, name, or area. This search is available anytime, without an issuing file.</p>
             <div class="stat-row directory-stats" aria-live="polite">
               <div class="stat"><span class="stat-num" id="directoryTotal"></span><span class="stat-label">pharmacies</span></div>
               <div class="stat"><span class="stat-num" id="directoryJeddah"></span><span class="stat-label">Jeddah · 1100</span></div>
@@ -911,8 +999,8 @@
           <div class="step-marker"><span>2</span></div>
           <div class="step-content">
             <h2>Update pharmacy list</h2>
-            <p class="directory-note">Upload the complete current list. Saving it adds new pharmacies, updates their details, and removes pharmacies missing from the uploaded list.</p>
-            <p class="directory-note">Required columns: <strong>Plant / Pharmacy</strong> and <strong>WH / Warehouse</strong> (1100 or 2100). <strong>Area_name</strong> and <strong>Pharmacy Name</strong> are optional.</p>
+            <p class="directory-note">Upload the complete list. Pharmacies missing from the new list will be removed.</p>
+            <p class="directory-note">Required columns: <strong>Pharmacy</strong> and <strong>Warehouse</strong>.</p>
             <label class="dropzone" id="directoryDropzone" for="directoryFileInput" tabindex="0" role="button" aria-label="Upload complete pharmacy reference list">
               <input type="file" id="directoryFileInput" accept=".xlsx,.xls,.csv">
               <span class="drop-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span>
@@ -927,7 +1015,27 @@
               <div class="directory-actions"><button class="primary-btn accent" id="directorySave" type="button">Save updated list</button><button class="text-btn" id="directoryCancel" type="button">Cancel upload</button></div>
             </div>
             <div class="callout note" id="directoryStatus" role="status" aria-live="polite" hidden></div>
-            <p class="directory-note">In a normal browser window, the saved list stays on this device after refreshing or closing the website. Other browsers and devices need their own upload. Private browsing or clearing this website’s browser data can remove the saved list.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="sheet" id="historyTool" hidden>
+        <section class="step" id="historySection">
+          <div class="step-marker"><span aria-hidden="true">↶</span></div>
+          <div class="step-content">
+            <h2>Process History</h2>
+            <div class="history-toolbar">
+              <div class="field"><label for="historySearch">Search history</label><input type="search" id="historySearch" placeholder="Filename, module, or warehouse" autocomplete="off" spellcheck="false"></div>
+              <div class="field"><label for="historyModule">Module</label><select id="historyModule"><option value="all">All modules</option><option value="issue">Pharmacy Issue</option><option value="transfer">Warehouse Transfer</option><option value="expire">Store Expire</option><option value="overstock">Overstock Issue</option><option value="stock">Stock Check</option></select></div>
+              <div class="field"><label for="historyWarehouse">Warehouse</label><select id="historyWarehouse"><option value="all">All warehouses</option><option value="jeddah">Jeddah</option><option value="riyadh">Riyadh</option></select></div>
+              <div class="field"><label for="historyDate">Process date</label><input type="date" id="historyDate"></div>
+            </div>
+            <div class="history-actions"><button class="primary-btn accent" id="historyExport" type="button" disabled>Export history to Excel</button><button class="text-btn" id="historyResetFilters" type="button">Clear filters</button><button class="text-btn history-delete" id="historyClear" type="button" disabled>Clear history</button></div>
+            <p class="directory-note" id="historyResultCount" role="status" aria-live="polite"></p>
+            <div class="callout note" id="historyStatus" role="status" aria-live="polite" hidden></div>
+            <div class="callout error" id="historyClearConfirm" hidden><p>Delete every saved history entry in this browser? This cannot be undone.</p><div class="history-actions"><button class="text-btn history-delete" id="historyConfirmClear" type="button">Delete all history</button><button class="text-btn" id="historyCancelClear" type="button">Cancel</button></div></div>
+            <div id="historyList"></div>
+            <div class="directory-actions"><button class="text-btn" id="historyBack" type="button">Back to Pharmacy Issue</button></div>
           </div>
         </section>
       </div>
@@ -941,7 +1049,6 @@
           <div class="step-marker"><span>1</span></div>
           <div class="step-content">
             <h2>Upload today’s warehouse stock</h2>
-            <p class="section-hint">Upload any stock category for Jeddah or Riyadh. Medicine alone, cosmetics alone, milk alone, diaper alone, or any combination works immediately. Repeated material codes are combined within each warehouse.</p>
             <div class="compare-upload-grid">
               <div class="compare-file">
                 <h3>Jeddah warehouse (1100)</h3>
@@ -977,7 +1084,6 @@
           <div class="step-marker"><span>2</span></div>
           <div class="step-content">
             <h2>Check materials in your warehouse</h2>
-            <p class="section-hint">Search by the unique material number, upload any Excel list with a material column, or compare required quantities from an issuing file.</p>
             <div class="field" id="stockWarehouseWrap">
               <label for="stockWarehouseScope">Warehouse to check</label>
               <select id="stockWarehouseScope"><option value="">Upload a warehouse stock file first</option><option value="1100" disabled>Jeddah (1100) — upload stock first</option><option value="2100" disabled>Riyadh (2100) — upload stock first</option></select>
@@ -989,7 +1095,7 @@
             </div>
             <div id="stockSearchPanel">
               <div class="field"><label for="stockMaterialSearch">Material number(s)</label><textarea id="stockMaterialSearch" rows="2" spellcheck="false" placeholder="Example: 100002" aria-describedby="stockSearchHint"></textarea></div>
-              <p class="warehouse-note" id="stockSearchHint">Use exact material numbers. You can paste several numbers separated by commas, spaces, or new lines. Press Enter to check; Shift + Enter adds a new line.</p>
+              <p class="warehouse-note" id="stockSearchHint">Separate material numbers with commas, spaces, or new lines.</p>
             </div>
             <div id="stockFilePanel" hidden>
             <p class="section-hint" id="stockUploadHint">Upload any Excel list containing Material, Material Number, or Material Code. Required quantity and warehouse columns are optional for an availability check.</p>
@@ -1045,6 +1151,8 @@
               </div>
               <div class="table-wrap"><table id="stockReportTable" aria-label="Warehouse stock report for all material categories"></table></div>
               <p class="preview-note" id="stockReportNote" role="status" aria-live="polite"></p>
+              <div class="field-grid" style="margin:16px 0"><div class="field"><label for="stockDate">Report date</label><input type="date" id="stockDate" required readonly aria-describedby="stockDateHelp stockDateError"><label class="issue-date-auto" for="stockUseToday"><input type="checkbox" id="stockUseToday" checked><span>Use today’s date</span></label><p class="transfer-storage-help" id="stockDateHelp">Uses today’s date when you download.</p><p class="callout error" id="stockDateError" role="alert" hidden></p></div></div>
+              <div id="stockDownloadSummary" aria-live="polite"></div>
               <div class="result-actions" id="stockReportActions"><button class="primary-btn accent" id="stockReportDownload" type="button">Download stock report</button><button class="text-btn" id="stockResetBtn" type="button">Check more materials</button></div>
               <p class="download-name" id="stockReportDownloadName"></p>
               <p class="preview-note" id="stockExportHint">The Excel report includes warehouse, material number, description, available quantity, and status. Your stock files stay loaded for the next check in this session.</p>
@@ -1116,11 +1224,13 @@
   sidebar.addEventListener('click', function (event) {
     if (event.target.closest('.mode-btn')) {
       setMenuOpen(false, false);
-      const choice = document.getElementById('expireWarehouse');
+      const choice = document.getElementById('expireFromWarehouse');
       const needsWarehouse = choice && !choice.disabled && !document.getElementById('expireSetup').hidden;
       const directory = document.getElementById('pharmacyDirectoryTool');
       const overstock = document.getElementById('overstockTool');
-      const upload = directory && !directory.hidden ? document.getElementById('directorySearch') : overstock && !overstock.hidden ? document.getElementById('overstockDropzone') : needsWarehouse ? choice : document.querySelector('.sheet:not([hidden]) .dropzone');
+      const transfer = document.getElementById('transferSetup');
+      const history = document.getElementById('historyTool');
+      const upload = history && !history.hidden ? document.getElementById('historySearch') : directory && !directory.hidden ? document.getElementById('directorySearch') : overstock && !overstock.hidden ? document.getElementById('overstockDropzone') : transfer && !transfer.hidden ? document.getElementById('direction') : needsWarehouse ? choice : document.querySelector('.sheet:not([hidden]) .dropzone');
       if (upload) upload.focus({ preventScroll: true });
     }
   });
@@ -2060,6 +2170,7 @@
   const CATEGORY_PUR_GROUP = { medicine: 'INM', cosmetics: 'INC', milk: 'INC', diaper: 'INC' };
   const CATEGORY_LABEL = { medicine: 'Medicine', cosmetics: 'Cosmetics', milk: 'Milk', diaper: 'Diaper' };
   const WAREHOUSE_LABEL = { 1100: 'Jeddah', 2100: 'Riyadh' };
+  const TRANSFER_PLANTS = { 1100: 'Jeddah', 1200: 'Jeddah', 2100: 'Riyadh', 2200: 'Riyadh' };
   const LEADING_DIGIT_CATEGORY = { '1': 'medicine', '2': 'cosmetics', '3': 'milk', '4': 'diaper' };
 
   // Store Expire keeps every input line, including different batches of the
@@ -2075,9 +2186,19 @@
     batch: ['batchnumber', 'batch', 'batchno', 'batchcode', 'lotnumber', 'lotno', 'charg', 'pobatch', 'pobatchtypechargd'],
     wh: ['supplyingplant', 'warehouse', 'warehousecode', 'wh', 'whcode'],
   };
+  const CUSTOM_TRANSFER_COLUMNS = {
+    ...EXPIRE_COLUMNS,
+    order: [...EXPIRE_COLUMNS.order, 'unrestricedquantity', 'unrestrictedquantity', 'unrestricted', 'unrestrictedstock', 'availablequantity'],
+    wh: [...EXPIRE_COLUMNS.wh, 'plant', 'sourceplant'],
+    storage: ['storagelocation', 'storageloc', 'sloc', 'lgort', 'sourcestoragelocation', 'supplyingstoragelocation', 'fromstoragelocation', 'sourcestorage', 'fromstorage'],
+  };
+  function transferCategoryStorage(plant, category) {
+    const locations = STORAGE_LOCATIONS[plant] || (plant === 1200 ? EXPIRE_DESTINATION[1100] : plant === 2200 ? EXPIRE_DESTINATION[2100] : null);
+    return locations?.[category] || null;
+  }
   function expireKey(value) { return String(value == null ? '' : value).toLowerCase().replace(/[^a-z0-9]/g, ''); }
-  function expireColumn(cells, role) {
-    const hits = Array.from(cells).filter(([, cell]) => EXPIRE_COLUMNS[role].includes(expireKey(cell.v)));
+  function expireColumn(cells, role, columns = EXPIRE_COLUMNS) {
+    const hits = Array.from(cells).filter(([, cell]) => columns[role].includes(expireKey(cell.v)));
     return hits.length === 1 ? hits[0][0] : -1;
   }
   function expireBatch(cell) {
@@ -2092,9 +2213,10 @@
     }
     return { batch: String(cell.v).trim(), batchProblem: '' };
   }
-  function parseExpireWorkbook(workbook) {
+  function parseExpireWorkbook(workbook, options = {}) {
     const result = { rows: [], skippedSheets: [], invalidRowCount: 0, sampleHeaders: [], detectedColumns: null, errors: [], sourceWarehouse: null };
     const warehouses = new Set();
+    const columns = options.customTransfer ? CUSTOM_TRANSFER_COLUMNS : EXPIRE_COLUMNS;
     function invalid(where, reason) {
       result.invalidRowCount++;
       if (result.errors.length < 5) result.errors.push(where + ': ' + reason);
@@ -2114,7 +2236,7 @@
       let header = -1, cols;
       for (let i = 0; i < Math.min(rows.length, 40); i++) {
         const cells = rows[i][1];
-        const candidate = Object.fromEntries(Object.keys(EXPIRE_COLUMNS).map(role => [role, expireColumn(cells, role)]));
+        const candidate = Object.fromEntries(Object.keys(columns).map(role => [role, expireColumn(cells, role, columns)]));
         if (candidate.material >= 0 && candidate.order >= 0) { header = i; cols = candidate; break; }
       }
       if (header < 0) {
@@ -2130,7 +2252,7 @@
         const materialText = String(materialCell && materialCell.v != null ? materialCell.v : '').trim();
         const qtyText = String(qtyCell && qtyCell.v != null ? qtyCell.v : '').trim();
         if (['total', 'subtotal', 'grandtotal'].includes(expireKey(materialText))) continue;
-        if (EXPIRE_COLUMNS.material.includes(expireKey(materialText)) && EXPIRE_COLUMNS.order.includes(expireKey(qtyText))) continue;
+        if (columns.material.includes(expireKey(materialText)) && columns.order.includes(expireKey(qtyText))) continue;
         const where = sheetName + ' row ' + (rowNumber + 1);
         if (!/^0*[1-4]\d{5}$/.test(materialText) || materialCell.t === 'e') {
           invalid(where, 'use a six-digit material number starting with 1, 2, 3, or 4.'); continue;
@@ -2140,13 +2262,22 @@
         if (!qtyText || !Number.isFinite(quantity) || quantity <= 0 || quantity > Number.MAX_SAFE_INTEGER || qtyCell.t === 'e') {
           invalid(where, 'quantity must be a positive number.'); continue;
         }
-        if (cols.wh >= 0 && cells.has(cols.wh)) {
+        if (!options.ignoreWarehouse && cols.wh >= 0 && cells.has(cols.wh)) {
           const wh = Number(cells.get(cols.wh).v);
           if (!KNOWN_WAREHOUSES.includes(wh)) { invalid(where, 'supplying warehouse must be 1100 or 2100.'); continue; }
           warehouses.add(wh);
         }
         const material = Number(materialText);
-        result.rows.push({ material, order: quantity, category: LEADING_DIGIT_CATEGORY[String(material)[0]], source: where, ...expireBatch(cells.get(cols.batch)) });
+        const row = { material, order: quantity, category: LEADING_DIGIT_CATEGORY[String(material)[0]], source: where, ...expireBatch(cells.get(cols.batch)) };
+        if (options.customTransfer) {
+          for (const [role, field] of [['wh', 'sourcePlant'], ['storage', 'sourceStorage']]) {
+            const cell = cells.get(cols[role]);
+            const text = cols[role] < 0 ? null : String(cell?.v == null ? '' : cell.v).trim();
+            row[field + 'Text'] = text;
+            row[field] = text && /^\d{4}$/.test(text) && cell?.t !== 'e' ? Number(text) : null;
+          }
+        }
+        result.rows.push(row);
       }
     });
     if (warehouses.size > 1) invalid('Warehouse column', 'this file contains both warehouses. Upload one warehouse at a time.');
@@ -2154,7 +2285,6 @@
     return result;
   }
   function buildExpireRows(rows, settings) {
-    const destination = EXPIRE_DESTINATION[settings.warehouse];
     let docNm = 0, slNo = 0, previousCategory = null;
     // Preserve the exact worksheet/row sequence. Start another SAP document
     // when the category changes, so documents remain contiguous without sorting.
@@ -2164,38 +2294,43 @@
       return {
         docNm, date: settings.dateNum, type: settings.docType,
         companyCode: settings.companyCode, purchOrg: settings.purchOrg,
-        purGroup: CATEGORY_PUR_GROUP[row.category], supplyingPlant: settings.warehouse,
-        slNo, material: row.material, stgeLoc: null, toWhere: destination.plant,
+        purGroup: CATEGORY_PUR_GROUP[row.category], supplyingPlant: settings.fromWh,
+        slNo, material: row.material, stgeLoc: null, toWhere: settings.toWh,
         qty: row.order, poUnit: settings.poUnit, poReason: null,
         poBatch: settings.includeBatch ? row.batch : null,
-        destStgeLoc: destination[row.category], supplyingStgeLoc: STORAGE_LOCATIONS[settings.warehouse][row.category],
+        destStgeLoc: settings.toStorageMode === 'auto' ? transferCategoryStorage(settings.toWh,row.category) : settings.toStorage,
+        supplyingStgeLoc: settings.fromStorageMode === 'auto' ? transferCategoryStorage(settings.fromWh,row.category) : settings.fromStorageMode === 'excel' ? row.sourceStorage : settings.fromStorage,
       };
     });
   }
 
-  function mergeDuplicateMaterials(rows) {
+  function mergeDuplicateMaterials(rows, includeBatch = false, includeStorage = false) {
     const merged = [];
     const map = new Map();
     rows.forEach(r => {
-      if (map.has(r.material)) {
-        map.get(r.material).order += r.order;
+      const key = JSON.stringify([r.material, includeBatch ? r.batch : '', includeStorage ? r.sourceStorage : '']);
+      if (map.has(key)) {
+        const total = map.get(key).order + r.order;
+        if (!Number.isFinite(total) || total > Number.MAX_SAFE_INTEGER) throw new Error('The combined quantity for material ' + r.material + ' exceeds Excel’s safe numeric range. Keep the rows separate or correct their quantities.');
+        map.get(key).order = total;
       } else {
-        const copy = { material: r.material, order: r.order };
-        map.set(r.material, copy);
+        const copy = { ...r };
+        map.set(key, copy);
         merged.push(copy);
       }
     });
     return { merged, duplicates: rows.length - merged.length };
   }
 
-  function transferDuplicateSummary(rows) {
+  function transferDuplicateSummary(rows, includeBatch = false, includeStorage = false) {
     const seen = new Set(), materials = new Map(), unique = [];
     let duplicates = 0;
     rows.forEach(row => {
-      const key = row.material + '|' + row.order;
+      const key = JSON.stringify([row.material, row.order, includeBatch ? row.batch : '', includeStorage ? row.sourceStorage : '']);
       if (seen.has(key)) duplicates++;
       else { seen.add(key); unique.push(row); }
-      materials.set(row.material, (materials.get(row.material) || 0) + 1);
+      const group = JSON.stringify([row.material, includeBatch ? row.batch : '', includeStorage ? row.sourceStorage : '']);
+      materials.set(group, (materials.get(group) || 0) + 1);
     });
     return { unique, duplicates, repeatedMaterials: Array.from(materials.values()).filter(count => count > 1).length };
   }
@@ -2221,8 +2356,7 @@
   }
 
   function buildTransferRows(rows, settings) {
-    const fromWh = settings.direction === 'jed2ryd' ? 1100 : 2100;
-    const toWh = settings.direction === 'jed2ryd' ? 2100 : 1100;
+    const fromWh = settings.fromWh, toWh = settings.toWh;
     let docNm = 0, slNo = 0, prevCategory = null;
     return rows.map(row => {
       const category = LEADING_DIGIT_CATEGORY[String(row.material)[0]];
@@ -2234,9 +2368,9 @@
         companyCode: settings.companyCode, purchOrg: settings.purchOrg,
         purGroup: CATEGORY_PUR_GROUP[category], supplyingPlant: fromWh, slNo, material: row.material,
         stgeLoc: null, toWhere: toWh, qty: row.order,
-        poUnit: settings.poUnit, poReason: null, poBatch: null,
-        destStgeLoc: STORAGE_LOCATIONS[toWh][category],
-        supplyingStgeLoc: STORAGE_LOCATIONS[fromWh][category],
+        poUnit: settings.poUnit, poReason: null, poBatch: settings.includeBatch ? row.batch : null,
+        destStgeLoc: STORAGE_LOCATIONS[toWh] || settings.toStorageMode === 'auto' ? transferCategoryStorage(toWh, category) : settings.toStorage,
+        supplyingStgeLoc: STORAGE_LOCATIONS[fromWh] ? STORAGE_LOCATIONS[fromWh][category] : settings.fromStorageMode === 'excel' ? row.sourceStorage : settings.fromStorage,
       };
     });
   }
@@ -2524,8 +2658,8 @@
     catch (error) { throw uploadError('excel-parse'); }
   }
 
-  const state = { mode: 'issue', uniqueRows: null, finalRows: null, fileName: '', fileReadToken: 0, fileReadController: null, expireWarehouse: null,
-    transferAllRows: null, transferDuplicateChoice: null, transferDuplicates: 0, transferRepeatedMaterials: 0,
+  const state = { mode: 'issue', uniqueRows: null, finalRows: null, fileName: '', fileReadToken: 0, fileReadController: null, uploadedSummary: null,
+    transferAllRows: null, transferDuplicateChoice: null, transferDuplicates: 0, transferRepeatedMaterials: 0, transferMergeError: '',
     issueSourceRows: null, issueAllRows: null, issueDuplicateChoice: null, issueDuplicates: 0, issueRepeatedGroups: 0, issueValidationIssues: [], issueValidationLimit: 50,
     issueWarehouseOverrides: new Map(), issueReviewLimit: 40 };
   const DIRECTORY_STORAGE_KEY = 'upc-stocklink-pharmacy-directory-v1';
@@ -2567,7 +2701,8 @@
   const transferChecks = {};
   ['transferDuplicatesPanel', 'transferDuplicatesSummary', 'transferDuplicatesStatus', 'transferRemoveDuplicates',
     'transferKeepDuplicates', 'transferCombineDuplicates', 'transferFromWarehouse', 'transferToWarehouse',
-    'transferRouteReview', 'transferToUpload'].forEach(id => { transferChecks[id] = document.getElementById(id); });
+    'transferRouteReview', 'transferToUpload', 'transferRouteError', 'transferFileError', 'transferSourceLocations'].forEach(id => { transferChecks[id] = document.getElementById(id); });
+  const expireRouteUI = Object.fromEntries(['FromWarehouse','ToWarehouse','FromStorage','ToStorage','RouteError','MappingRows','FromSummary','ToSummary','ToUpload'].map(name => [name,document.getElementById('expire'+name)]));
   const pharmacyReview = {
     panel: document.getElementById('pharmacyWarehouseReview'),
     reference: document.getElementById('pharmacyReviewReference'),
@@ -2589,7 +2724,6 @@
   const transferSetup = document.getElementById('transferSetup');
   const expireSettings = document.getElementById('expireSettings');
   const expireSetup = document.getElementById('expireSetup');
-  const expireWarehouseInput = document.getElementById('expireWarehouse');
   const expireDateInput = document.getElementById('expireDate');
   const expireIncludeBatchInput = document.getElementById('expireIncludeBatch');
   const expireValidation = document.getElementById('expireValidation');
@@ -2629,17 +2763,65 @@
     const day = String(d.getDate()).padStart(2, '0');
     return d.getFullYear() + '-' + m + '-' + day;
   }
-  issueDateInput.value = todayIso();
-  transferDateInput.value = todayIso();
-  expireDateInput.value = todayIso();
-  try {
-    const savedWarehouse = Number(localStorage.getItem('upc-stocklink-expire-warehouse'));
-    if (KNOWN_WAREHOUSES.includes(savedWarehouse)) state.expireWarehouse = savedWarehouse;
-  } catch (error) {}
-  expireWarehouseInput.value = state.expireWarehouse ? String(state.expireWarehouse) : '';
+  const dateChoices = Object.fromEntries(['issue','transfer','expire','overstock','stock'].map(mode => [mode, {
+    input: document.getElementById(mode+'Date'), automatic: document.getElementById(mode+'UseToday'),
+    help: document.getElementById(mode+'DateHelp'), error: document.getElementById(mode+'DateError'),
+  }]));
+  let moduleDateRefreshTimer;
+  function refreshModuleDate(mode) {
+    const control = dateChoices[mode];
+    const isoDate = todayIso();
+    const automatic = control.automatic.checked;
+    const changed = automatic && control.input.value !== isoDate;
+    control.input.readOnly = automatic;
+    if (automatic) control.input.value = isoDate;
+    control.help.textContent = automatic ? 'Uses today’s date when you generate or download.' : 'Your selected date is used for this file. Select Use today’s date to return to automatic updates.';
+    if (changed && state.mode === mode && ['issue','transfer','expire'].includes(mode)) {
+      if (state.finalRows) downloadName.textContent = 'Download as: ' + outputFilename();
+      downloadStatus.hidden = true;
+    }
+    document.querySelectorAll('[data-summary-date="'+mode+'"]').forEach(element => { element.textContent = formatSummaryDate(control.input.value); });
+    if (changed && control.onRefresh) control.onRefresh();
+    return control.input.value;
+  }
+  function refreshAllModuleDates() {
+    Object.keys(dateChoices).forEach(refreshModuleDate);
+    window.clearTimeout(moduleDateRefreshTimer);
+    if (Object.values(dateChoices).some(control => control.automatic.checked)) {
+      const now = new Date();
+      const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      moduleDateRefreshTimer = window.setTimeout(refreshAllModuleDates, midnight.getTime() - now.getTime() + 100);
+    }
+  }
+  function moduleDateProblem(mode) {
+    const input = dateChoices[mode].input;
+    return /^\d{4}-\d{2}-\d{2}$/.test(input.value) && input.validity.valid ? '' : 'Choose a valid date, or select Use today’s date.';
+  }
+  function validateModuleDate(mode, focus = false) {
+    const control = dateChoices[mode], problem = moduleDateProblem(mode);
+    control.error.textContent = problem; control.error.hidden = !problem;
+    control.input.setAttribute('aria-invalid',String(Boolean(problem)));
+    if (problem && focus) {
+      for (let parent = control.input.parentElement; parent; parent = parent.parentElement) if (parent.tagName === 'DETAILS') parent.open = true;
+      scrollToSection(control.input); control.input.focus({preventScroll:true});
+    }
+    return !problem;
+  }
+  Object.entries(dateChoices).forEach(([mode,control]) => {
+    const change = () => { refreshAllModuleDates(); validateModuleDate(mode); if (control.onChange) control.onChange(); };
+    control.automatic.addEventListener('change',change);
+    control.input.addEventListener('input',change); control.input.addEventListener('change',change);
+  });
+  function refreshAutomaticIssueDate() { return refreshModuleDate('issue'); }
+  refreshAllModuleDates();
+  window.addEventListener('focus', refreshAllModuleDates);
+  window.addEventListener('pageshow', refreshAllModuleDates);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) refreshAllModuleDates();
+  });
 
   function scrollToSection(element) {
-    if (!element || Boolean(element.closest('#pharmacyDirectoryTool')) !== directory.open) return;
+    if (!element || Boolean(element.closest('#pharmacyDirectoryTool')) !== directory.open || Boolean(element.closest('#historyTool')) !== processHistory.open) return;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     element.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     const step = element.closest('.step');
@@ -2662,6 +2844,293 @@
     });
   }
 
+  function formatSummaryDate(value) {
+    const text = String(value || '').replace(/-/g,'');
+    return /^\d{8}$/.test(text) ? text.slice(6,8)+'-'+text.slice(4,6)+'-'+text.slice(0,4) : 'Choose a date';
+  }
+  function newSummaryGroup() { return {lines:0, materials:new Set(), total:0, integerTotal:0n, integers:true, known:0, missing:0}; }
+  function newSummaryTotals() { return {total:newSummaryGroup(), groups:Object.fromEntries([...EXPIRE_CATEGORY_ORDER,'other'].map(key => [key,newSummaryGroup()]))}; }
+  function summaryStats(rows, getQuantity = row => row.order, getCategory = row => row.category || LEADING_DIGIT_CATEGORY[String(row.material)[0]] || 'other', getWarehouse = row => row.supplyingPlant ?? row.wh ?? row.sourcePlant) {
+    const stats = {...newSummaryTotals(), warehouses:new Map()};
+    rows.forEach(row => {
+      const category = getCategory(row), group = stats.groups[category] || stats.groups.other;
+      const warehouse = String(getWarehouse(row) ?? '').trim() || 'unassigned';
+      if (!stats.warehouses.has(warehouse)) stats.warehouses.set(warehouse,newSummaryTotals());
+      const warehouseStats = stats.warehouses.get(warehouse), warehouseGroup = warehouseStats.groups[category] || warehouseStats.groups.other;
+      const quantity = getQuantity(row);
+      for (const item of [stats.total,group,warehouseStats.total,warehouseGroup]) {
+        item.lines++; item.materials.add(String(row.material));
+        if (typeof quantity !== 'number' || !Number.isFinite(quantity)) { item.missing++; continue; }
+        item.known++; item.total += quantity;
+        if (Number.isSafeInteger(quantity)) item.integerTotal += BigInt(quantity); else item.integers = false;
+      }
+    });
+    return stats;
+  }
+  function summaryQuantity(group) {
+    if (!group.known && group.missing) return 'Not listed';
+    return group.integers ? group.integerTotal.toLocaleString() : Number(group.total.toPrecision(15)).toLocaleString(undefined,{maximumSignificantDigits:15});
+  }
+  function categoryCardsHTML(stats, options = {}) {
+    const ids = EXPIRE_CATEGORY_ORDER.concat(stats.groups.other.lines ? ['other'] : []);
+    return '<div class="category-total-grid">' + ids.map(category => {
+      const group = stats.groups[category], label = category === 'other' ? 'Other' : CATEGORY_LABEL[category];
+      const materialCount = group.materials.size.toLocaleString() + (group.materials.size === 1 ? ' material' : ' materials');
+      const counts = options.uniqueOnly ? materialCount
+        : group.lines.toLocaleString() + (options.checks ? group.lines === 1 ? ' check' : ' checks' : group.lines === 1 ? ' line' : ' lines') + ' · ' + materialCount;
+      return '<div class="category-total" data-category="'+category+'"><span class="category-total-label">'+label+'</span><strong>'+escapeHtml(summaryQuantity(group))+'</strong><small>'+escapeHtml(options.quantityLabel || 'Total quantity')+'</small><span class="category-total-meta">'+counts+'</span>'+(group.missing ? '<small>'+group.missing.toLocaleString()+' not listed in stock</small>' : '')+'</div>';
+    }).join('')+'</div>';
+  }
+  function warehouseCardsHTML(stats, options = {}) {
+    if (!stats.warehouses?.size) return '';
+    const title = options.uniqueOnly ? 'Uploaded stock by warehouse' : options.checks ? 'Checks by warehouse' : 'Lines by supplying warehouse';
+    return '<h4 class="warehouse-summary-title">'+title+'</h4><div class="warehouse-summary-grid">'+Array.from(stats.warehouses).sort(([a],[b]) => naturalCompare(a,b)).map(([code,values]) => {
+      const label = code === 'unassigned' ? 'Warehouse not specified' : TRANSFER_PLANTS[code] ? TRANSFER_PLANTS[code]+' ('+code+')' : 'Warehouse '+code;
+      const lines = options.uniqueOnly && stats.warehouses.size === 1 && options.uploadedLines != null ? options.uploadedLines : values.total.lines;
+      const categoryIds = EXPIRE_CATEGORY_ORDER.concat(values.groups.other.lines ? ['other'] : []);
+      const countLabel = options.uniqueOnly ? 'Materials' : options.checks ? 'Checks' : 'Lines';
+      return '<section class="warehouse-total-card" data-warehouse="'+escapeHtml(code)+'"><h4>'+escapeHtml(label)+'</h4><div class="warehouse-total-metrics">'+
+        '<span><strong data-wh-lines>'+lines.toLocaleString()+'</strong><small>'+(options.uniqueOnly ? 'Uploaded lines' : countLabel)+'</small></span>'+
+        '<span><strong data-wh-quantity>'+escapeHtml(summaryQuantity(values.total))+'</strong><small>'+escapeHtml(options.quantityLabel || 'Total quantity')+'</small></span>'+
+        '<span><strong data-wh-materials>'+values.total.materials.size.toLocaleString()+'</strong><small>Unique materials</small></span></div>'+
+        (values.total.missing ? '<p class="summary-note">'+values.total.missing.toLocaleString()+' stock quantities are not listed.</p>' : '')+
+        '<details><summary>View category totals</summary><table class="warehouse-category-table"><thead><tr><th>Category</th><th>'+countLabel+'</th><th>Quantity</th></tr></thead><tbody>'+categoryIds.map(category => {
+          const group = values.groups[category];
+          return '<tr data-wh-category="'+category+'"><td>'+(category === 'other' ? 'Other' : CATEGORY_LABEL[category])+'</td><td data-wh-category-lines>'+(options.uniqueOnly ? group.materials.size : group.lines).toLocaleString()+'</td><td data-wh-category-quantity>'+escapeHtml(summaryQuantity(group))+'</td></tr>';
+        }).join('')+'</tbody></table></details></section>';
+    }).join('')+'</div>';
+  }
+  function renderCategorySummary(target, stats, title, note, options = {}) {
+    target.tabIndex = -1;
+    target.hidden = !stats.total.lines;
+    if (!stats.total.lines) { target.replaceChildren(); return; }
+    target.innerHTML = '<section class="summary-panel"><h3>'+escapeHtml(title)+'</h3><p class="summary-note">'+escapeHtml(note)+'</p><div class="summary-headline">'+
+      (options.uniqueOnly ? '' : '<span><b data-summary-lines>'+stats.total.lines.toLocaleString()+'</b> lines</span>')+
+      '<span><b data-summary-materials>'+stats.total.materials.size.toLocaleString()+'</b> unique materials</span><span>'+escapeHtml(options.quantityLabel || 'Total quantity')+': <b data-summary-quantity>'+escapeHtml(summaryQuantity(stats.total))+'</b></span></div>'+warehouseCardsHTML(stats,options)+categoryCardsHTML(stats,options)+'</section>';
+  }
+  function renderDownloadSummary(target, stats, fields, mode, options = {}) {
+    target.innerHTML = '<section class="summary-panel download-summary-panel"><h3>Review before download</h3><p class="summary-note">'+escapeHtml(options.note || 'These totals follow your selected settings and include every line in the SAP download.')+'</p><dl class="summary-details">'+fields.map(([label,value,date]) => '<div><dt>'+escapeHtml(label)+'</dt><dd data-summary-field="'+label.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'"'+(date ? ' data-summary-date="'+mode+'"' : '')+'>'+escapeHtml(value)+'</dd></div>').join('')+'</dl>'+warehouseCardsHTML(stats,options)+categoryCardsHTML(stats,options)+'</section>';
+  }
+  function refreshUploadedWarehouseSummary() {
+    const uploaded = state.uploadedSummary;
+    if (!uploaded || !['issue','transfer','expire'].includes(state.mode)) return;
+    const warehouse = state.mode === 'issue' ? row => row.wh : state.mode === 'expire' ? row => row.sourcePlantText != null ? row.sourcePlant : expireRouteConfig().fromWh
+      : row => row.sourcePlantText != null ? row.sourcePlant : transferRouteConfig().fromWh;
+    renderCategorySummary(document.getElementById('uploadCategorySummary'),summaryStats(uploaded.rows,undefined,undefined,warehouse),'Uploaded file totals',
+      'Valid uploaded lines, including repeated rows. Download totals follow your duplicate choice.' + (uploaded.excluded ? ' '+uploaded.excluded.toLocaleString()+' invalid or unrecognized lines are excluded from these totals.' : ''));
+  }
+  function summaryCodes(values, plants = false) {
+    const codes = Array.from(new Set(values.filter(value => value != null && value !== '').map(String))).sort(naturalCompare);
+    return codes.length ? codes.slice(0,8).map(code => plants && TRANSFER_PLANTS[code] ? TRANSFER_PLANTS[code]+' ('+code+')' : code).join(', ')+(codes.length > 8 ? ' + '+(codes.length-8)+' more' : '') : '—';
+  }
+  function sapSummaryFields(rows, stats, mode) {
+    const destinations = new Set(rows.map(row => String(row.toWhere)));
+    const choice = mode === 'issue' ? state.issueDuplicateChoice : state.transferDuplicateChoice;
+    const duplicateText = mode === 'expire' || mode === 'overstock' ? 'Every accepted line kept' : choice === 'combine' ? 'Matching quantities combined' : choice === 'remove' ? 'Exact duplicate rows removed' : 'All rows kept';
+    const fields = [['Issue date',formatSummaryDate(rows[0]?.date || dateChoices[mode].input.value),true],
+      ['From warehouse',summaryCodes(rows.map(row => row.supplyingPlant),true)],
+      ['To',mode === 'issue' ? destinations.size.toLocaleString()+' pharmacies / dark stores'+(destinations.size <= 3 ? ': '+Array.from(destinations).join(', ') : '') : summaryCodes(rows.map(row => row.toWhere),true)],
+      ['Output lines',stats.total.lines.toLocaleString()],['Unique materials',stats.total.materials.size.toLocaleString()],['Total quantity',summaryQuantity(stats.total)],
+      ['Batches',rows.some(row => row.poBatch != null && String(row.poBatch) !== '') ? 'Included' : 'Not included'],['Duplicate handling',duplicateText]];
+    const sourceStorage = summaryCodes(rows.map(row => row.supplyingStgeLoc));
+    if (sourceStorage !== '—') fields.push(['From storage',sourceStorage]);
+    fields.push(['To storage',summaryCodes(rows.map(row => row.destStgeLoc))]);
+    return fields;
+  }
+
+  // Keep small, versioned download summaries; never persist uploaded material rows.
+  const processHistory = (function () {
+    const KEY = 'upc-stocklink-process-history-v1', LIMIT = 100;
+    const labels = {issue:'Pharmacy Issue',transfer:'Warehouse Transfer',expire:'Store Expire',overstock:'Overstock Issue',stock:'Stock Check'};
+    const history = {open:false, returnScroll:0, entries:[], notice:'', problem:false};
+    const ui = Object.fromEntries(['Tool','Section','Search','Module','Warehouse','Date','Export','ResetFilters','Clear','ResultCount','Status','ClearConfirm','ConfirmClear','CancelClear','List','Back'].map(name => [name,document.getElementById('history'+name)]));
+    const categories = [...EXPIRE_CATEGORY_ORDER,'other'];
+    const safeText = (value, max = 600) => typeof value === 'string' && value.length <= max;
+    const safeCount = value => Number.isSafeInteger(value) && value >= 0;
+    const safeQuantity = value => value === null || safeText(value,80) && value.trim() !== '' && Number.isFinite(Number(value));
+    function validGroup(value) {
+      return value && safeCount(value.lines) && safeCount(value.materials) && safeCount(value.missing) && safeQuantity(value.quantity);
+    }
+    function validTotals(value) {
+      return value && validGroup(value.total) && value.groups && categories.every(key => validGroup(value.groups[key]));
+    }
+    function validEntry(entry) {
+      return entry && safeText(entry.id,100) && /^[a-zA-Z0-9-]+$/.test(entry.id) && Object.hasOwn(labels,entry.mode) &&
+        safeText(entry.createdAt,40) && Number.isFinite(Date.parse(entry.createdAt)) && safeText(entry.processDate,10) && /^\d{4}-\d{2}-\d{2}$/.test(entry.processDate) &&
+        safeText(entry.timeZone,100) && safeText(entry.sourceName,1500) && safeText(entry.outputName,300) && safeText(entry.kind,80) &&
+        safeText(entry.quantityLabel,80) && typeof entry.checks === 'boolean' && validTotals(entry.stats) &&
+        Array.isArray(entry.stats.warehouses) && entry.stats.warehouses.length <= 16 && entry.stats.warehouses.every(item => Array.isArray(item) && item.length === 2 && safeText(item[0],40) && validTotals(item[1])) &&
+        Array.isArray(entry.destinationCodes) && entry.destinationCodes.length <= 16 && entry.destinationCodes.every(code => typeof code === 'string' && /^\d{4}$/.test(code)) &&
+        Array.isArray(entry.fields) && entry.fields.length <= 40 && entry.fields.every(field => Array.isArray(field) && field.length === 2 && safeText(field[0],100) && safeText(field[1],1500));
+    }
+    function readStored() {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return [];
+      if (raw.length > 2000000) throw new Error('History is too large.');
+      const saved = JSON.parse(raw);
+      if (saved.version !== 1 || !Array.isArray(saved.entries) || saved.entries.length > LIMIT || !saved.entries.every(validEntry)) throw new Error('Unrecognized saved history.');
+      return saved.entries;
+    }
+    function mergeEntries(saved, current) {
+      const seen = new Set();
+      return [...saved,...current].filter(entry => { if (seen.has(entry.id)) return false; seen.add(entry.id); return true; }).sort((a,b) => b.createdAt.localeCompare(a.createdAt)).slice(0,LIMIT);
+    }
+    function announce(message, problem = false) {
+      history.notice = message; history.problem = problem;
+      ui.Status.textContent = message; ui.Status.className = 'callout '+(problem ? 'error' : 'note'); ui.Status.hidden = !message;
+    }
+    function load(announceChange = false) {
+      try {
+        history.entries = readStored();
+        if (announceChange) announce('History was updated in another tab.');
+      } catch (error) { announce('Saved history could not be read. Entries from this tab can still be exported. Clear history to reset saved data, or check browser storage settings.',true); }
+      render();
+    }
+    function packGroup(group) {
+      return {lines:group.lines,materials:group.materials.size,missing:group.missing,
+        quantity:!group.known && group.missing ? null : group.integers ? group.integerTotal.toString() : Number(group.total.toPrecision(15)).toString()};
+    }
+    function packTotals(stats) {
+      return {total:packGroup(stats.total),groups:Object.fromEntries(categories.map(key => [key,packGroup(stats.groups[key])]))};
+    }
+    function quantityText(value) {
+      if (value === null) return 'Not listed';
+      return /^-?\d+$/.test(value) ? BigInt(value).toLocaleString() : Number(value).toLocaleString(undefined,{maximumSignificantDigits:15});
+    }
+    function excelQuantity(value) {
+      if (value === null) return null;
+      const number = Number(value);
+      return Number.isInteger(number) && !Number.isSafeInteger(number) ? value : number;
+    }
+    function warehouseName(code) { return TRANSFER_PLANTS[code] ? TRANSFER_PLANTS[code]+' ('+code+')' : code === 'unassigned' ? 'Warehouse not specified' : 'Warehouse '+code; }
+    function warehousesText(entry) { return entry.stats.warehouses.map(([code]) => warehouseName(code)).join(', ') || '—'; }
+    function destinationsText(entry) { return entry.destinationCodes.map(warehouseName).join(', '); }
+    function fieldValue(entry, label) { return entry.fields.find(field => field[0] === label)?.[1] || '—'; }
+    function timeText(entry) {
+      const options = {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false};
+      try { return new Date(entry.createdAt).toLocaleString('en-GB',{...options,timeZone:entry.timeZone}); }
+      catch (error) { return new Date(entry.createdAt).toLocaleString('en-GB',options); }
+    }
+    function counted(value, label) { return value.toLocaleString()+' '+label+(value === 1 ? '' : 's'); }
+    function filteredEntries() {
+      const query = ui.Search.value.trim().toLowerCase(), mode = ui.Module.value, city = ui.Warehouse.value, date = ui.Date.value;
+      const cityCodes = city === 'jeddah' ? ['1100','1200'] : ['2100','2200'];
+      return history.entries.filter(entry => (mode === 'all' || entry.mode === mode) && (!date || entry.processDate === date) &&
+        (city === 'all' || [...entry.stats.warehouses.map(([code]) => code),...entry.destinationCodes].some(code => cityCodes.includes(code))) &&
+        (!query || [entry.sourceName,entry.outputName,labels[entry.mode],entry.kind,warehousesText(entry),destinationsText(entry)].join(' ').toLowerCase().includes(query)));
+    }
+    function categoryHTML(stats, entry) {
+      return '<div class="category-total-grid">'+categories.filter(key => key !== 'other' || stats.groups.other.lines).map(key => {
+        const group = stats.groups[key];
+        return '<div class="category-total" data-history-category="'+key+'"><span class="category-total-label">'+(CATEGORY_LABEL[key] || 'Other')+'</span><strong>'+escapeHtml(quantityText(group.quantity))+'</strong><small>'+escapeHtml(entry.quantityLabel)+'</small><span class="category-total-meta">'+counted(group.lines,entry.checks ? 'check' : 'line')+' · '+counted(group.materials,'unique material')+'</span></div>';
+      }).join('')+'</div>';
+    }
+    function warehouseHTML(entry) {
+      return '<h4 class="warehouse-summary-title">'+(entry.checks ? 'Checks' : 'Lines')+' by supplying warehouse</h4><div class="warehouse-summary-grid">'+entry.stats.warehouses.map(([code,stats]) =>
+        '<section class="warehouse-total-card" data-history-warehouse="'+escapeHtml(code)+'"><h4>'+escapeHtml(warehouseName(code))+'</h4><div class="warehouse-total-metrics"><span><strong data-history-lines>'+stats.total.lines.toLocaleString()+'</strong><small>'+(entry.checks ? 'Checks' : 'Lines')+'</small></span><span><strong data-history-quantity>'+escapeHtml(quantityText(stats.total.quantity))+'</strong><small>'+escapeHtml(entry.quantityLabel)+'</small></span><span><strong>'+stats.total.materials.toLocaleString()+'</strong><small>Unique materials</small></span></div>'+categoryHTML(stats,entry)+(stats.total.missing ? '<p class="summary-note">'+stats.total.missing.toLocaleString()+' quantities are not listed.</p>' : '')+'</section>'
+      ).join('')+'</div>';
+    }
+    function render() {
+      const entries = filteredEntries();
+      ui.ResultCount.textContent = entries.length+' of '+history.entries.length+' '+(history.entries.length === 1 ? 'entry' : 'entries');
+      ui.Export.disabled = !entries.length; ui.Clear.disabled = !history.entries.length && !history.problem;
+      ui.List.innerHTML = entries.length ? entries.map(entry => '<article class="history-entry" data-history-id="'+escapeHtml(entry.id)+'"><div class="history-entry-top"><span class="history-module">'+labels[entry.mode]+'</span><time datetime="'+escapeHtml(entry.createdAt)+'">'+escapeHtml(timeText(entry))+'</time></div><h3>'+escapeHtml(entry.outputName)+'</h3><p class="summary-note">'+escapeHtml(entry.kind)+' · '+escapeHtml(warehousesText(entry))+(entry.destinationCodes.length ? ' → '+escapeHtml(destinationsText(entry)) : '')+'</p><div class="summary-headline"><span><b>'+entry.stats.total.lines.toLocaleString()+'</b> '+(entry.checks ? entry.stats.total.lines === 1 ? 'check' : 'checks' : entry.stats.total.lines === 1 ? 'line' : 'lines')+'</span><span><b>'+entry.stats.total.materials.toLocaleString()+'</b> unique material'+(entry.stats.total.materials === 1 ? '' : 's')+'</span><span>'+escapeHtml(entry.quantityLabel)+': <b>'+escapeHtml(quantityText(entry.stats.total.quantity))+'</b></span></div><details><summary>View details</summary><dl class="summary-details"><div><dt>Uploaded file(s)</dt><dd>'+escapeHtml(entry.sourceName)+'</dd></div><div><dt>Download status</dt><dd>Download started</dd></div>'+entry.fields.map(([label,value]) => '<div><dt>'+escapeHtml(label)+'</dt><dd>'+escapeHtml(value)+'</dd></div>').join('')+'</dl>'+warehouseHTML(entry)+'<h4 class="warehouse-summary-title">All categories</h4>'+categoryHTML(entry.stats,entry)+'<div class="history-entry-actions"><button class="text-btn history-delete" type="button" data-history-delete="'+escapeHtml(entry.id)+'">Delete this entry</button></div></details></article>').join('') : '<p class="history-empty">'+(history.entries.length ? 'No matching history.' : 'No history yet.')+'</p>';
+    }
+    function record(options) {
+      try {
+        const entry = {id:typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),
+          mode:options.mode,createdAt:new Date().toISOString(),processDate:todayIso(),timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone || 'Device time',
+          sourceName:String(options.sourceName || 'Manual material search').slice(0,1500),outputName:String(options.outputName).slice(0,300),kind:options.kind || 'SAP issue Excel',
+          quantityLabel:options.quantityLabel || 'Total quantity',checks:Boolean(options.checks),
+          stats:{...packTotals(options.stats),warehouses:Array.from(options.stats.warehouses,([code,stats]) => [code,packTotals(stats)])},
+          destinationCodes:Array.from(new Set((options.destinationCodes || []).map(String).filter(code => /^\d{4}$/.test(code)))).slice(0,16),
+          fields:options.fields.map(([label,value]) => [String(label).slice(0,100),String(value).slice(0,1500)]).slice(0,40)};
+        if (!validEntry(entry)) throw new Error('Invalid history summary.');
+        let saved;
+        try { saved = readStored(); }
+        catch (error) {
+          history.entries = [entry,...history.entries].slice(0,LIMIT);
+          announce('This download is listed for this tab, but history could not be saved. Check browser storage settings or export the history before closing.',true); render();
+          return ' History could not be saved; its summary is available in this tab.';
+        }
+        history.entries = [entry,...mergeEntries(saved,history.entries)].slice(0,LIMIT);
+        try { localStorage.setItem(KEY,JSON.stringify({version:1,entries:history.entries})); }
+        catch (error) {
+          announce('This download is listed for this tab, but browser storage is unavailable or full. Export history before closing this page.',true); render();
+          return ' History could not be saved; export it before closing this tab.';
+        }
+        announce('History saved in this browser.'); render(); return ' History saved.';
+      } catch (error) { announce('The file download started, but its history summary could not be saved.',true); return ' History could not be saved.'; }
+    }
+    function saveRemoval(id) {
+      try {
+        const entries = mergeEntries(readStored(),history.entries).filter(entry => entry.id !== id);
+        localStorage.setItem(KEY,JSON.stringify({version:1,entries})); history.entries = entries;
+        announce('History entry deleted.');
+      } catch (error) { announce('The entry could not be deleted from saved history. Check browser storage settings and try again.',true); }
+      render(); ui.Search.focus({preventScroll:true});
+    }
+    function exportWorkbook(entries) {
+      const wb = XLSX.utils.book_new();
+      function sheet(name, rows, widths) {
+        const ws = XLSX.utils.aoa_to_sheet(rows); ws['!cols'] = widths.map(wch => ({wch}));
+        ws['!autofilter'] = {ref:XLSX.utils.encode_range({s:{r:0,c:0},e:{r:rows.length-1,c:rows[0].length-1}})};
+        XLSX.utils.book_append_sheet(wb,ws,name);
+      }
+      const main = [['Processed at (saved time zone)','Time zone','Process date','Module','Output type','Uploaded file(s)','Downloaded file','Issue / report date','Supplying warehouse(s)','Destination warehouse(s)','Lines / checks','Unique materials','Quantity label','Quantity','Unknown quantities','Duplicate handling','Batches','Status']];
+      const warehouses = [['Processed at (saved time zone)','Downloaded file','Module','Supplying warehouse','Lines / checks','Unique materials','Quantity label','Quantity','Unknown quantities']];
+      const groups = [['Processed at (saved time zone)','Downloaded file','Module','Scope','Category','Lines / checks','Unique materials','Quantity label','Quantity','Unknown quantities']];
+      const details = [['Processed at (saved time zone)','Downloaded file','Detail','Value']];
+      entries.forEach(entry => {
+        const time = timeText(entry), label = labels[entry.mode];
+        const selectedDate = entry.fields.find(field => field[0] === 'Issue date' || field[0] === 'Report date')?.[1] || '—';
+        main.push([time,entry.timeZone,entry.processDate,label,entry.kind,entry.sourceName,entry.outputName,selectedDate,warehousesText(entry),destinationsText(entry),entry.stats.total.lines,entry.stats.total.materials,entry.quantityLabel,excelQuantity(entry.stats.total.quantity),entry.stats.total.missing,fieldValue(entry,'Duplicate handling'),fieldValue(entry,'Batches'),'Download started']);
+        function appendGroups(stats, scope) { categories.filter(key => key !== 'other' || stats.groups.other.lines).forEach(key => {
+          const value = stats.groups[key]; groups.push([time,entry.outputName,label,scope,CATEGORY_LABEL[key] || 'Other',value.lines,value.materials,entry.quantityLabel,excelQuantity(value.quantity),value.missing]);
+        }); }
+        appendGroups(entry.stats,'All supplying warehouses');
+        entry.stats.warehouses.forEach(([code,stats]) => { warehouses.push([time,entry.outputName,label,warehouseName(code),stats.total.lines,stats.total.materials,entry.quantityLabel,excelQuantity(stats.total.quantity),stats.total.missing]); appendGroups(stats,warehouseName(code)); });
+        entry.fields.forEach(([key,value]) => details.push([time,entry.outputName,key,value]));
+      });
+      sheet('History',main,[26,24,14,23,30,45,45,20,32,32,16,18,28,22,20,32,28,22]);
+      sheet('Warehouse totals',warehouses,[26,45,23,28,18,18,28,22,20]);
+      sheet('Category totals',groups,[26,45,23,30,18,18,18,28,22,20]);
+      sheet('Details',details,[26,45,30,60]);
+      return wb;
+    }
+    function openView() {
+      if (!history.open) history.returnScroll = directory.open ? directory.returnScroll : window.scrollY;
+      history.open = true; directory.open = false; ui.ClearConfirm.hidden = true;
+      applyModeUI(); scrollToSection(ui.Section); ui.Search.focus({preventScroll:true});
+    }
+    function closeView() {
+      history.open = false; ui.ClearConfirm.hidden = true; applyModeUI();
+      window.requestAnimationFrame(() => window.scrollTo({top:history.returnScroll,behavior:'auto'}));
+      document.getElementById('sidebarToggle').focus({preventScroll:true});
+    }
+    [ui.Search,ui.Module,ui.Warehouse,ui.Date].forEach(input => input.addEventListener(input === ui.Search || input === ui.Date ? 'input' : 'change',render));
+    ui.ResetFilters.addEventListener('click',() => { ui.Search.value = ''; ui.Module.value = ui.Warehouse.value = 'all'; ui.Date.value = ''; render(); ui.Search.focus(); });
+    ui.Back.addEventListener('click',closeView);
+    ui.Clear.addEventListener('click',() => { ui.ClearConfirm.hidden = false; ui.ConfirmClear.focus({preventScroll:true}); });
+    ui.CancelClear.addEventListener('click',() => { ui.ClearConfirm.hidden = true; ui.Clear.focus({preventScroll:true}); });
+    ui.ConfirmClear.addEventListener('click',() => {
+      try { localStorage.removeItem(KEY); history.entries = []; announce('All process history deleted from this browser.'); }
+      catch (error) { announce('Saved history could not be cleared. Check browser storage settings and try again.',true); }
+      ui.ClearConfirm.hidden = true; render(); ui.Search.focus({preventScroll:true});
+    });
+    ui.List.addEventListener('click',event => { const button = event.target.closest('[data-history-delete]'); if (button) saveRemoval(button.dataset.historyDelete); });
+    ui.Export.addEventListener('click',async () => {
+      const entries = filteredEntries(); if (!entries.length) return;
+      await runWithLoading('Preparing your history export…',async () => {
+        try { const filename = 'StockLink_History_'+todayIso()+'.xlsx'; await downloadWorkbook(exportWorkbook(entries),filename); announce('Download started: '+filename+' · '+entries.length+' history entries.'); }
+        catch (error) { announce('History could not be exported. Please try again.',true); }
+      });
+    });
+    window.addEventListener('storage',event => { if (event.key === KEY || event.key === null) load(true); });
+    load();
+    return {get open() { return history.open; },openView,closeView,dismiss() { const scroll = history.open ? history.returnScroll : null; history.open = false; return scroll; },record,render};
+  })();
+
   const MODE_TEXT = {
     issue: {
       sub: "Upload your warehouse pick list, confirm the details, and download a file ready to upload into SAP.",
@@ -2670,7 +3139,7 @@
     },
     transfer: {
       sub: "Choose the supplying and receiving warehouses first, then upload materials and quantities and download your SAP transfer file.",
-      hint: "Upload your material + quantity list — column names are detected automatically. Repeated materials give you a choice: keep every row, remove exact duplicates, or combine quantities into one line per material.",
+      hint: "Upload Material and Quantity columns. Custom transfers also accept SAP’s Unrestriced Quantity heading, with optional Plant, Storage Location and Batch columns. When reading source storage from Excel, each line needs its location. Any supplied Plant must match the selected source warehouse. Choose how to handle repeated lines before generating.",
       generate: "Generate transfer file",
     },
     expire: {
@@ -2684,15 +3153,23 @@
     const stockMode = state.mode === 'stock';
     const overstockMode = state.mode === 'overstock';
     const expireMode = state.mode === 'expire';
-    document.getElementById('orderTool').hidden = stockMode || overstockMode || directory.open;
-    document.getElementById('overstockTool').hidden = !overstockMode || directory.open;
-    document.getElementById('stockCheckTool').hidden = !stockMode || directory.open;
+    const overlay = directory.open || processHistory.open;
+    document.getElementById('orderTool').hidden = stockMode || overstockMode || overlay;
+    document.getElementById('overstockTool').hidden = !overstockMode || overlay;
+    document.getElementById('stockCheckTool').hidden = !stockMode || overlay;
     directoryUI.pharmacyDirectoryTool.hidden = !directory.open;
-    document.querySelector('.main-inner').classList.toggle('stock-check-view', stockMode && !directory.open);
-    document.querySelector('.main-inner').classList.toggle('overstock-view', overstockMode && !directory.open);
+    document.getElementById('historyTool').hidden = !processHistory.open;
+    document.querySelector('.main-inner').classList.toggle('stock-check-view', stockMode && !overlay);
+    document.querySelector('.main-inner').classList.toggle('overstock-view', overstockMode && !overlay);
     document.querySelector('.main-inner').classList.toggle('pharmacy-directory-view', directory.open);
-    modeBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-mode') === (directory.open ? 'pharmacy' : state.mode)));
+    document.querySelector('.main-inner').classList.toggle('history-view', processHistory.open);
+    modeBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-mode') === (processHistory.open ? 'history' : directory.open ? 'pharmacy' : state.mode)));
     document.getElementById('topbarWorkflow').textContent = overstockMode ? 'Overstock Issue' : stockMode ? 'Stock Check' : state.mode === 'expire' ? 'Store Expire' : state.mode === 'issue' ? 'Pharmacy Issue' : 'Warehouse Transfer';
+    if (processHistory.open) {
+      document.getElementById('historyBack').textContent = 'Back to '+document.getElementById('topbarWorkflow').textContent;
+      document.getElementById('topbarWorkflow').textContent = 'Process History';
+      processHistory.render(); return;
+    }
     if (directory.open) {
       directoryUI.directoryBack.textContent = 'Back to ' + document.getElementById('topbarWorkflow').textContent;
       document.getElementById('topbarWorkflow').textContent = 'Pharmacy Search';
@@ -2702,7 +3179,7 @@
     if (overstockMode) return;
     expireSetup.hidden = !expireMode;
     transferSetup.hidden = state.mode !== 'transfer';
-    expireSettings.hidden = !expireMode || !state.expireWarehouse;
+    expireSettings.hidden = !expireMode;
     step2.hidden = expireMode;
     generateBtn.hidden = expireMode;
     const transferMode = state.mode === 'transfer';
@@ -2711,7 +3188,7 @@
     document.querySelector('#step3 .step-marker span').textContent = transferMode ? '4' : '3';
     document.querySelector('#step3 h2').textContent = expireMode ? 'Download your file' : 'Generate & download';
     resetBtn.textContent = expireMode ? 'Upload next file' : 'Start over with a new file';
-    refreshExpireWarehouse();
+    refreshUploadAccess();
     refreshTransferRoute();
     if (stockMode) return;
     const t = MODE_TEXT[state.mode];
@@ -2736,17 +3213,22 @@
   modeBtns.forEach(btn => {
     btn.addEventListener('click', function () {
       const mode = btn.getAttribute('data-mode');
+      if (mode === 'history') { processHistory.openView(); return; }
       if (mode === 'pharmacy') { openPharmacyDirectory(); return; }
-      if (mode === state.mode) { if (directory.open) closePharmacyDirectory(); return; }
+      if (mode === state.mode) { if (directory.open) closePharmacyDirectory(); else if (processHistory.open) processHistory.closeView(); return; }
+      processHistory.dismiss();
       directory.open = false;
       state.mode = mode;
       resetTool(false);
       applyModeUI();
-      scrollToSection(document.getElementById(mode === 'overstock' ? 'overstockUploadSection' : mode === 'stock' ? 'stockStep1' : mode === 'transfer' ? 'transferSetup' : mode === 'expire' && !state.expireWarehouse ? 'expireSetup' : 'step1'));
+      scrollToSection(document.getElementById(mode === 'overstock' ? 'overstockUploadSection' : mode === 'stock' ? 'stockStep1' : mode === 'transfer' ? 'transferSetup' : mode === 'expire' ? 'expireSetup' : 'step1'));
     });
   });
 
   function hideAll() {
+    state.uploadedSummary = null;
+    document.getElementById('uploadCategorySummary').hidden = true;
+    document.getElementById('uploadCategorySummary').replaceChildren();
     parseError.hidden = true;
     statRow.hidden = true;
     whList.hidden = true;
@@ -2757,6 +3239,8 @@
     issueChecks.issueDuplicatesPanel.hidden = true;
     issueChecks.issueMergeError.hidden = true;
     transferChecks.transferDuplicatesPanel.hidden = true;
+    transferChecks.transferFileError.hidden = true;
+    transferChecks.transferSourceLocations.hidden = true;
     pharmacyReview.panel.hidden = true;
   }
 
@@ -2781,7 +3265,9 @@
     state.transferDuplicateChoice = null;
     state.transferDuplicates = 0;
     state.transferRepeatedMaterials = 0;
+    state.transferMergeError = '';
     transferChecks.transferDuplicatesPanel.hidden = true;
+    transferChecks.transferFileError.hidden = true;
   }
 
   function resetTool(scroll) {
@@ -2811,10 +3297,11 @@
     resultBlock.hidden = true;
     downloadStatus.hidden = true;
     if (state.mode === 'expire') refreshExpireDetails();
+    if (state.mode === 'transfer') refreshTransferRoute();
     if (scroll !== false) {
-      const chooseWarehouse = state.mode === 'expire' && !state.expireWarehouse;
+      const chooseWarehouse = state.mode === 'expire' && Boolean(expireRouteProblem());
       scrollToSection(state.mode === 'transfer' ? transferSetup : chooseWarehouse ? expireSetup : document.getElementById('step1'));
-      (state.mode === 'transfer' ? directionInput : chooseWarehouse ? expireWarehouseInput : dropzone).focus({ preventScroll: true });
+      (state.mode === 'transfer' ? directionInput : chooseWarehouse ? expireRouteUI.FromWarehouse : dropzone).focus({ preventScroll: true });
     }
   }
 
@@ -2884,11 +3371,11 @@
     issueChecks.issueKeepDuplicates.setAttribute('aria-pressed', String(choice === 'keep'));
     issueChecks.issueCombineQuantities.setAttribute('aria-pressed', String(choice === 'combine'));
     issueChecks.issueDuplicatesPanel.hidden = !state.issueDuplicates && !state.issueRepeatedGroups;
-    issueChecks.issueDuplicatesSummary.textContent = state.issueRepeatedGroups.toLocaleString() + ' pharmacy / material / warehouse group(s) can be combined from ' + state.issueAllRows.length.toLocaleString() + ' uploaded lines. ' + state.issueDuplicates.toLocaleString() + ' extra exact duplicate row(s) found in the upload.';
+    issueChecks.issueDuplicatesSummary.textContent = state.issueRepeatedGroups.toLocaleString() + ' repeated groups · ' + state.issueDuplicates.toLocaleString() + ' exact duplicates';
     issueChecks.issueDuplicatesStatus.textContent = pending ? 'Choose an option before generating your file.'
-      : choice === 'combine' ? 'Combined into ' + state.uniqueRows.length.toLocaleString() + ' lines. Every uploaded quantity is included, including exact duplicates. You can change this choice.'
-      : choice === 'remove' ? 'Exact duplicates removed. ' + state.uniqueRows.length.toLocaleString() + ' lines will be exported. You can change this choice.'
-      : 'All ' + state.uniqueRows.length.toLocaleString() + ' uploaded lines will be kept, including duplicates. You can change this choice.';
+      : choice === 'combine' ? 'Combined · ' + state.uniqueRows.length.toLocaleString() + ' output lines'
+      : choice === 'remove' ? 'Exact duplicates removed · ' + state.uniqueRows.length.toLocaleString() + ' output lines'
+      : 'All rows kept · ' + state.uniqueRows.length.toLocaleString() + ' output lines';
     renderPharmacyWarehouseReview();
   }
 
@@ -2916,23 +3403,162 @@
   issueChecks.issueKeepDuplicates.addEventListener('click', () => chooseIssueDuplicates('keep'));
   issueChecks.issueCombineQuantities.addEventListener('click', () => chooseIssueDuplicates('combine'));
 
-  function refreshTransferRoute() {
-    const from = directionInput.value === 'ryd2jed' ? 2100 : 1100;
-    const to = from === 1100 ? 2100 : 1100;
-    transferChecks.transferFromWarehouse.textContent = WAREHOUSE_LABEL[from] + ' · ' + from;
-    transferChecks.transferToWarehouse.textContent = WAREHOUSE_LABEL[to] + ' · ' + to;
-    transferChecks.transferRouteReview.textContent = 'From ' + WAREHOUSE_LABEL[from] + ' (' + from + ') → To ' + WAREHOUSE_LABEL[to] + ' (' + to + ')';
+  const LEGACY_CUSTOM_TRANSFER_KEY = 'upc-stocklink-custom-transfer-v1';
+  const TRANSFER_DIRECTION_KEY = 'upc-stocklink-transfer-direction-v1';
+  const EXPIRE_ROUTE_KEY = 'upc-stocklink-expire-route-v1';
+  function transferUsesBatch() { return false; }
+  function transferUsesSourceStorage() { return false; }
+  function transferRouteConfig() {
+    const direction = directionInput.value === 'ryd2jed' ? 'ryd2jed' : 'jed2ryd';
+    const fromWh = direction === 'ryd2jed' ? 2100 : 1100;
+    return {direction,fromWh,toWh:fromWh === 1100 ? 2100 : 1100,fromStorageMode:'auto',toStorageMode:'auto',fromStorage:null,toStorage:null,includeBatch:false};
   }
-  directionInput.addEventListener('change', refreshTransferRoute);
-  transferChecks.transferToUpload.addEventListener('click', function () {
-    scrollToSection(document.getElementById('step1')); dropzone.focus({ preventScroll: true });
+  function transferRouteProblem() { return ''; }
+  function transferFileProblem() { return moduleDateProblem('transfer') || state.transferMergeError || ''; }
+  function refreshUploadAccess() {
+    const problem = state.mode === 'expire' ? expireRouteProblem() : state.mode === 'transfer' ? transferRouteProblem() : '';
+    fileInput.disabled = Boolean(problem);
+    dropzone.setAttribute('aria-disabled',String(fileInput.disabled));
+    dropzone.setAttribute('aria-label',problem ? 'Choose a valid route before uploading' : 'Choose an Excel file');
+    dropzone.tabIndex = problem ? -1 : 0;
+  }
+  function refreshTransferReadiness() {
+    if (state.mode !== 'transfer') return;
+    const routeProblem = transferRouteProblem(), fileProblem = transferFileProblem();
+    transferChecks.transferRouteError.textContent = routeProblem;
+    transferChecks.transferRouteError.hidden = !routeProblem;
+    transferChecks.transferFileError.textContent = fileProblem;
+    transferChecks.transferFileError.hidden = !fileProblem;
+    transferChecks.transferSourceLocations.hidden = true;
+    const pending = state.transferRepeatedMaterials > 0 && !state.transferDuplicateChoice;
+    const disabled = !state.uniqueRows?.length || Boolean(routeProblem || fileProblem || state.fileReadController) || pending;
+    continueBtn.disabled = generateBtn.disabled = disabled;
+    transferChecks.transferToUpload.disabled = Boolean(routeProblem);
+    refreshUploadAccess();
+    if (routeProblem || fileProblem) { state.finalRows = null; resultBlock.hidden = true; }
+    downloadBtn.disabled = disabled || !state.finalRows;
+  }
+  function refreshTransferRoute() {
+    const route = transferRouteConfig();
+    const from = TRANSFER_PLANTS[route.fromWh]+' · '+route.fromWh+' / automatic by material';
+    const to = TRANSFER_PLANTS[route.toWh]+' · '+route.toWh+' / automatic by material';
+    transferChecks.transferFromWarehouse.textContent = from;
+    transferChecks.transferToWarehouse.textContent = to;
+    transferChecks.transferRouteReview.textContent = 'From '+from+' → To '+to;
+    refreshTransferReadiness();
+  }
+  function expireRouteConfig() {
+    const fromWh = Number(expireRouteUI.FromWarehouse.value), toWh = Number(expireRouteUI.ToWarehouse.value);
+    const fromStorageMode = STORAGE_LOCATIONS[fromWh] ? 'auto' : expireRouteUI.FromStorage.value === 'excel' ? 'excel' : 'manual';
+    const toStorageMode = STORAGE_LOCATIONS[toWh] || expireRouteUI.ToStorage.value === 'auto' ? 'auto' : 'manual';
+    return {fromWh,toWh,fromStorageMode,toStorageMode,
+      fromStorage:fromStorageMode === 'manual' ? Number(expireRouteUI.FromStorage.value) || null : null,
+      toStorage:toStorageMode === 'manual' ? Number(expireRouteUI.ToStorage.value) || null : null,
+      includeBatch:expireIncludeBatchInput.checked};
+  }
+  function expireRouteProblem() {
+    const route = expireRouteConfig();
+    if (!Object.hasOwn(TRANSFER_PLANTS,route.fromWh) || !Object.hasOwn(TRANSFER_PLANTS,route.toWh)) return 'Choose both supplying and receiving warehouses.';
+    if (route.fromWh === route.toWh) return 'Choose different supplying and receiving warehouses.';
+    for (const side of ['from','to']) {
+      const plant = route[side+'Wh'], storage = route[side+'Storage'];
+      if (!STORAGE_LOCATIONS[plant] && !['excel','auto'].includes(route[side+'StorageMode']) && (!Number.isInteger(storage) || storage < plant+1 || storage > plant+8)) {
+        return 'Choose the '+(side === 'from' ? 'source' : 'destination')+' storage location from '+(plant+1)+' to '+(plant+8)+'.';
+      }
+    }
+    return '';
+  }
+  function syncExpireStorage(side) {
+    const title = side === 'from' ? 'From' : 'To';
+    const plant = Number(expireRouteUI[title+'Warehouse'].value);
+    const select = expireRouteUI[title+'Storage'], previous = select.value;
+    const automatic = Boolean(STORAGE_LOCATIONS[plant]);
+    select.disabled = automatic;
+    select.innerHTML = automatic ? '<option value="auto">Automatic by material</option>'
+      : '<option value="">Choose storage location</option>'+(side === 'from' ? '<option value="excel">Read each line from Excel</option>' : '<option value="auto">Automatic by material</option>')+Array.from({length:8},(_,index) => '<option value="'+(plant+index+1)+'">'+(plant+index+1)+'</option>').join('');
+    if (!automatic) select.value = previous && Array.from(select.options).some(option => option.value === previous) ? previous : side === 'from' ? 'excel' : 'auto';
+  }
+  function refreshExpireRoute() {
+    syncExpireStorage('from'); syncExpireStorage('to');
+    const route = expireRouteConfig();
+    const sideText = side => {
+      const plant = route[side+'Wh'], storage = route[side+'Storage'], mode = route[side+'StorageMode'];
+      return (TRANSFER_PLANTS[plant] || 'Warehouse')+' · '+plant+' / '+(mode === 'excel' ? 'storage from Excel' : mode === 'auto' ? 'automatic by material' : storage || 'choose storage');
+    };
+    expireRouteUI.FromSummary.textContent = sideText('from');
+    expireRouteUI.ToSummary.textContent = sideText('to');
+    const categoryStorage = (side,category) => route[side+'StorageMode'] === 'excel' ? 'From Excel' : route[side+'StorageMode'] === 'auto' ? transferCategoryStorage(route[side+'Wh'],category) : route[side+'Storage'] || 'Choose storage';
+    expireRouteUI.MappingRows.innerHTML = EXPIRE_CATEGORY_ORDER.map(category => '<tr><td>'+CATEGORY_LABEL[category]+'</td><td>'+categoryStorage('from',category)+'</td><td>'+categoryStorage('to',category)+'</td></tr>').join('');
+    const problem = expireRouteProblem();
+    expireRouteUI.RouteError.textContent = problem; expireRouteUI.RouteError.hidden = !problem;
+    expireRouteUI.ToUpload.disabled = Boolean(problem);
+  }
+  function saveExpireRoute() {
+    try { localStorage.setItem(EXPIRE_ROUTE_KEY,JSON.stringify({version:1,from:expireRouteUI.FromWarehouse.value,to:expireRouteUI.ToWarehouse.value,
+      fromStorage:expireRouteUI.FromStorage.value,toStorage:expireRouteUI.ToStorage.value})); } catch (error) {}
+  }
+  // Move existing custom-route preferences into Store Expire without restoring
+  // the retired Custom option in Warehouse Transfer.
+  let legacyRoute = null;
+  try { legacyRoute = JSON.parse(localStorage.getItem(LEGACY_CUSTOM_TRANSFER_KEY) || 'null'); } catch (error) {}
+  try {
+    const direction = localStorage.getItem(TRANSFER_DIRECTION_KEY) || legacyRoute?.direction;
+    if (['jed2ryd','ryd2jed'].includes(direction)) directionInput.value = direction;
+  } catch (error) {}
+  try {
+    const raw = localStorage.getItem(EXPIRE_ROUTE_KEY);
+    const saved = raw ? JSON.parse(raw) : legacyRoute?.direction === 'custom' ? legacyRoute : null;
+    if (saved && Object.hasOwn(TRANSFER_PLANTS,saved.from) && Object.hasOwn(TRANSFER_PLANTS,saved.to)) {
+      expireRouteUI.FromWarehouse.value = String(saved.from); expireRouteUI.ToWarehouse.value = String(saved.to);
+      syncExpireStorage('from'); syncExpireStorage('to');
+      for (const side of ['from','to']) {
+        const select = expireRouteUI[(side === 'from' ? 'From' : 'To')+'Storage'];
+        if (Array.from(select.options).some(option => option.value === String(saved[side+'Storage']))) select.value = String(saved[side+'Storage']);
+      }
+    } else {
+      const previousWarehouse = Number(localStorage.getItem('upc-stocklink-expire-warehouse'));
+      if (KNOWN_WAREHOUSES.includes(previousWarehouse)) {
+        expireRouteUI.FromWarehouse.value = String(previousWarehouse);
+        expireRouteUI.ToWarehouse.value = String(EXPIRE_DESTINATION[previousWarehouse].plant);
+      }
+    }
+  } catch (error) {}
+  syncExpireStorage('from'); syncExpireStorage('to');
+  directionInput.addEventListener('change',function () {
+    state.finalRows = null; resultBlock.hidden = true; downloadStatus.hidden = true;
+    refreshTransferRoute(); refreshUploadedWarehouseSummary();
+    try { localStorage.setItem(TRANSFER_DIRECTION_KEY,directionInput.value); } catch (error) {}
   });
+  for (const input of [expireRouteUI.FromWarehouse,expireRouteUI.ToWarehouse,expireRouteUI.FromStorage,expireRouteUI.ToStorage]) {
+    input.addEventListener('change',function () {
+      if (state.mode !== 'expire') return;
+      state.finalRows = null; resultBlock.hidden = true; downloadStatus.hidden = true;
+      refreshExpireRoute(); saveExpireRoute(); refreshUploadedWarehouseSummary(); refreshExpireDetails();
+      if (state.uniqueRows && !state.fileReadController && prepareOutput()) resultBlock.hidden = false;
+    });
+  }
+  transferChecks.transferToUpload.addEventListener('click',function () {
+    scrollToSection(document.getElementById('step1')); dropzone.focus({preventScroll:true});
+  });
+  expireRouteUI.ToUpload.addEventListener('click',function () {
+    if (expireRouteProblem()) { refreshExpireDetails(); scrollToSection(expireRouteUI.RouteError); return; }
+    scrollToSection(document.getElementById('step1')); dropzone.focus({preventScroll:true});
+  });
+
+  function updateTransferDuplicateSummary(resetChoice) {
+    const summary = transferDuplicateSummary(state.transferAllRows || [],transferUsesBatch(),transferUsesSourceStorage());
+    state.transferDuplicates = summary.duplicates; state.transferRepeatedMaterials = summary.repeatedMaterials;
+    if (resetChoice) state.transferDuplicateChoice = summary.repeatedMaterials ? null : 'keep';
+  }
 
   function rebuildTransferRows() {
     if (!state.transferAllRows) return;
     const choice = state.transferDuplicateChoice;
-    const rows = choice === 'combine' ? mergeDuplicateMaterials(state.transferAllRows).merged
-      : choice === 'remove' ? transferDuplicateSummary(state.transferAllRows).unique : state.transferAllRows.slice();
+    const includeBatch = transferUsesBatch();
+    const includeStorage = transferUsesSourceStorage();
+    const groupLabel = 'material' + (includeBatch ? ', batch' : '') + (includeStorage ? ' and source storage' : '');
+    const rows = choice === 'combine' ? mergeDuplicateMaterials(state.transferAllRows,includeBatch,includeStorage).merged
+      : choice === 'remove' ? transferDuplicateSummary(state.transferAllRows,includeBatch,includeStorage).unique : state.transferAllRows.slice();
     state.uniqueRows = sortRowsForTransfer(rows);
     const categories = categorizeRows(state.uniqueRows).categoryCounts;
     statRows.textContent = state.uniqueRows.length.toLocaleString();
@@ -2940,19 +3566,19 @@
     statRow.hidden = false; whList.hidden = !state.uniqueRows.length;
     whList.textContent = 'Categories found — ' + Object.keys(categories).map(category => CATEGORY_LABEL[category] + ': ' + categories[category]).join(' · ');
     const pending = state.transferRepeatedMaterials > 0 && !choice;
-    continueBtn.disabled = generateBtn.disabled = pending;
-    downloadBtn.disabled = pending || !state.finalRows;
     transferChecks.transferDuplicatesPanel.hidden = !state.transferRepeatedMaterials;
-    transferChecks.transferDuplicatesSummary.textContent = state.transferRepeatedMaterials.toLocaleString() + ' material number(s) appear more than once. ' + state.transferDuplicates.toLocaleString() + ' extra exact duplicate row(s) found across the uploaded sheets.';
+    transferChecks.transferDuplicatesSummary.textContent = state.transferRepeatedMaterials.toLocaleString() + ' repeated ' + groupLabel + ' groups · ' + state.transferDuplicates.toLocaleString() + ' exact duplicates';
     transferChecks.transferRemoveDuplicates.disabled = !state.transferDuplicates;
     transferChecks.transferRemoveDuplicates.setAttribute('aria-pressed', String(choice === 'remove'));
     transferChecks.transferKeepDuplicates.setAttribute('aria-pressed', String(choice === 'keep'));
     transferChecks.transferCombineDuplicates.setAttribute('aria-pressed', String(choice === 'combine'));
+    transferChecks.transferCombineDuplicates.textContent = 'Combine quantities by ' + groupLabel;
     const count = state.uniqueRows.length.toLocaleString();
     transferChecks.transferDuplicatesStatus.textContent = pending ? 'Choose an option before generating your file.'
-      : choice === 'remove' ? 'Removed ' + state.transferDuplicates.toLocaleString() + ' identical repeat(s). ' + count + ' lines will be exported; different quantities are kept.'
-      : choice === 'combine' ? 'Every uploaded quantity is included in the total. ' + count + ' material line(s) will be exported.'
-      : 'All ' + count + ' uploaded lines will be kept, including duplicates.';
+      : choice === 'remove' ? 'Exact duplicates removed · ' + count + ' output lines'
+      : choice === 'combine' ? 'Combined · ' + count + ' output lines'
+      : 'All rows kept · ' + count + ' output lines';
+    refreshTransferReadiness();
   }
 
   async function chooseTransferDuplicates(choice) {
@@ -2962,9 +3588,15 @@
     const buttons = { remove: transferChecks.transferRemoveDuplicates, keep: transferChecks.transferKeepDuplicates, combine: transferChecks.transferCombineDuplicates };
     const messages = { remove: 'Removing exact transfer duplicates…', keep: 'Keeping all transfer rows…', combine: 'Combining material quantities…' };
     await runWithLoading(messages[choice], function () {
-      state.transferDuplicateChoice = choice; rebuildTransferRows();
-      downloadStatus.hidden = true;
-      if (hadResult) prepareOutput(); else scrollToSection(step2);
+      const previousChoice = state.transferDuplicateChoice;
+      try {
+        state.transferMergeError = ''; state.transferDuplicateChoice = choice; rebuildTransferRows();
+        downloadStatus.hidden = true;
+        if (hadResult) prepareOutput(); else scrollToSection(transferFileProblem() ? transferChecks.transferFileError : step2);
+      } catch (error) {
+        state.transferDuplicateChoice = previousChoice; state.transferMergeError = error.message;
+        refreshTransferReadiness(); scrollToSection(transferChecks.transferFileError);
+      }
     }, () => hadResult ? buttons[choice] : transferDateInput);
   }
   transferChecks.transferRemoveDuplicates.addEventListener('click', () => chooseTransferDuplicates('remove'));
@@ -2972,10 +3604,14 @@
   transferChecks.transferCombineDuplicates.addEventListener('click', () => chooseTransferDuplicates('combine'));
 
   async function handleFile(file) {
-    if (state.mode === 'expire' && !state.expireWarehouse) {
+    if (state.mode === 'transfer' && transferRouteProblem()) {
+      fileInput.value = ''; refreshTransferRoute(); scrollToSection(transferChecks.transferRouteError);
+      return;
+    }
+    if (state.mode === 'expire' && expireRouteProblem()) {
       fileInput.value = '';
-      scrollToSection(expireSetup);
-      expireWarehouseInput.focus({ preventScroll: true });
+      refreshExpireDetails(); scrollToSection(expireRouteUI.RouteError);
+      expireRouteUI.FromWarehouse.focus({ preventScroll: true });
       return;
     }
     if (state.fileReadController) state.fileReadController.abort();
@@ -3012,11 +3648,15 @@
       setUploadLoading(fileLoading,dropzone,'Checking columns and quantities…');
       await paintUploadState();
       if (uploadToken !== state.fileReadToken) return;
-      const parsed = state.mode === 'expire' ? parseExpireWorkbook(workbook) : state.mode === 'issue'
+      const parsed = state.mode === 'expire' ? parseExpireWorkbook(workbook,{ignoreWarehouse:true,customTransfer:true}) : state.mode === 'issue'
         ? await parseIssueWorkbook(workbook, controller.signal, message => {
           if (uploadToken === state.fileReadToken) setUploadLoading(fileLoading, dropzone, message);
         }) : parseWorkbook(workbook, requiredFields);
       if (uploadToken !== state.fileReadToken) return;
+      const uploadedRows = state.mode === 'transfer' ? parsed.rows.filter(row => LEADING_DIGIT_CATEGORY[String(row.material)[0]]) : parsed.rows;
+      const excludedRows = parsed.invalidRowCount + parsed.rows.length - uploadedRows.length;
+      state.uploadedSummary = {rows:uploadedRows, excluded:excludedRows, sourceWarehouse:parsed.sourceWarehouse};
+      refreshUploadedWarehouseSummary();
       if (state.mode === 'issue') {
         renderIssueValidation(parsed);
         if (parsed.invalidRowCount) {
@@ -3075,16 +3715,13 @@
         statRow.hidden = false;
         whList.hidden = false;
         whList.textContent = 'Categories found: ' + categories.map(category => CATEGORY_LABEL[category]).join(', ') + '. Total quantity: ' + parsed.rows.reduce((total, row) => total + row.order, 0).toLocaleString();
-        dedupNote.hidden = false;
-        dedupNote.textContent = 'Every material line stays in its original position. Repeated materials, repeated lines, and their quantities are kept exactly as uploaded.' + (parsed.skippedSheets.length ? ' Sheets without Material and Quantity headings were not included: ' + parsed.skippedSheets.join(', ') + '.' : '');
+        dedupNote.hidden = !parsed.skippedSheets.length;
+        dedupNote.textContent = parsed.skippedSheets.length ? 'Worksheets excluded: ' + parsed.skippedSheets.join(', ') + '.' : '';
         matchedCols.textContent += parsed.detectedColumns.batch ? ' · Batch: ' + parsed.detectedColumns.batch : ' · No batch column found';
       } else {
         const { valid, unrecognized } = categorizeRows(parsed.rows);
-        const summary = transferDuplicateSummary(valid);
         state.transferAllRows = valid;
-        state.transferDuplicates = summary.duplicates;
-        state.transferRepeatedMaterials = summary.repeatedMaterials;
-        state.transferDuplicateChoice = summary.repeatedMaterials ? null : 'keep';
+        updateTransferDuplicateSummary(true);
         rebuildTransferRows();
         state._unrecognizedCategoryCount = unrecognized;
       }
@@ -3122,18 +3759,20 @@
         refreshExpireDetails();
         if (prepareOutput()) {
           resultBlock.hidden = false;
-          scrollToSection(downloadBtn);
-          if (!directory.open) downloadBtn.focus({ preventScroll: true });
+          const totals = document.getElementById('uploadCategorySummary');
+          scrollToSection(totals);
+          if (!directory.open) totals.focus({ preventScroll: true });
         } else {
           scrollToSection(expireValidation);
           if (!directory.open) expireIncludeBatchInput.focus({ preventScroll: true });
         }
-      } else if (duplicateChoicePending) {
-        scrollToSection(state.mode === 'transfer' ? transferChecks.transferDuplicatesPanel : issueChecks.issueDuplicatesPanel);
-        if (!directory.open) (state.mode === 'transfer' ? state.transferDuplicates ? transferChecks.transferRemoveDuplicates : transferChecks.transferKeepDuplicates : state.issueRepeatedGroups ? issueChecks.issueCombineQuantities : issueChecks.issueRemoveDuplicates).focus({ preventScroll: true });
+      } else if (state.mode === 'transfer' && (transferRouteProblem() || transferFileProblem())) {
+        refreshTransferReadiness();
+        scrollToSection(transferRouteProblem() ? transferChecks.transferRouteError : transferChecks.transferFileError);
       } else {
-        scrollToSection(step2);
-        if (!directory.open) (state.mode === 'issue' ? pharmacyReview.search : transferDateInput).focus({ preventScroll: true });
+        const totals = document.getElementById('uploadCategorySummary');
+        scrollToSection(totals);
+        if (!directory.open) totals.focus({ preventScroll: true });
       }
     } catch (error) {
       if (uploadToken !== state.fileReadToken || error.name === 'AbortError') return;
@@ -3143,7 +3782,7 @@
         : error.code === 'file-read' ? "Couldn't read that file. Try re-saving it from Excel and uploading again."
         : "This doesn't look like a valid Excel file. Try re-saving it as .xlsx and uploading again.";
     } finally {
-      if (uploadToken === state.fileReadToken) { state.fileReadController = null; setUploadLoading(fileLoading,dropzone,null); }
+      if (uploadToken === state.fileReadToken) { state.fileReadController = null; setUploadLoading(fileLoading,dropzone,null); if (state.mode === 'transfer') refreshTransferReadiness(); if (state.mode === 'expire') refreshExpireDetails(); }
     }
   }
 
@@ -3167,10 +3806,13 @@
     }
   });
   dropzone.addEventListener('click', function (event) {
-    if (state.mode === 'expire' && !state.expireWarehouse) {
+    if (state.mode === 'transfer' && transferRouteProblem()) {
+      event.preventDefault(); refreshTransferRoute(); scrollToSection(transferChecks.transferRouteError); return;
+    }
+    if (state.mode === 'expire' && expireRouteProblem()) {
       event.preventDefault();
-      scrollToSection(expireSetup);
-      expireWarehouseInput.focus({ preventScroll: true });
+      refreshExpireDetails(); scrollToSection(expireRouteUI.RouteError);
+      expireRouteUI.FromWarehouse.focus({ preventScroll: true });
     }
   });
   continueBtn.addEventListener('click', function () {
@@ -3180,43 +3822,9 @@
   clearFileBtn.addEventListener('click', function (e) { e.preventDefault(); resetTool(); });
   resetBtn.addEventListener('click', function (e) { e.preventDefault(); resetTool(); });
 
-  function refreshExpireWarehouse() {
-    const active = state.mode === 'expire';
-    const selected = KNOWN_WAREHOUSES.includes(state.expireWarehouse);
-    document.getElementById('expireWarehouseChoose').hidden = selected;
-    document.getElementById('expireWarehouseLocked').hidden = !selected;
-    document.getElementById('expireWarehouseTitle').textContent = selected ? 'Selected warehouse' : 'Choose your warehouse';
-    document.getElementById('expireWarehouseLabel').textContent = selected
-      ? WAREHOUSE_LABEL[state.expireWarehouse] + ': ' + state.expireWarehouse + ' → ' + EXPIRE_DESTINATION[state.expireWarehouse].plant : '';
-    expireWarehouseInput.disabled = selected;
-    expireWarehouseInput.value = selected ? String(state.expireWarehouse) : '';
-    expireSettings.hidden = !active || !selected;
-    fileInput.disabled = active && !selected;
-    dropzone.setAttribute('aria-disabled', String(fileInput.disabled));
-    dropzone.setAttribute('aria-label', fileInput.disabled ? 'Choose a warehouse before uploading' : 'Choose an Excel file');
-    dropzone.tabIndex = fileInput.disabled ? -1 : 0;
-  }
-  expireWarehouseInput.addEventListener('change', function () {
-    if (state.mode !== 'expire' || state.expireWarehouse) { refreshExpireWarehouse(); return; }
-    const chosen = Number(expireWarehouseInput.value);
-    if (!KNOWN_WAREHOUSES.includes(chosen)) return;
-    state.expireWarehouse = chosen;
-    try { localStorage.setItem('upc-stocklink-expire-warehouse', String(chosen)); } catch (error) {}
-    resetTool(false);
-    scrollToSection(document.getElementById('step1'));
-    dropzone.focus({ preventScroll: true });
-  });
-  document.getElementById('expireChangeWarehouse').addEventListener('click', function () {
-    state.expireWarehouse = null;
-    try { localStorage.removeItem('upc-stocklink-expire-warehouse'); } catch (error) {}
-    resetTool(false);
-    refreshExpireWarehouse();
-    scrollToSection(expireSetup);
-    expireWarehouseInput.focus({ preventScroll: true });
-  });
-
   function currentIssueSettings() {
-    const isoDate = issueDateInput.value || todayIso();
+    // Automatic mode uses today's date; manual mode keeps the chosen date.
+    const isoDate = refreshAutomaticIssueDate();
     const dateStr = isoDate.replace(/-/g, '');
     const companyCodeRaw = companyCodeInput.value.trim();
     const companyCode = isNaN(Number(companyCodeRaw)) ? companyCodeRaw : Number(companyCodeRaw);
@@ -3231,7 +3839,7 @@
   }
 
   function currentTransferSettings() {
-    const isoDate = transferDateInput.value || todayIso();
+    const isoDate = refreshModuleDate('transfer');
     const dateNum = Number(isoDate.replace(/-/g, ''));
     const companyCodeRaw = tCompanyCodeInput.value.trim();
     const companyCode = isNaN(Number(companyCodeRaw)) ? companyCodeRaw : Number(companyCodeRaw);
@@ -3241,15 +3849,15 @@
       companyCode: companyCode,
       purchOrg: tPurchOrgInput.value.trim() || 'INT',
       poUnit: tPoUnitInput.value.trim() || 'EA',
-      direction: directionInput.value,
+      ...transferRouteConfig(),
     };
   }
 
   function currentExpireSettings() {
     const company = eCompanyCodeInput.value.trim();
     return {
-      warehouse: state.expireWarehouse,
-      dateNum: Number((expireDateInput.value || todayIso()).replace(/-/g, '')),
+      ...expireRouteConfig(),
+      dateNum: Number(refreshModuleDate('expire').replace(/-/g, '')),
       includeBatch: expireIncludeBatchInput.checked,
       docType: eDocTypeInput.value.trim() || 'ZTDD',
       companyCode: company ? (isNaN(Number(company)) ? company : Number(company)) : 1000,
@@ -3258,11 +3866,19 @@
     };
   }
   function expireProblem() {
+    const routeProblem = expireRouteProblem();
+    if (routeProblem) return routeProblem;
+    const dateProblem = moduleDateProblem('expire');
+    if (dateProblem) return dateProblem;
     if (!state.uniqueRows || !state.uniqueRows.length) return '';
-    const warehouse = state.expireWarehouse;
-    if (!KNOWN_WAREHOUSES.includes(warehouse)) return 'Choose Jeddah (1100) or Riyadh (2100).';
-    if (state.expireSourceWarehouse && state.expireSourceWarehouse !== warehouse) {
-      return 'Your selected warehouse stays at ' + warehouse + ', but this file identifies ' + state.expireSourceWarehouse + '. Upload the matching file, or use Change warehouse above.';
+    const route = expireRouteConfig();
+    const wrongPlant = state.uniqueRows.find(row => row.sourcePlantText != null && row.sourcePlant !== route.fromWh);
+    if (wrongPlant) return wrongPlant.source + ': the uploaded Plant is ' + (wrongPlant.sourcePlantText || 'blank') + ', but the selected source warehouse is ' + route.fromWh + '. Choose the matching source warehouse or correct the file.';
+    if (route.fromStorageMode === 'excel') {
+      const noColumn = state.uniqueRows.find(row => row.sourceStorageText == null);
+      if (noColumn) return noColumn.source + ': no unique source Storage Location column was found. Add that column, or choose one source storage for all lines.';
+      const invalidStorage = state.uniqueRows.find(row => !Number.isInteger(row.sourceStorage) || row.sourceStorage < route.fromWh+1 || row.sourceStorage > route.fromWh+8);
+      if (invalidStorage) return invalidStorage.source + ': source storage is ' + (invalidStorage.sourceStorageText || 'blank') + '. Use a location from ' + (route.fromWh+1) + ' to ' + (route.fromWh+8) + ', or choose one source storage for all lines.';
     }
     if (expireIncludeBatchInput.checked) {
       const invalid = state.uniqueRows.filter(row => row.batchProblem);
@@ -3274,30 +3890,26 @@
   }
   function refreshExpireDetails() {
     if (state.mode !== 'expire') return;
-    refreshExpireWarehouse();
-    const warehouse = state.expireWarehouse, destination = EXPIRE_DESTINATION[warehouse];
+    refreshExpireRoute(); refreshUploadAccess();
     const rows = state.uniqueRows || [];
-    const categories = EXPIRE_CATEGORY_ORDER.filter(category => !rows.length || rows.some(row => row.category === category));
-    document.getElementById('expireRouteNote').textContent = destination
-      ? WAREHOUSE_LABEL[warehouse] + ' expiry transfer: ' + warehouse + ' → ' + destination.plant + '. Storage locations follow the material category. Row order stays exactly as uploaded.' : 'Choose a supplying warehouse.';
-    document.getElementById('expireMappingRows').innerHTML = destination ? categories.map(category => '<tr><td>' + CATEGORY_LABEL[category] + '</td><td>' + STORAGE_LOCATIONS[warehouse][category] + '</td><td>' + destination[category] + '</td></tr>').join('') : '';
     const batches = rows.filter(row => row.batch && !row.batchProblem).length;
     document.getElementById('expireBatchSummary').textContent = rows.length
-      ? batches + ' of ' + rows.length + ' lines have a usable batch number. ' + (expireIncludeBatchInput.checked ? 'Batch numbers will be copied as text into PO_BATCH.' : 'PO_BATCH will be blank in the downloaded file.') : '';
+      ? batches + ' of ' + rows.length + ' lines have batch numbers.' : '';
     const problem = expireProblem();
-    expireValidation.textContent = problem;
-    expireValidation.hidden = !problem;
-    continueBtn.disabled = generateBtn.disabled = !rows.length || Boolean(problem);
+    expireValidation.textContent = expireRouteProblem() ? '' : problem;
+    expireValidation.hidden = !expireValidation.textContent;
+    continueBtn.disabled = generateBtn.disabled = !rows.length || Boolean(problem) || Boolean(state.fileReadController);
     if (problem) {
       state.finalRows = null;
       resultBlock.hidden = true;
       downloadStatus.hidden = true;
     }
-    downloadBtn.disabled = !state.finalRows || Boolean(problem);
+    downloadBtn.disabled = !state.finalRows || Boolean(problem) || Boolean(state.fileReadController);
   }
 
   function openPharmacyDirectory() {
-    if (!directory.open) directory.returnScroll = window.scrollY;
+    const historyScroll = processHistory.dismiss();
+    if (!directory.open) directory.returnScroll = historyScroll ?? window.scrollY;
     directory.open = true;
     applyModeUI();
     scrollToSection(document.getElementById('directorySearchSection'));
@@ -3360,8 +3972,8 @@
     directoryUI.directoryJeddah.textContent = rows.filter(row => row.wh === 1100).length;
     directoryUI.directoryRiyadh.textContent = rows.filter(row => row.wh === 2100).length;
     directoryUI.directoryActiveList.textContent = directory.saved
-      ? 'Active list: ' + directory.sourceName + ' · Saved in this browser on ' + new Date(directory.savedAt).toLocaleString()
-      : 'Active list: Pharmacies.xlsx · Original list included in the app';
+      ? directory.sourceName + ' · ' + new Date(directory.savedAt).toLocaleString()
+      : 'Pharmacies.xlsx';
     const query = directoryUI.directorySearch.value.trim().toLowerCase();
     const warehouse = directoryUI.directoryWarehouse.value;
     const filtered = rows.filter(row => (warehouse === 'all' || String(row.wh) === warehouse) && (!query || [row.code, row.name || '', row.area, issueWarehouseLabel(row.wh)].join(' ').toLowerCase().includes(query)));
@@ -3560,7 +4172,7 @@
     const reviews = pharmacyWarehouseReviews();
     const counts = { mismatch: 0, match: 0, unknown: 0, applied: 0 };
     reviews.forEach(row => counts[row.status]++);
-    pharmacyReview.reference.textContent = 'Reference: ' + directory.sourceName + ' · ' + PHARMACY_WAREHOUSE_REFERENCE.size + ' pharmacy codes. Suggestions use the WH column.';
+    pharmacyReview.reference.textContent = directory.sourceName + ' · ' + PHARMACY_WAREHOUSE_REFERENCE.size + ' pharmacies';
     pharmacyReview.summary.textContent = reviews.length + ' pharmacies checked · ' + counts.mismatch + ' warehouse mismatches · ' + counts.match + ' matches · ' + counts.unknown + ' not found · ' + counts.applied + ' applied';
     pharmacyReview.applyAll.hidden = counts.mismatch === 0;
     pharmacyReview.applyAll.textContent = 'Apply all ' + counts.mismatch + ' warehouse suggestions';
@@ -3585,7 +4197,7 @@
     });
     if (!shown.length) html += '<tr><td class="pharmacy-review-empty" colspan="5">No pharmacies match this search and filter.</td></tr>';
     pharmacyReview.table.innerHTML = html + '</tbody>';
-    pharmacyReview.shown.textContent = 'Showing ' + shown.length + ' of ' + filtered.length + ' matching pharmacies. All order lines are included in the export.';
+    pharmacyReview.shown.textContent = shown.length + ' of ' + filtered.length + ' pharmacies';
     pharmacyReview.more.hidden = shown.length >= filtered.length;
   }
 
@@ -3653,8 +4265,8 @@
     html += '</tbody>';
     previewTable.innerHTML = html;
     previewNote.textContent = rows.length > shown.length
-      ? 'Showing ' + shown.length + ' of ' + rows.length + ' lines — every line is included in the download.'
-      : rows.length + ' line' + (rows.length === 1 ? '' : 's') + ', ready to download.';
+      ? 'Showing ' + shown.length + ' of ' + rows.length + ' lines'
+      : rows.length + ' line' + (rows.length === 1 ? '' : 's');
     ruleNote.textContent = (state.issueDuplicateChoice === 'combine'
       ? 'All ' + state.issueAllRows.length + ' uploaded quantities are combined into ' + rows.length + ' lines by pharmacy, material, and selected warehouse. Exact duplicate quantities are included. '
       : state.issueDuplicates ? state.issueDuplicateChoice === 'remove'
@@ -3664,25 +4276,23 @@
   }
 
   function renderTransferPreview(rows, settings) {
-    const cols = ['Doc', 'Item', 'Material', 'Qty', 'Group', 'From', 'To'];
-    let html = '<thead><tr>' + cols.map(c => '<th>' + c + '</th>').join('') + '</tr></thead><tbody>';
+    const cols = ['Doc', 'Item', 'Material', 'Qty', 'Group', 'From plant / storage', 'To plant / storage'];
+    if (settings.includeBatch) cols.push('Batch');
     const shown = rows.slice(0, 20);
-    shown.forEach(r => {
-      html += '<tr><td>' + r.docNm + '</td><td>' + r.slNo + '</td><td>' + r.material + '</td><td>' + r.qty + '</td><td>' + r.purGroup +
-        '</td><td>' + WAREHOUSE_LABEL[r.supplyingPlant] + ' (' + r.supplyingStgeLoc + ')</td><td>' +
-        WAREHOUSE_LABEL[r.toWhere] + ' (' + r.destStgeLoc + ')</td></tr>';
-    });
-    html += '</tbody>';
-    previewTable.innerHTML = html;
+    previewTable.innerHTML = '<thead><tr>' + cols.map(label => '<th>' + label + '</th>').join('') + '</tr></thead><tbody>' + shown.map(row => {
+      const values = [row.docNm,row.slNo,row.material,row.qty,row.purGroup,row.supplyingPlant + ' / ' + row.supplyingStgeLoc,row.toWhere + ' / ' + row.destStgeLoc];
+      if (settings.includeBatch) values.push(row.poBatch);
+      return '<tr>' + values.map(value => '<td>' + escapeHtml(value) + '</td>').join('') + '</tr>';
+    }).join('') + '</tbody>';
     previewNote.textContent = rows.length > shown.length
-      ? 'Showing ' + shown.length + ' of ' + rows.length + ' lines — every line is included in the download.'
-      : rows.length + ' line' + (rows.length === 1 ? '' : 's') + ', ready to download.';
-    ruleNote.textContent = WAREHOUSE_LABEL[settings.direction === 'jed2ryd' ? 1100 : 2100] + ' → ' +
-      WAREHOUSE_LABEL[settings.direction === 'jed2ryd' ? 2100 : 1100] +
+      ? 'Showing ' + shown.length + ' of ' + rows.length + ' lines'
+      : rows.length + ' line' + (rows.length === 1 ? '' : 's');
+    ruleNote.textContent = settings.fromWh + ' → ' + settings.toWh +
       ". Each material's category comes from its leading digit — 1 is Medicine (INM), 2 Cosmetics, 3 Milk, 4 Diaper (all INC) — sorted by material, with every category becoming its own document and lines numbered 10, 20, 30…";
+    if (settings.direction === 'custom') ruleNote.textContent += ' Storage follows the previewed route. ' + (settings.fromStorageMode === 'excel' ? 'Each line keeps its source storage from Excel; different source locations stay separate. ' : '') + (settings.includeBatch ? 'Batch numbers are copied as text; different batches stay separate when combining.' : 'PO_BATCH is blank.');
     if (state.transferRepeatedMaterials) ruleNote.textContent += state.transferDuplicateChoice === 'remove'
       ? ' ' + state.transferDuplicates + ' exact duplicate row(s) removed by your choice; different quantities are kept.'
-      : state.transferDuplicateChoice === 'combine' ? ' All uploaded quantities were combined into one line per material by your choice.'
+      : state.transferDuplicateChoice === 'combine' ? ' All uploaded quantities were combined into one line per material' + (settings.includeBatch ? ', batch' : '') + (settings.fromStorageMode === 'excel' ? ' and source storage' : '') + ' by your choice.'
       : ' All repeated rows are kept by your choice.';
   }
 
@@ -3695,14 +4305,19 @@
       if (settings.includeBatch) values.push(row.poBatch);
       return '<tr>' + values.map(value => '<td>' + escapeHtml(value) + '</td>').join('') + '</tr>';
     }).join('') + '</tbody>';
-    previewNote.textContent = (rows.length > shown.length ? 'Showing ' + shown.length + ' of ' + rows.length + ' lines. ' : rows.length + ' lines. ') + rows[rows.length - 1].docNm + ' document(s), all included in the download.';
+    previewNote.textContent = (rows.length > shown.length ? 'Showing ' + shown.length + ' of ' + rows.length + ' lines · ' : rows.length + ' lines · ') + rows[rows.length - 1].docNm + ' document(s)';
     ruleNote.textContent = 'Every material line and quantity stays in the exact upload order, including repeats. A new SAP document starts when the material category changes, with items numbered 10, 20, 30… ' + (settings.includeBatch ? 'Batch numbers are included in PO_BATCH.' : 'PO_BATCH is blank.');
   }
 
   function prepareOutput() {
     if (!state.uniqueRows || !state.uniqueRows.length) return false;
+    if (dateChoices[state.mode]) {
+      refreshModuleDate(state.mode);
+      if (!validateModuleDate(state.mode)) { state.finalRows = null; downloadBtn.disabled = true; resultBlock.hidden = true; return false; }
+    }
     if (state.mode === 'issue' && (state.issueValidationIssues.length || ((state.issueDuplicates > 0 || state.issueRepeatedGroups > 0) && !state.issueDuplicateChoice))) return false;
     if (state.mode === 'transfer' && state.transferRepeatedMaterials > 0 && !state.transferDuplicateChoice) return false;
+    if (state.mode === 'transfer' && (transferRouteProblem() || transferFileProblem())) { refreshTransferReadiness(); return false; }
     if (state.mode === 'issue') {
       const settings = currentIssueSettings();
       state.finalRows = buildIssueRows(state.uniqueRows, settings);
@@ -3717,14 +4332,29 @@
       state.finalRows = buildTransferRows(state.uniqueRows, settings);
       renderTransferPreview(state.finalRows, settings);
     }
+    const exportStats = summaryStats(state.finalRows,row => row.qty);
+    renderDownloadSummary(document.getElementById('finalDownloadSummary'),exportStats,sapSummaryFields(state.finalRows,exportStats,state.mode),state.mode);
     downloadName.textContent = 'Download as: ' + outputFilename();
     downloadBtn.disabled = false;
     return true;
   }
 
-  const settingsInputs = [issueDateInput, docTypeInput, companyCodeInput, purchOrgInput,
-    poUnitInput, destStgeLocInput, directionInput, transferDateInput, tCompanyCodeInput,
-    tPurchOrgInput, tPoUnitInput, tDocTypeInput, expireDateInput,
+  function updateStandardDateChoice(mode) {
+    if (state.mode !== mode) return;
+    const valid = validateModuleDate(mode);
+    if (!valid) { state.finalRows = null; downloadBtn.disabled = true; resultBlock.hidden = true; }
+    if (mode === 'transfer') refreshTransferReadiness();
+    if (mode === 'expire') refreshExpireDetails();
+    if (valid && !state.fileReadController && (state.finalRows || mode === 'expire' && state.uniqueRows)) {
+      if (prepareOutput() && mode === 'expire') resultBlock.hidden = false;
+    }
+    downloadStatus.hidden = true;
+  }
+  ['issue','transfer','expire'].forEach(mode => { dateChoices[mode].onChange = () => updateStandardDateChoice(mode); });
+
+  const settingsInputs = [docTypeInput, companyCodeInput, purchOrgInput,
+    poUnitInput, destStgeLocInput, directionInput, tCompanyCodeInput,
+    tPurchOrgInput, tPoUnitInput, tDocTypeInput,
     expireIncludeBatchInput, eCompanyCodeInput, ePurchOrgInput, ePoUnitInput, eDocTypeInput];
   settingsInputs.forEach(function (input) {
     function refreshResult() {
@@ -3744,6 +4374,10 @@
 
   generateBtn.addEventListener('click', async function () {
     if (generateBtn.disabled || state.fileReadController) return;
+    if (dateChoices[state.mode]) {
+      refreshModuleDate(state.mode);
+      if (!validateModuleDate(state.mode,true)) return;
+    }
     await runWithLoading('Generating your SAP file…', function () {
       if (!prepareOutput()) return;
       downloadStatus.hidden = true;
@@ -3759,8 +4393,16 @@
         if (!prepareOutput()) return;
         const filename = outputFilename();
         await downloadWorkbook(buildWorkbook(state.finalRows), filename);
+        const stats = summaryStats(state.finalRows,row => row.qty);
+        const historyNote = processHistory.record({mode:state.mode,sourceName:state.fileName,outputName:filename,stats,
+          fields:sapSummaryFields(state.finalRows,stats,state.mode).concat([
+            ['Document type',summaryCodes(state.finalRows.map(row => row.type))],['Company code',summaryCodes(state.finalRows.map(row => row.companyCode))],
+            ['Purchasing organization',summaryCodes(state.finalRows.map(row => row.purchOrg))],['Order unit',summaryCodes(state.finalRows.map(row => row.poUnit))],
+            ...(state.mode === 'issue' ? [['Pharmacy warehouse suggestions applied',String(state.issueWarehouseOverrides.size)]] : [])
+          ]),kind:state.mode === 'transfer' ? 'SAP transfer Excel' : state.mode === 'expire' ? 'SAP expiry Excel' : 'SAP pharmacy issue Excel',
+          destinationCodes:state.mode === 'issue' ? [] : state.finalRows.map(row => row.toWhere)});
         downloadStatus.className = 'callout note';
-        downloadStatus.textContent = 'Download started: ' + filename;
+        downloadStatus.textContent = 'Download started: ' + filename + historyNote;
       } catch (error) {
         downloadStatus.className = 'callout error';
         downloadStatus.textContent = 'The download could not start. Please try again.';
@@ -3778,7 +4420,7 @@
       'Shown','More','Download','ProblemsDownload','Next','DownloadName','DownloadStatus'].forEach(name => {
       ui[name] = document.getElementById('overstock' + name);
     });
-    const data = { warehouse: '', token: 0, controller: null, fileName: '', result: null, limit: 100 };
+    const data = { warehouse: '', token: 0, controller: null, fileName: '', result: null, summary: null, limit: 100 };
     const columns = OVERSTOCK_COLUMNS;
     const count = number => number.toLocaleString();
     const quantityText = number => number.toLocaleString(undefined, { maximumFractionDigits: 8 });
@@ -3796,7 +4438,7 @@
     function resetFile() {
       data.token++;
       if (data.controller) data.controller.abort();
-      data.controller = null; data.warehouse = ''; data.fileName = ''; data.result = null; data.limit = 100;
+      data.controller = null; data.warehouse = ''; data.fileName = ''; data.result = null; data.summary = null; data.limit = 100;
       ui.FileInput.value = ''; ui.FileRow.hidden = true; ui.Results.hidden = true; ui.Error.hidden = true;
       ui.Search.value = ''; ui.View.value = 'ready'; ui.Table.replaceChildren();
       ui.Download.disabled = true; ui.ProblemsDownload.disabled = true; ui.DownloadStatus.hidden = true;
@@ -3897,7 +4539,7 @@
       return result;
     }
     function buildIssueRows() {
-      const selected = route(), date = Number(todayIso().replace(/-/g, ''));
+      const selected = route(), date = Number(refreshModuleDate('overstock').replace(/-/g, ''));
       let docNm = 0, slNo = 0, previousCategory = null;
       return data.result.ready.map(row => {
         if (row.category !== previousCategory) { docNm++; slNo = 10; }
@@ -3924,11 +4566,19 @@
     function render() {
       if (!data.result) return;
       const {ready,problems,ignored,sourceRows} = data.result, selected = route();
-      const total = ready.reduce((sum,row) => sum + row.quantity,0);
+      const stats = data.summary;
+      renderCategorySummary(document.getElementById('overstockCategorySummary'),stats,'Ready to issue by category','Accepted lines only. Batch problems and ignored storage locations are excluded.');
+      renderDownloadSummary(document.getElementById('overstockDownloadSummary'),stats,[
+        ['Issue date',formatSummaryDate(refreshModuleDate('overstock')),true],
+        ['From warehouse',summaryCodes([selected.source],true)],['To warehouse',summaryCodes([selected.destination],true)],
+        ['Output lines',count(ready.length)],['Total quantity',summaryQuantity(stats.total)],['Unique materials',count(stats.total.materials.size)],
+        ['Batches',ready.length ? 'Included on every accepted line' : 'No accepted lines'],['Duplicate handling','Every accepted line kept'],
+        ['From storage',summaryCodes(ready.map(row => row.storage))],['Batch / data problems excluded',count(problems.length)],['Other rows ignored',count(ignored)]
+      ],'overstock');
       ui.Results.hidden = false;
       showDetectedWarehouse();
       ui.ReadyCount.textContent = count(ready.length); ui.ProblemCount.textContent = count(problems.length); ui.IgnoredCount.textContent = count(ignored);
-      ui.ResultSummary.textContent = count(sourceRows) + ' source lines checked for ' + WAREHOUSE_LABEL[selected.destination] + '. ' + count(ready.length) + ' ready lines, total quantity ' + quantityText(total) + '. ' + count(problems.length) + ' problem lines excluded; ' + count(ignored) + ' rows from other plants or storage locations ignored.';
+      ui.ResultSummary.textContent = count(sourceRows) + ' source lines checked for ' + WAREHOUSE_LABEL[selected.destination] + '. ' + count(ready.length) + ' ready lines, total quantity ' + summaryQuantity(stats.total) + '. ' + count(problems.length) + ' problem lines excluded; ' + count(ignored) + ' rows from other plants or storage locations ignored.';
       const showProblems = ui.View.value === 'problems', all = showProblems ? problems : ready;
       const query = ui.Search.value.trim().toLowerCase();
       const filtered = query ? all.filter(row => [row.material,row.description,row.batch].some(value => String(value).toLowerCase().includes(query))) : all;
@@ -3938,7 +4588,8 @@
         (rows.length ? rows.map(row => '<tr>' + [row.material,row.description,row.storage,row.batch,typeof row.quantity === 'number' ? quantityText(row.quantity) : row.quantity,showProblems ? row.problem : STORAGE_LOCATIONS[selected.destination][row.category],row.sheet + ' · ' + row.excelRow].map((value,index) => '<td' + (index === 1 ? ' class="description-cell"' : index === 5 && showProblems ? ' class="problem-cell"' : '') + '>' + escapeHtml(value) + '</td>').join('') + '</tr>').join('') : '<tr><td colspan="7">' + (query ? 'No matching rows.' : showProblems ? 'No batch or data problems found.' : 'No lines match the selected storage and batch rules.') + '</td></tr>') + '</tbody>';
       ui.Shown.textContent = 'Showing ' + count(rows.length) + ' of ' + count(filtered.length) + (query ? ' matching' : '') + ' ' + (showProblems ? 'problem' : 'ready') + ' lines.';
       ui.More.hidden = rows.length >= filtered.length;
-      ui.Download.disabled = !ready.length; ui.ProblemsDownload.disabled = false;
+      const dateValid = validateModuleDate('overstock');
+      ui.Download.disabled = !ready.length || !dateValid; ui.ProblemsDownload.disabled = !dateValid;
       ui.DownloadName.textContent = ready.length ? 'SAP file: ' + filename('Overstock_Issue') : 'The SAP download becomes available when at least one line passes the rules.';
     }
     async function upload(file) {
@@ -3955,6 +4606,7 @@
         const result = await parse(workbook,selected,controller.signal,phase);
         if (token !== data.token) return;
         data.result = result;
+        data.summary = summaryStats(result.ready,row => row.quantity,undefined,() => selected.source);
         ui.View.value = result.ready.length ? 'ready' : 'problems';
         render();
         if (active()) scrollToSection(ui.Results);
@@ -3971,11 +4623,21 @@
     }
     async function download(problemsOnly) {
       if (!data.result || !problemsOnly && !data.result.ready.length) return;
+      refreshModuleDate('overstock');
+      if (!validateModuleDate('overstock',true)) return;
       await runWithLoading(problemsOnly ? 'Preparing the batch problem report…' : 'Preparing the overstock SAP issue file…', async () => {
         try {
           const name = filename(problemsOnly ? 'Batch_Problems' : 'Overstock_Issue');
           await downloadWorkbook(problemsOnly ? buildProblemWorkbook() : buildWorkbook(buildIssueRows()),name);
-          ui.DownloadStatus.className = 'callout note'; ui.DownloadStatus.textContent = 'Download started: ' + name;
+          const rows = problemsOnly ? data.result.problems : data.result.ready, selected = route();
+          const stats = problemsOnly ? summaryStats(rows,row => typeof row.quantity === 'number' && Number.isFinite(row.quantity) && row.quantity > 0 && row.quantity <= Number.MAX_SAFE_INTEGER ? row.quantity : null,undefined,row => row.plant) : data.summary;
+          const historyNote = processHistory.record({mode:'overstock',sourceName:data.fileName,outputName:name,stats,
+            kind:problemsOnly ? 'Batch problems report' : 'SAP overstock issue Excel',destinationCodes:problemsOnly ? [] : [selected.destination],
+            quantityLabel:problemsOnly ? 'Known problem quantity' : 'Total quantity',
+            fields:[[problemsOnly ? 'Report date' : 'Issue date',formatSummaryDate(refreshModuleDate('overstock'))],['From warehouse',summaryCodes([selected.source],true)],
+              ['To warehouse',problemsOnly ? 'Problem report only' : summaryCodes([selected.destination],true)],['Batches','Included'],['Duplicate handling',problemsOnly ? 'Every problem line kept' : 'Every accepted line kept'],
+              ['From storage',summaryCodes(rows.map(row => row.storage))],['Batch / data problem lines',String(data.result.problems.length)],['Other rows ignored',String(data.result.ignored)]]});
+          ui.DownloadStatus.className = 'callout note'; ui.DownloadStatus.textContent = 'Download started: ' + name + historyNote;
         } catch (error) {
           ui.DownloadStatus.className = 'callout error'; ui.DownloadStatus.textContent = 'The Excel download could not be prepared. Please try again.';
         }
@@ -3996,6 +4658,8 @@
     ui.More.addEventListener('click', () => { data.limit += 100; render(); });
     ui.Download.addEventListener('click', () => download(false));
     ui.ProblemsDownload.addEventListener('click', () => download(true));
+    dateChoices.overstock.onChange = () => { ui.DownloadStatus.hidden = true; if (data.result) render(); };
+    dateChoices.overstock.onRefresh = () => { if (data.result && data.result.ready.length) ui.DownloadName.textContent = 'SAP file: ' + filename('Overstock_Issue'); };
   })();
 
   // Stock comparison is separate from the SAP issuing export.
@@ -4193,15 +4857,15 @@
         const names = selectedIssueSheets();
         const rowCount = names.reduce((total,name) => total + issueSheet(name).rows.length, 0);
         const excluded = issue.workbook.SheetNames.filter(name => !names.includes(name));
-        issue.summary.textContent = count(rowCount) + ' rows across ' + names.join(', ') + '.' + (excluded.length ? ' Not included: ' + excluded.join(', ') + '.' : '') + (method === 'search' ? '' : problem ? ' ' + problem : method === 'quantity' ? ' Repeated required quantities will be totalled.' : ' Repeated material numbers will be checked once.');
+        issue.summary.textContent = count(rowCount) + ' rows · ' + names.join(', ') + (excluded.length ? ' · Excluded: ' + excluded.join(', ') : '') + (method === 'search' ? '' : problem ? ' · ' + problem : '');
         issue.summary.hidden = false;
         issue.mapping.open = issue.mapping.open || (method !== 'search' && Boolean(problem));
       }
       el('stockScopeNote').textContent = !ready ? 'Upload Jeddah or Riyadh stock to start.' : method !== 'search' && problem ? problem : scope.value === '__file__'
-        ? 'Each row is checked against its supplying warehouse. Every warehouse used in the file needs its own stock upload.'
-        : 'Checking ' + warehouseLabel(scope.value) + ' only. ' + (method === 'quantity' && issue.wh.value !== ''
-          ? 'Rows supplied by another warehouse are outside this check and will be counted in the report.'
-          : method === 'quantity' ? 'This warehouse supplies all material rows in the file.' : 'Material numbers are matched exactly; no required quantity is needed.');
+        ? 'Using each row’s supplying warehouse.'
+        : 'Checking ' + warehouseLabel(scope.value) + (method === 'quantity' && issue.wh.value !== ''
+          ? ' · Other warehouse rows excluded.'
+          : '');
       if (advance && state.mode === 'stock' && ready) scrollToSection(method !== 'search' && issue.workbook ? compareButton : step2);
     }
     function configureIssueColumns() {
@@ -4270,13 +4934,10 @@
       }
       if (errors.length) throw new Error(count(errors.length) + ' invalid stock row(s). ' + errors.slice(0, 4).join(' | ') + '. Correct these rows and upload again.');
       source.materials = materials; source.sheetNames = names; source.rowCount = rowCount; source.loaded = true;
-      source.categoryBox.innerHTML = stockCategories.filter(category => stats.get(category.id).sheets.length).map(category => {
-        const stat = stats.get(category.id);
-        return '<div class="warehouse-category"><span>' + category.label + ' · ' + escapeHtml(stat.sheets.join(', ')) + '</span><b>' + count(stat.codes.size) + ' materials</b></div>';
-      }).join('') || '<div class="warehouse-category"><span>Stock · ' + escapeHtml(names.join(', ')) + '</span><b>0 materials</b></div>';
-      source.categoryBox.hidden = false;
+      renderCategorySummary(source.categoryBox,summaryStats(Array.from(materials.values()),row => row.qty,stockSummaryCategory,() => source.code),
+        'Uploaded stock totals','Every valid stock quantity is included. Repeated material codes are combined within this warehouse.',{uniqueOnly:true,uploadedLines:rowCount});
       const excluded = workbook.SheetNames.filter(name => !names.includes(name));
-      source.summary.textContent = count(rowCount) + ' rows → ' + count(materials.size) + ' materials. ' + count(rowCount - materials.size) + ' repeated rows combined. Worksheets read: ' + names.join(', ') + '.' + (excluded.length ? ' Not read (summary or no stock columns): ' + excluded.join(', ') + '.' : '');
+      source.summary.textContent = count(rowCount) + ' rows · ' + count(materials.size) + ' materials' + (excluded.length ? ' · Excluded worksheets: ' + excluded.join(', ') : '');
       source.summary.hidden = false;
     }
     function importIssue(workbook) {
@@ -4316,7 +4977,10 @@
         await paintUploadState();
         if (token !== source.readToken) return;
         if (source.kind === 'issue') importIssue(workbook);
-        else { importWarehouse(source, workbook); refreshReadiness(true); }
+        else {
+          importWarehouse(source, workbook); refreshReadiness(false);
+          if (state.mode === 'stock' && !source.categoryBox.hidden) { scrollToSection(source.categoryBox); if (!directory.open) source.categoryBox.focus({preventScroll:true}); }
+        }
       } catch (error) {
         if (token !== source.readToken || error.name === 'AbortError') return;
         fail(error.code === 'reader-unavailable' ? 'The Excel reader could not load. Connect to the internet and refresh this page.'
@@ -4421,6 +5085,10 @@
       return base + '_Stock_Report_' + todayIso() + '.xlsx';
     }
     function reportStatus(row) { return row.status === 'in-stock' && report.kind !== 'quantity' ? 'Stock available' : statusLabels[row.status]; }
+    function stockSummaryCategory(row) {
+      const groups = Array.from(row.categories || []);
+      return groups.length === 1 ? groups[0] : LEADING_DIGIT_CATEGORY[String(row.material)[0]] || 'other';
+    }
     function renderReport() {
       if (!report) return;
       const filter = reportFilter.value, category = reportCategory.value;
@@ -4430,6 +5098,15 @@
       const filtered = report.rows.filter(row => matchesSearch(row) && (filter === 'all' || (filter === 'problems' ? row.status !== 'in-stock' : row.status === filter)) && (category === 'all' || row.categories.includes(category)));
       const shown = filtered.slice(0,200);
       const compareQuantities = report.kind === 'quantity';
+      const fields = [['Report date',formatSummaryDate(refreshModuleDate('stock')),true],['Warehouse',report.scope],
+        ['Checks',count(report.rows.length)],['Unique materials',count(report.summary.total.materials.size)],
+        ['Known available quantity',summaryQuantity(report.availableSummary.total)],['Not in stock file',count(report.availableSummary.total.missing)],
+        ['Download scope','All checks, including rows hidden by preview filters']];
+      if (compareQuantities) fields.push(['Required quantity',summaryQuantity(report.summary.total)]);
+      renderDownloadSummary(el('stockDownloadSummary'),report.summary,fields,'stock',{
+        quantityLabel:compareQuantities ? 'Required quantity' : 'Known available quantity',checks:true,
+        note:'These totals cover the full report. Materials missing from the stock file have an unknown available quantity.'
+      });
       const headers = ['Warehouse','Category','Material','Description'].concat(compareQuantities ? ['Required','Available','Shortfall','Status'] : ['Available','Status']);
       let html = '<thead><tr>' + headers.map(header => '<th scope="col">' + header + '</th>').join('') + '</tr></thead><tbody>';
       for (const row of shown) {
@@ -4439,8 +5116,8 @@
       if (!shown.length) html += '<tr><td class="compare-empty" colspan="' + headers.length + '">' + (query ? 'No compared materials match this search and the selected filters.' : filter === 'problems' && category === 'all' ? compareQuantities ? 'Every requested material has enough stock in its supplying warehouse.' : 'Every checked material has available stock in the selected warehouse.' : 'No materials match this view.') + '</td></tr>';
       reportTable.innerHTML = html + '</tbody>';
       el('stockReportNote').textContent = query
-        ? (filtered.length > shown.length ? 'Showing ' + count(shown.length) + ' of ' + count(filtered.length) + ' matches. ' : count(filtered.length) + ' matching check' + (filtered.length === 1 ? '' : 's') + '. ') + count(report.rows.length) + ' total checks. Download includes the full report.'
-        : filtered.length > shown.length ? 'Showing ' + count(shown.length) + ' of ' + count(filtered.length) + ' checks. The Excel report includes every check.' : count(filtered.length) + ' check' + (filtered.length === 1 ? '' : 's') + ' in this view.';
+        ? (filtered.length > shown.length ? 'Showing ' + count(shown.length) + ' of ' + count(filtered.length) + ' matches · ' : count(filtered.length) + ' matches · ') + count(report.rows.length) + ' total checks'
+        : filtered.length > shown.length ? 'Showing ' + count(shown.length) + ' of ' + count(filtered.length) + ' checks' : count(filtered.length) + ' check' + (filtered.length === 1 ? '' : 's');
       el('stockReportDownloadName').textContent = 'Download as: ' + reportFilename();
     }
     compareButton.addEventListener('click', async () => {
@@ -4470,6 +5147,8 @@
         const priority = {'no-stock':0, insufficient:1, missing:2, 'in-stock':3};
         rows.sort((a,b) => priority[a.status] - priority[b.status] || naturalCompare(a.wh,b.wh) || naturalCompare(a.material,b.material));
         report = {rows, kind:method, sourceName:method === 'search' ? 'Material_Search' : issue.fileName, zeroDemand:demand.zeroDemand, positiveRows:demand.positiveRows, sourceRows:demand.sourceRows, excluded:demand.excluded, sheetNames:method === 'search' ? [] : selectedIssueSheets(), scope:scope.value === '__file__' ? 'Each supplying warehouse separately' : warehouseLabel(scope.value)};
+        report.summary = summaryStats(rows,row => compareQuantities ? row.required : row.available,stockSummaryCategory);
+        report.availableSummary = compareQuantities ? summaryStats(rows,row => row.available,stockSummaryCategory) : report.summary;
         el('stockCheckedCount').textContent = count(rows.length);
         el('stockAvailableCount').textContent = count(rows.filter(row => row.status === 'in-stock').length);
         el('stockAvailableLabel').textContent = compareQuantities ? 'enough stock' : 'available';
@@ -4516,7 +5195,7 @@
       const headers = ['Warehouse','Category','Material','Material Description'].concat(compareQuantities ? ['Required Qty','Available Qty','Shortfall Qty','Status'] : ['Available Qty','Status']);
       const excluded = report.kind === 'search' ? [] : issue.workbook.SheetNames.filter(name => !report.sheetNames.includes(name));
       const metadata = [
-        ['Warehouse stock report'], ['Report date',todayIso()],
+        ['Warehouse stock report'], ['Report date',refreshModuleDate('stock')],
         ['Check type',compareQuantities ? 'Required quantity comparison' : 'Material availability'],
         ['Source',report.kind === 'search' ? 'Exact material number search' : report.sourceName], ['Worksheets',report.sheetNames.join(', ') || 'Manual search'],
         ['Jeddah (1100) stock',warehouses['1100'].loaded ? warehouses['1100'].fileName : 'Not uploaded','Worksheets',warehouses['1100'].sheetNames.join(', ')],
@@ -4545,14 +5224,26 @@
     }
     el('stockReportDownload').addEventListener('click', async () => {
       if (!report) return;
+      refreshModuleDate('stock');
+      if (!validateModuleDate('stock',true)) return;
       await runWithLoading('Preparing your stock report…', async () => {
       try {
         const filename = reportFilename(); await downloadWorkbook(buildReportWorkbook(),filename);
-        downloadStatus.className = 'callout note'; downloadStatus.textContent = 'Download started: ' + filename;
+        const historyNote = processHistory.record({mode:'stock',sourceName:report.kind === 'search' ? 'Manual material search' : report.sourceName,outputName:filename,stats:report.summary,checks:true,
+          kind:report.kind === 'quantity' ? 'Required quantity comparison' : 'Material availability report',quantityLabel:report.kind === 'quantity' ? 'Required quantity' : 'Known available quantity',
+          fields:[['Report date',formatSummaryDate(refreshModuleDate('stock'))],['Warehouse',report.scope],['Known available quantity',summaryQuantity(report.availableSummary.total)],
+            ['Not in stock file',String(report.availableSummary.total.missing)],['Required quantity',report.kind === 'quantity' ? summaryQuantity(report.summary.total) : 'Not requested'],
+            ['Duplicate handling','Repeated materials combined per warehouse'],['Jeddah stock file',warehouses['1100'].loaded ? warehouses['1100'].fileName : 'Not uploaded'],
+            ['Riyadh stock file',warehouses['2100'].loaded ? warehouses['2100'].fileName : 'Not uploaded'],['Worksheets',report.sheetNames.join(', ') || 'Manual search'],
+            ['Stock available / correct',String(report.rows.filter(row => row.status === 'in-stock').length)],['No stock',String(report.rows.filter(row => row.status === 'no-stock').length)],
+            ['Insufficient stock',String(report.rows.filter(row => row.status === 'insufficient').length)],['Download scope','All checks, including rows hidden by preview filters']]});
+        downloadStatus.className = 'callout note'; downloadStatus.textContent = 'Download started: ' + filename + historyNote;
       } catch (error) { downloadStatus.className = 'callout error'; downloadStatus.textContent = 'The stock report could not be downloaded. Please try again.'; }
       downloadStatus.hidden = false; scrollToSection(downloadStatus);
       });
     });
+    dateChoices.stock.onChange = () => { downloadStatus.hidden = true; if (report) renderReport(); };
+    dateChoices.stock.onRefresh = () => { if (report) el('stockReportDownloadName').textContent = 'Download as: ' + reportFilename(); };
     el('stockResetBtn').addEventListener('click', () => {
       searchInput.value = ''; clearSource(issue); scrollToSection(step2);
       (method === 'search' ? searchInput : issue.dropzone).focus({preventScroll:true});
